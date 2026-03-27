@@ -1,0 +1,29 @@
+[versions]
+guava = "33.4.5-jre"
+junit = "4.13.2"
+shadow = "9.3.1"
+jetbrainsannotations = "26.0.2-1"
+mongoDriver = "5.7.0-alpha0"
+gson = "2.13.2"
+influxdb = "7.5.0"
+protobuf-plugin = "0.9.4"
+protobuf-java = "4.29.3"
+nats = "2.25.1"
+lettuce = "7.4.0.RELEASE"
+
+[libraries]
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+jedis = { module = "redis.clients:jedis", version.ref = "jedis" }
+junit = { module = "junit:junit", version.ref = "junit" }
+jetbrainsannotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsannotations" }
+mongo = { module = "org.mongodb:mongodb-driver-sync", version.ref = "mongoDriver" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+influxdb = { module = "com.influxdb:influxdb-client-java", version.ref = "influxdb" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf-java" }
+nats = { module = "io.nats:jnats", version.ref = "nats" }
+lettuce = { module = "io.lettuce:lettuce-core", version.ref = "lettuce" }
+
+[plugins]
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
+
