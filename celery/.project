@@ -20,9 +20,16 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>gen-java</name>
+			<type>2</type>
+			<location>/home/yyuh/dev/libs/proto/gen/java</location>
+		</link>
+	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>1774615596161</id>
+			<id>1774658074546</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
