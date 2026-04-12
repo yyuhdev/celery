@@ -13,11 +13,10 @@ java {
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://mvn.revived.club/releases")
 }
 
 dependencies {
-    implementation("club.revived:celery:1.0.0-SNAPSHOT")
+    implementation("com.google.protobuf:protobuf-java:4.34.1")
 }
 
 tasks.withType<JavaCompile> {
@@ -30,9 +29,8 @@ tasks.withType<Test> {
 
 sourceSets {
     main {
-        java {
-            srcDir("${rootProject.projectDir}/proto/gen/java")
-        }
+        java.srcDir("src/main")
+        java.srcDir("${rootProject.projectDir}/proto/gen/java")
     }
 }
 

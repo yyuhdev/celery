@@ -1,6 +1,7 @@
 plugins {
     `java-library`
     `maven-publish`
+    id("eclipse")
 }
 
 group = "club.revived"
@@ -29,7 +30,8 @@ publishing {
     repositories {
         maven {
             name = "revived"
-            url = uri("https://mvn.revived.club/releases")
+            url = uri("http://mvn.int.revived.club/releases")
+            isAllowInsecureProtocol = true
             credentials {
                 username = project.findProperty("repoUser")?.toString() ?: ""
                 password = project.findProperty("repoPass")?.toString() ?: ""
@@ -60,7 +62,8 @@ subprojects {
         repositories {
             maven {
                 name = "revived"
-                url = uri("https://mvn.revived.club/releases")
+                url = uri("https://mvn.int.revived.club/releases")
+                isAllowInsecureProtocol = true
                 credentials {
                     username = rootProject.findProperty("repoUser")?.toString() ?: ""
                     password = rootProject.findProperty("repoPass")?.toString() ?: ""

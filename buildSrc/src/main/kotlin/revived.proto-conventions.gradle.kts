@@ -5,9 +5,8 @@ plugins {
 // Source generated proto files from the proto submodule
 sourceSets {
     main {
-        java {
-            srcDir("${rootProject.projectDir}/proto/gen/java")
-        }
+        java.srcDir("src/main")
+        java.srcDir("${rootProject.projectDir}/proto/gen/java")
     }
 }
 

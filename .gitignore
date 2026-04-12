@@ -1,5 +1,63 @@
-# Ignore Gradle project-specific cache directory
-.gradle
+# =========================
+# Java build outputs
+# =========================
+/bin/
+/build/
+/out/
+/target/
+/*.class
 
-# Ignore Gradle build output directory
-build
+# =========================
+# Eclipse / JDTLS / IDE metadata
+# =========================
+.project
+.classpath
+.settings/
+.metadata/
+*.launch
+
+# Eclipse-specific cache/workspace files
+.recommenders/
+.factorypath
+
+# JDTLS / Language Server Protocol (Eclipse JDT Language Server)
+.lsp/
+.jdt.ls/
+
+# =========================
+# VS Code (if you ever open it there)
+# =========================
+.vscode/
+*.code-workspace
+
+# =========================
+# Gradle / Maven (if used)
+# =========================
+.gradle/
+build/
+!gradle-wrapper.jar
+
+# Maven
+/target/
+*.log
+
+# =========================
+# OS junk files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs and temp files
+# =========================
+*.log
+*.tmp
+*.swp
+*.bak
+
+# =========================
+# Java packaging / archives
+# =========================
+*.jar
+*.war
+*.ear

@@ -5,3 +5,6 @@ plugins {
 rootProject.name = "libs"
 
 include("celery")
+include("core")
+include("celery-api")
+include("celery-platform:celery-mongodb")
