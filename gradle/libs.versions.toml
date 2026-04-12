@@ -1,0 +1,39 @@
+[versions]
+jetbrainsannotations = "26.0.2-1"
+mongo = "5.7.0-alpha0"
+protobuf-plugin = "0.9.4"
+protobuf-java = "4.34.1"
+gson = "2.13.2"
+nats = "2.25.1"
+influxdb = "7.5.0"
+lettuce = "7.4.0.RELEASE"
+guava = "33.4.5-jre"
+junit = "4.13.2"
+junit-jupiter = "5.11.4"
+mockito = "5.15.2"
+assertj = "3.27.3"
+testcontainers = "1.20.4"
+
+[libraries]
+jetbrainsannotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsannotations" }
+mongo = { module = "org.mongodb:mongodb-driver-sync", version.ref = "mongo" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf-java" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+nats = { module = "io.nats:jnats", version.ref = "nats" }
+influxdb = { module = "com.influxdb:influxdb-client-java", version.ref = "influxdb" }
+lettuce = { module = "io.lettuce:lettuce-core", version.ref = "lettuce" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+junit = { module = "junit:junit", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.11.4" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
+testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
+testcontainers-mongodb = { module = "org.testcontainers:mongodb", version.ref = "testcontainers" }
+
+[plugins]

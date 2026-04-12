@@ -1,0 +1,65 @@
+package de.yyuh.celery.api.schema;
+
+import de.yyuh.celery.api.annotation.Field;
+import de.yyuh.celery.api.annotation.Repository;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public final class SchemaExtractor {
+
+    private SchemaExtractor() {
+    }
+
+    @NotNull
+    public static String getName(final @NotNull Class<?> entityClass) {
+        if (entityClass.isAnnotationPresent(Repository.class)) {
+            return entityClass.getAnnotation(Repository.class).value();
+        }
+        return entityClass.getSimpleName().toLowerCase();
+    }
+
+    @NotNull
+    public static Map<String, java.lang.reflect.Field> getFields(final @NotNull Class<?> entityClass) {
+        final Map<String, java.lang.reflect.Field> fields = new HashMap<>();
+
+        for (java.lang.reflect.Field field : entityClass.getDeclaredFields()) {
+
+            String name = field.getName();
+            if (field.isAnnotationPresent(Field.class)) {
+                name = field.getAnnotation(Field.class).value();
+            }
+
+            fields.put(name, field);
+        }
+        return fields;
+    }
+
+    @NotNull
+    public static String generateCreateTableSql(final @NotNull Class<?> entityClass) {
+        final String tableName = getName(entityClass);
+        final String columns = Arrays.stream(entityClass.getDeclaredFields())
+                .map(field -> {
+                    String name = field.isAnnotationPresent(Field.class) 
+                        ? field.getAnnotation(Field.class).value() 
+                        : field.getName();
+                    String type = getSqlType(field.getType());
+                    return name + " " + type;
+                })
+                .collect(Collectors.joining(", "));
+        
+        return "CREATE TABLE IF NOT EXISTS " + tableName + " (" + columns + ");";
+    }
+
+    @NotNull
+    private static String getSqlType(final Class<?> type) {
+        if (type == String.class || type == java.util.UUID.class) return "VARCHAR(255)";
+        if (type == int.class || type == Integer.class) return "INT";
+        if (type == long.class || type == Long.class) return "BIGINT";
+        if (type == boolean.class || type == Boolean.class) return "BOOLEAN";
+        return "TEXT";
+    }
+}
