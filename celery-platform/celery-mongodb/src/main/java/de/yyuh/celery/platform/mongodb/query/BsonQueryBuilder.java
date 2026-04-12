@@ -11,25 +11,25 @@ import java.util.Map;
 
 public final class BsonQueryBuilder {
 
-    private BsonQueryBuilder() {
+  private BsonQueryBuilder() {
+  }
+
+  @NotNull
+  public static Bson buildFilter(final @NotNull IQuery<?> query) {
+    final Map<String, Object> filters = query.filters();
+    if (filters.isEmpty()) {
+      return Filters.empty();
     }
 
-    @NotNull
-    public static Bson buildFilter(final @NotNull IQuery<?> query) {
-        final Map<String, Object> filters = query.filters();
-        if (filters.isEmpty()) {
-            return Filters.empty();
-        }
-
-        final List<Bson> bsonFilters = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : filters.entrySet()) {
-            bsonFilters.add(Filters.eq(entry.getKey(), entry.getValue()));
-        }
-
-        if (bsonFilters.size() == 1) {
-            return bsonFilters.get(0);
-        }
-
-        return Filters.and(bsonFilters);
+    final List<Bson> bsonFilters = new ArrayList<>();
+    for (Map.Entry<String, Object> entry : filters.entrySet()) {
+      bsonFilters.add(Filters.eq(entry.getKey(), entry.getValue()));
     }
+
+    if (bsonFilters.size() == 1) {
+      return bsonFilters.get(0);
+    }
+
+    return Filters.and(bsonFilters);
+  }
 }

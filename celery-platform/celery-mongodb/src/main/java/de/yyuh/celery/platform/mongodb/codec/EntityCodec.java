@@ -20,173 +20,173 @@ import java.util.Map;
 
 public final class EntityCodec<T extends IEntity> implements Codec<T> {
 
-    private final Class<T> clazz;
-    private final CodecRegistry registry;
-    private final Constructor<T> constructor;
-    private final RecordComponent[] components;
+  private final Class<T> clazz;
+  private final CodecRegistry registry;
+  private final Constructor<T> constructor;
+  private final RecordComponent[] components;
 
-    public EntityCodec(
-            @NotNull final Class<T> clazz,
-            @NotNull final CodecRegistry registry) {
+  public EntityCodec(
+      @NotNull final Class<T> clazz,
+      @NotNull final CodecRegistry registry) {
 
-        if (!clazz.isRecord()) {
-            throw new IllegalArgumentException("EntityCodec supports records only. Class: " + clazz.getName());
-        }
-
-        this.clazz = clazz;
-        this.registry = registry;
-        this.components = clazz.getRecordComponents();
-
-        try {
-            final Class<?>[] parameterTypes = new Class<?>[components.length];
-
-            for (int i = 0; i < components.length; i++) {
-                parameterTypes[i] = components[i].getType();
-            }
-
-            this.constructor = clazz.getDeclaredConstructor(parameterTypes);
-            this.constructor.setAccessible(true);
-
-        } catch (final Exception exception) {
-            throw new RuntimeException(
-                    "Failed to initialize codec for " + clazz.getName(),
-                    exception);
-        }
+    if (!clazz.isRecord()) {
+      throw new IllegalArgumentException("EntityCodec supports records only. Class: " + clazz.getName());
     }
 
-    @Override
-    public void encode(
-            @NotNull final BsonWriter writer,
-            @NotNull final T value,
-            @NotNull final EncoderContext encoderContext) {
+    this.clazz = clazz;
+    this.registry = registry;
+    this.components = clazz.getRecordComponents();
 
-        writer.writeStartDocument();
+    try {
+      final Class<?>[] parameterTypes = new Class<?>[components.length];
 
-        try {
+      for (int i = 0; i < components.length; i++) {
+        parameterTypes[i] = components[i].getType();
+      }
 
-            for (final RecordComponent component : components) {
-                if (component.isAnnotationPresent(Ignore.class)) {
-                    continue;
-                }
+      this.constructor = clazz.getDeclaredConstructor(parameterTypes);
+      this.constructor.setAccessible(true);
 
-                final String fieldName = this.getFieldName(component);
-                final Object fieldValue = component.getAccessor().invoke(value);
+    } catch (final Exception exception) {
+      throw new RuntimeException(
+          "Failed to initialize codec for " + clazz.getName(),
+          exception);
+    }
+  }
 
-                if (fieldValue == null) {
-                    writer.writeName(fieldName);
-                    writer.writeNull();
-                    continue;
-                }
+  @Override
+  public void encode(
+      @NotNull final BsonWriter writer,
+      @NotNull final T value,
+      @NotNull final EncoderContext encoderContext) {
 
-                writer.writeName(fieldName);
-                @SuppressWarnings("unchecked")
-                final Codec<Object> codec = (Codec<Object>) registry.get(fieldValue.getClass());
+    writer.writeStartDocument();
 
-                encoderContext.encodeWithChildContext(codec, writer, fieldValue);
-            }
+    try {
 
-        } catch (final Exception exception) {
-            throw new RuntimeException(
-                    "Failed to encode " + clazz.getName(),
-                    exception);
+      for (final RecordComponent component : components) {
+        if (component.isAnnotationPresent(Ignore.class)) {
+          continue;
         }
 
-        writer.writeEndDocument();
+        final String fieldName = this.getFieldName(component);
+        final Object fieldValue = component.getAccessor().invoke(value);
+
+        if (fieldValue == null) {
+          writer.writeName(fieldName);
+          writer.writeNull();
+          continue;
+        }
+
+        writer.writeName(fieldName);
+        @SuppressWarnings("unchecked")
+        final Codec<Object> codec = (Codec<Object>) registry.get(fieldValue.getClass());
+
+        encoderContext.encodeWithChildContext(codec, writer, fieldValue);
+      }
+
+    } catch (final Exception exception) {
+      throw new RuntimeException(
+          "Failed to encode " + clazz.getName(),
+          exception);
     }
 
-    @Override
-    public T decode(
-            @NotNull final BsonReader reader,
-            @NotNull final DecoderContext decoderContext) {
+    writer.writeEndDocument();
+  }
 
-        final Map<String, Object> values = new HashMap<>();
+  @Override
+  public T decode(
+      @NotNull final BsonReader reader,
+      @NotNull final DecoderContext decoderContext) {
 
-        reader.readStartDocument();
+    final Map<String, Object> values = new HashMap<>();
 
-        while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
+    reader.readStartDocument();
 
-            final String bsonName = reader.readName();
+    while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
 
-            final RecordComponent component = findComponent(bsonName);
+      final String bsonName = reader.readName();
 
-            if (component == null) {
-                reader.skipValue();
-                continue;
-            }
+      final RecordComponent component = findComponent(bsonName);
 
-            final Object value;
+      if (component == null) {
+        reader.skipValue();
+        continue;
+      }
 
-            if (reader.getCurrentBsonType() == BsonType.NULL) {
-                reader.readNull();
-                value = null;
-            } else {
-                @SuppressWarnings("unchecked")
-                final Codec<Object> codec = (Codec<Object>) registry.get(component.getType());
+      final Object value;
 
-                value = decoderContext.decodeWithChildContext(codec, reader);
-            }
+      if (reader.getCurrentBsonType() == BsonType.NULL) {
+        reader.readNull();
+        value = null;
+      } else {
+        @SuppressWarnings("unchecked")
+        final Codec<Object> codec = (Codec<Object>) registry.get(component.getType());
 
-            values.put(component.getName(), value);
-        }
+        value = decoderContext.decodeWithChildContext(codec, reader);
+      }
 
-        reader.readEndDocument();
-
-        try {
-            final Object[] args = new Object[components.length];
-
-            for (int i = 0; i < components.length; i++) {
-                args[i] = values.get(components[i].getName());
-            }
-
-            return constructor.newInstance(args);
-
-        } catch (final Exception exception) {
-            throw new RuntimeException(
-                    "Failed to decode " + clazz.getName(),
-                    exception);
-        }
+      values.put(component.getName(), value);
     }
 
-    private RecordComponent findComponent(@NotNull final String bsonName) {
+    reader.readEndDocument();
 
-        if ("_id".equals(bsonName)) {
-            for (final RecordComponent component : components) {
-                if (component.isAnnotationPresent(Identifier.class))
-                    return component;
-            }
-        }
+    try {
+      final Object[] args = new Object[components.length];
 
-        for (final RecordComponent component : components) {
-            if (component.isAnnotationPresent(Field.class)) {
-                if (component.getAnnotation(Field.class).value().equals(bsonName)) {
-                    return component;
-                }
-            }
-        }
+      for (int i = 0; i < components.length; i++) {
+        args[i] = values.get(components[i].getName());
+      }
 
-        for (final RecordComponent component : components) {
-            if (component.getName().equals(bsonName))
-                return component;
-        }
+      return constructor.newInstance(args);
 
-        return null;
+    } catch (final Exception exception) {
+      throw new RuntimeException(
+          "Failed to decode " + clazz.getName(),
+          exception);
+    }
+  }
+
+  private RecordComponent findComponent(@NotNull final String bsonName) {
+
+    if ("_id".equals(bsonName)) {
+      for (final RecordComponent component : components) {
+        if (component.isAnnotationPresent(Identifier.class))
+          return component;
+      }
     }
 
-    @NotNull
-    private String getFieldName(final RecordComponent component) {
-        if (component.isAnnotationPresent(Identifier.class)) {
-            return "_id";
+    for (final RecordComponent component : components) {
+      if (component.isAnnotationPresent(Field.class)) {
+        if (component.getAnnotation(Field.class).value().equals(bsonName)) {
+          return component;
         }
-
-        if (component.isAnnotationPresent(Field.class)) {
-            return component.getAnnotation(Field.class).value();
-        }
-
-        return component.getName();
+      }
     }
 
-    @Override
-    public Class<T> getEncoderClass() {
-        return clazz;
+    for (final RecordComponent component : components) {
+      if (component.getName().equals(bsonName))
+        return component;
     }
+
+    return null;
+  }
+
+  @NotNull
+  private String getFieldName(final RecordComponent component) {
+    if (component.isAnnotationPresent(Identifier.class)) {
+      return "_id";
+    }
+
+    if (component.isAnnotationPresent(Field.class)) {
+      return component.getAnnotation(Field.class).value();
+    }
+
+    return component.getName();
+  }
+
+  @Override
+  public Class<T> getEncoderClass() {
+    return clazz;
+  }
 }

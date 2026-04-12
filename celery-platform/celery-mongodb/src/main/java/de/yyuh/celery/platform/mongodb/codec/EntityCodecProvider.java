@@ -8,13 +8,13 @@ import org.jetbrains.annotations.NotNull;
 
 public final class EntityCodecProvider implements CodecProvider {
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> Codec<T> get(final @NotNull Class<T> clazz, final @NotNull CodecRegistry registry) {
-        if (IEntity.class.isAssignableFrom(clazz) && clazz.isRecord()) {
-            return (Codec<T>) new EntityCodec(clazz, registry);
-        }
-        
-        return null;
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> Codec<T> get(final @NotNull Class<T> clazz, final @NotNull CodecRegistry registry) {
+    if (IEntity.class.isAssignableFrom(clazz) && clazz.isRecord()) {
+      return (Codec<T>) new EntityCodec(clazz, registry);
     }
+
+    return null;
+  }
 }

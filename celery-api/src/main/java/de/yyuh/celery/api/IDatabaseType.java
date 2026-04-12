@@ -4,11 +4,11 @@ import org.jetbrains.annotations.NotNull;
 
 public interface IDatabaseType {
 
-    @NotNull
-    String name();
+  @NotNull
+  String name();
 
-    int defaultPort();
+  int defaultPort();
 
-    @NotNull
-    CeleryPlatformType defaultPlatform();
+  @NotNull
+  CeleryPlatformType defaultPlatform();
 }

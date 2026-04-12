@@ -11,21 +11,21 @@ import java.util.concurrent.CompletableFuture;
 
 public interface IDatabaseProvider<T, K> {
 
-    @NotNull
-    CompletableFuture<Result<Long, String>> connect(final Credentials credentials);
+  @NotNull
+  CompletableFuture<Result<Long, String>> connect(final Credentials credentials);
 
-    @NotNull
-    CompletableFuture<Optional<T>> get(final K k);
+  @NotNull
+  CompletableFuture<Optional<T>> get(final K k);
 
-    @NotNull
-    CompletableFuture<List<T>> find(final IQuery<T> query);
+  @NotNull
+  CompletableFuture<List<T>> find(final IQuery<T> query);
 
-    @NotNull
-    CompletableFuture<List<T>> getAll();
+  @NotNull
+  CompletableFuture<List<T>> getAll();
 
-    @NotNull
-    CompletableFuture<Void> save(final T entity);
+  @NotNull
+  CompletableFuture<Void> save(final T entity);
 
-    @NotNull
-    CompletableFuture<Void> delete(final K k);
+  @NotNull
+  CompletableFuture<Void> delete(final K k);
 }

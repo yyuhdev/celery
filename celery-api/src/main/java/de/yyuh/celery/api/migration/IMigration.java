@@ -6,14 +6,14 @@ import java.util.concurrent.CompletableFuture;
 
 public interface IMigration {
 
-    int version();
+  int version();
 
-    @NotNull
-    String description();
+  @NotNull
+  String description();
 
-    @NotNull
-    CompletableFuture<Void> up();
+  @NotNull
+  CompletableFuture<Void> up();
 
-    @NotNull
-    CompletableFuture<Void> down();
+  @NotNull
+  CompletableFuture<Void> down();
 }

@@ -9,33 +9,33 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractCeleryPlatform {
 
-    private final String id;
-    private final IDatabaseType databaseType;
-    private final CeleryPlatformType celeryPlatformType;
+  private final String id;
+  private final IDatabaseType databaseType;
+  private final CeleryPlatformType celeryPlatformType;
 
-    public AbstractCeleryPlatform(
-            final @NotNull String id,
-            final @NotNull IDatabaseType databaseType,
-            final @NotNull CeleryPlatformType platformType) {
-        this.id = id;
-        this.databaseType = databaseType;
-        this.celeryPlatformType = platformType;
-    }
+  public AbstractCeleryPlatform(
+      final @NotNull String id,
+      final @NotNull IDatabaseType databaseType,
+      final @NotNull CeleryPlatformType platformType) {
+    this.id = id;
+    this.databaseType = databaseType;
+    this.celeryPlatformType = platformType;
+  }
 
-    @NotNull
-    public String getId() {
-        return this.id;
-    }
+  @NotNull
+  public String getId() {
+    return this.id;
+  }
 
-    @NotNull
-    public IDatabaseType getDatabaseType() {
-        return this.databaseType;
-    }
+  @NotNull
+  public IDatabaseType getDatabaseType() {
+    return this.databaseType;
+  }
 
-    @NotNull
-    public CeleryPlatformType getCeleryPlatformType() {
-        return this.celeryPlatformType;
-    }
+  @NotNull
+  public CeleryPlatformType getCeleryPlatformType() {
+    return this.celeryPlatformType;
+  }
 
-    public abstract IDatabaseProvider<IEntity, IQuery> defaultProvider();
+  public abstract IDatabaseProvider<IEntity, IQuery> defaultProvider();
 }

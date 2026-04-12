@@ -26,123 +26,124 @@ import java.util.concurrent.CompletableFuture;
 
 public final class MongoDatabaseProvider implements IDatabaseProvider<IEntity, IQuery> {
 
-    private MongoClient mongoClient;
-    private MongoDatabase database;
+  private MongoClient mongoClient;
+  private MongoDatabase database;
 
-    @Override
-    public @NotNull CompletableFuture<Result<Long, String>> connect(final @NotNull Credentials credentials) {
-        final var timer = Timer.start();
+  @Override
+  public @NotNull CompletableFuture<Result<Long, String>> connect(final @NotNull Credentials credentials) {
+    final var timer = Timer.start();
 
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                final String connectionString = String.format("mongodb://%s:%s@%s:%d",
-                        credentials.user(), credentials.password(), credentials.ip(), credentials.port());
+    return CompletableFuture.supplyAsync(() -> {
+      try {
+        final String connectionString = String.format("mongodb://%s:%s@%s:%d",
+            credentials.user(), credentials.password(), credentials.ip(), credentials.port());
 
-                final CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(new EntityCodecProvider());
-                final CodecRegistry codecRegistry = CodecRegistries.fromRegistries(
-                        MongoClientSettings.getDefaultCodecRegistry(),
-                        pojoCodecRegistry
-                );
+        final CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(new EntityCodecProvider());
+        final CodecRegistry codecRegistry = CodecRegistries.fromRegistries(
+            MongoClientSettings.getDefaultCodecRegistry(),
+            pojoCodecRegistry);
 
-                final MongoClientSettings settings = MongoClientSettings.builder()
-                        .applyConnectionString(new ConnectionString(connectionString))
-                        .codecRegistry(codecRegistry)
-                        .build();
+        final MongoClientSettings settings = MongoClientSettings.builder()
+            .applyConnectionString(new ConnectionString(connectionString))
+            .codecRegistry(codecRegistry)
+            .build();
 
-                this.mongoClient = MongoClients.create(settings);
-                this.database = mongoClient.getDatabase("celery");
+        this.mongoClient = MongoClients.create(settings);
+        this.database = mongoClient.getDatabase("celery");
 
-                return Result.ok(timer.end());
-            } catch (Exception e) {
-                return Result.err(e.getMessage());
+        return Result.ok(timer.end());
+      } catch (Exception e) {
+        return Result.err(e.getMessage());
+      }
+    });
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public @NotNull CompletableFuture<Optional<IEntity>> get(final @NotNull IQuery iQuery) {
+    return CompletableFuture.supplyAsync(() -> {
+      final String collectionName = SchemaExtractor.getName(iQuery.entityClass());
+      final IEntity entity = (IEntity) database.getCollection(collectionName, iQuery.entityClass())
+          .find(BsonQueryBuilder.buildFilter(iQuery))
+          .first();
+      return Optional.ofNullable(entity);
+    });
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public @NotNull CompletableFuture<List<IEntity>> find(final @NotNull IQuery<IEntity> query) {
+    return CompletableFuture.supplyAsync(() -> {
+      final String collectionName = SchemaExtractor.getName(query.entityClass());
+      final List<IEntity> results = new ArrayList<>();
+      database.getCollection(collectionName, query.entityClass())
+          .find(BsonQueryBuilder.buildFilter(query))
+          .into(results);
+      return results;
+    });
+  }
+
+  @Override
+  public @NotNull CompletableFuture<List<IEntity>> getAll() {
+    return CompletableFuture.completedFuture(new ArrayList<>());
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public @NotNull CompletableFuture<Void> save(final @NotNull IEntity entity) {
+    return CompletableFuture.runAsync(() -> {
+      final String collectionName = SchemaExtractor.getName(entity.getClass());
+      final Object id = this.extractId(entity);
+
+      database.getCollection(collectionName, (Class<IEntity>) entity.getClass())
+          .replaceOne(new org.bson.Document("_id", id), entity,
+              new com.mongodb.client.model.ReplaceOptions().upsert(true));
+    });
+  }
+
+  @NotNull
+  private Object extractId(final @NotNull IEntity entity) {
+    if (entity.getClass().isRecord()) {
+      for (final var component : entity.getClass().getRecordComponents()) {
+        if (component.isAnnotationPresent(Identifier.class)) {
+          try {
+            final Object value = component.getAccessor().invoke(entity);
+            if (value == null) {
+              throw new IllegalArgumentException("Identifier value for " + entity.getClass().getName() + " is null");
             }
-        });
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public @NotNull CompletableFuture<Optional<IEntity>> get(final @NotNull IQuery iQuery) {
-        return CompletableFuture.supplyAsync(() -> {
-            final String collectionName = SchemaExtractor.getName(iQuery.entityClass());
-            final IEntity entity = (IEntity) database.getCollection(collectionName, iQuery.entityClass())
-                    .find(BsonQueryBuilder.buildFilter(iQuery))
-                    .first();
-            return Optional.ofNullable(entity);
-        });
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public @NotNull CompletableFuture<List<IEntity>> find(final @NotNull IQuery<IEntity> query) {
-        return CompletableFuture.supplyAsync(() -> {
-            final String collectionName = SchemaExtractor.getName(query.entityClass());
-            final List<IEntity> results = new ArrayList<>();
-            database.getCollection(collectionName, query.entityClass())
-                    .find(BsonQueryBuilder.buildFilter(query))
-                    .into(results);
-            return results;
-        });
-    }
-
-    @Override
-    public @NotNull CompletableFuture<List<IEntity>> getAll() {
-        return CompletableFuture.completedFuture(new ArrayList<>());
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public @NotNull CompletableFuture<Void> save(final @NotNull IEntity entity) {
-        return CompletableFuture.runAsync(() -> {
-            final String collectionName = SchemaExtractor.getName(entity.getClass());
-            final Object id = this.extractId(entity);
-            
-            database.getCollection(collectionName, (Class<IEntity>) entity.getClass())
-                    .replaceOne(new org.bson.Document("_id", id), entity, new com.mongodb.client.model.ReplaceOptions().upsert(true));
-        });
-    }
-
-    @NotNull
-    private Object extractId(final @NotNull IEntity entity) {
-        if (entity.getClass().isRecord()) {
-            for (final var component : entity.getClass().getRecordComponents()) {
-                if (component.isAnnotationPresent(Identifier.class)) {
-                    try {
-                        final Object value = component.getAccessor().invoke(entity);
-                        if (value == null) {
-                            throw new IllegalArgumentException("Identifier value for " + entity.getClass().getName() + " is null");
-                        }
-                        return value;
-                    } catch (Exception exception) {
-                        throw new RuntimeException("Failed to access identifier for " + entity.getClass().getName(), exception);
-                    }
-                }
-            }
-        } else {
-            for (final var field : entity.getClass().getDeclaredFields()) {
-                if (field.isAnnotationPresent(Identifier.class)) {
-                    field.setAccessible(true);
-                    try {
-                        final Object value = field.get(entity);
-                        if (value == null) {
-                            throw new IllegalArgumentException("Identifier value for " + entity.getClass().getName() + " is null");
-                        }
-                        return value;
-                    } catch (IllegalAccessException exception) {
-                        throw new RuntimeException("Failed to access identifier for " + entity.getClass().getName(), exception);
-                    }
-                }
-            }
+            return value;
+          } catch (Exception exception) {
+            throw new RuntimeException("Failed to access identifier for " + entity.getClass().getName(), exception);
+          }
         }
-
-        throw new IllegalArgumentException("Could not find @Identifier annotation for entity " + entity.getClass().getName());
+      }
+    } else {
+      for (final var field : entity.getClass().getDeclaredFields()) {
+        if (field.isAnnotationPresent(Identifier.class)) {
+          field.setAccessible(true);
+          try {
+            final Object value = field.get(entity);
+            if (value == null) {
+              throw new IllegalArgumentException("Identifier value for " + entity.getClass().getName() + " is null");
+            }
+            return value;
+          } catch (IllegalAccessException exception) {
+            throw new RuntimeException("Failed to access identifier for " + entity.getClass().getName(), exception);
+          }
+        }
+      }
     }
 
-    @Override
-    public @NotNull CompletableFuture<Void> delete(final @NotNull IQuery iQuery) {
-        return CompletableFuture.runAsync(() -> {
-            final String collectionName = SchemaExtractor.getName(iQuery.entityClass());
+    throw new IllegalArgumentException(
+        "Could not find @Identifier annotation for entity " + entity.getClass().getName());
+  }
 
-            database.getCollection(collectionName).deleteOne(BsonQueryBuilder.buildFilter(iQuery));
-        });
-    }
+  @Override
+  public @NotNull CompletableFuture<Void> delete(final @NotNull IQuery iQuery) {
+    return CompletableFuture.runAsync(() -> {
+      final String collectionName = SchemaExtractor.getName(iQuery.entityClass());
+
+      database.getCollection(collectionName).deleteOne(BsonQueryBuilder.buildFilter(iQuery));
+    });
+  }
 }

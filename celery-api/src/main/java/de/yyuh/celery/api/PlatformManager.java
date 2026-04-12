@@ -11,46 +11,47 @@ import java.util.Optional;
 
 public final class PlatformManager {
 
-    private static PlatformManager instance;
+  private static PlatformManager instance;
 
-    public static PlatformManager getInstance() {
-        if (instance == null) {
-            throw new IllegalStateException("DatabaseManager is not registered");
-        }
-
-        return instance;
+  public static PlatformManager getInstance() {
+    if (instance == null) {
+      throw new IllegalStateException("DatabaseManager is not registered");
     }
 
-    private final List<AbstractCeleryPlatform> platformInstances;
+    return instance;
+  }
 
-    public PlatformManager(final @NotNull List<AbstractCeleryPlatform> platformInstances) {
-        this.platformInstances = platformInstances;
+  private final List<AbstractCeleryPlatform> platformInstances;
 
-        instance = this;
-    }
+  public PlatformManager(final @NotNull List<AbstractCeleryPlatform> platformInstances) {
+    this.platformInstances = platformInstances;
 
-    @NotNull
-    public Optional<AbstractCeleryPlatform> getPlatform(final @NotNull String id) {
-        return this.platformInstances.stream()
-                .filter(platform -> platform.getId().equals(id))
-                .findFirst();
-    }
+    instance = this;
+  }
 
-    @NotNull
-    public Optional<AbstractCeleryPlatform> getDefaultPlatform(final @NotNull IDatabaseType databaseType) {
-        final var defaultPlatform = databaseType.defaultPlatform();
+  @NotNull
+  public Optional<AbstractCeleryPlatform> getPlatform(final @NotNull String id) {
+    return this.platformInstances.stream()
+        .filter(platform -> platform.getId().equals(id))
+        .findFirst();
+  }
 
-        return this.platformInstances.stream()
-                .filter(platform -> platform.getCeleryPlatformType() == defaultPlatform)
-                .findFirst();
-    }
+  @NotNull
+  public Optional<AbstractCeleryPlatform> getDefaultPlatform(final @NotNull IDatabaseType databaseType) {
+    final var defaultPlatform = databaseType.defaultPlatform();
 
-    @NotNull
-    @SuppressWarnings("unchecked")
-    public <T extends IEntity, K extends IQuery> Optional<IDatabaseProvider<T, K>> getProvider(final @NotNull CeleryPlatformType type, final @NotNull IDatabaseType databaseType) {
-        return this.platformInstances.stream()
-                .filter(platform -> platform.getCeleryPlatformType() == type && platform.getDatabaseType() == databaseType)
-                .map(platform -> (IDatabaseProvider<T, K>) platform.defaultProvider())
-                .findFirst();
-    }
+    return this.platformInstances.stream()
+        .filter(platform -> platform.getCeleryPlatformType() == defaultPlatform)
+        .findFirst();
+  }
+
+  @NotNull
+  @SuppressWarnings("unchecked")
+  public <T extends IEntity, K extends IQuery> Optional<IDatabaseProvider<T, K>> getProvider(
+      final @NotNull CeleryPlatformType type, final @NotNull IDatabaseType databaseType) {
+    return this.platformInstances.stream()
+        .filter(platform -> platform.getCeleryPlatformType() == type && platform.getDatabaseType() == databaseType)
+        .map(platform -> (IDatabaseProvider<T, K>) platform.defaultProvider())
+        .findFirst();
+  }
 }

@@ -7,18 +7,18 @@ import java.util.List;
 
 public interface ISqlQueryBuilder {
 
-    @NotNull
-    String buildSelect(@NotNull IQuery<?> query);
+  @NotNull
+  String buildSelect(@NotNull IQuery<?> query);
 
-    @NotNull
-    String buildInsert(@NotNull Object entity);
+  @NotNull
+  String buildInsert(@NotNull Object entity);
 
-    @NotNull
-    String buildUpdate(@NotNull Object entity, @NotNull IQuery<?> query);
+  @NotNull
+  String buildUpdate(@NotNull Object entity, @NotNull IQuery<?> query);
 
-    @NotNull
-    String buildDelete(@NotNull IQuery<?> query);
+  @NotNull
+  String buildDelete(@NotNull IQuery<?> query);
 
-    @NotNull
-    List<Object> getParameters(@NotNull IQuery<?> query);
+  @NotNull
+  List<Object> getParameters(@NotNull IQuery<?> query);
 }

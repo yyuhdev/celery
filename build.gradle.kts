@@ -43,6 +43,7 @@ publishing {
 subprojects {
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
+    apply(plugin = "eclipse")
 
     group = "de.yyuh.libs"
     version = rootProject.version.toString()
