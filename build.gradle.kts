@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "de.yyuh"
-version = "1.0.3-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 
 subprojects {
     group = rootProject.group
@@ -63,7 +63,7 @@ subprojects {
         repositories {
             maven {
                 name = "revived"
-                url = uri("https://mvn.int.revived.club/releases")
+                url = uri("http://mvn.int.revived.club/releases")
                 isAllowInsecureProtocol = true
                 credentials {
                     username = rootProject.findProperty("repoUser")?.toString() ?: ""
