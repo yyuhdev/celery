@@ -4,6 +4,7 @@ import de.yyuh.celery.api.CeleryDatabaseType;
 import de.yyuh.celery.api.CeleryPlatformType;
 import de.yyuh.celery.api.entity.IEntity;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
+import de.yyuh.celery.api.provider.IProvider;
 import de.yyuh.celery.api.provider.IDatabaseProvider;
 import de.yyuh.celery.api.query.IQuery;
 import de.yyuh.celery.platform.mongodb.provider.MongoDatabaseProvider;
@@ -12,25 +13,26 @@ import org.jetbrains.annotations.NotNull;
 /**
  * MongoDB platform implementation for the Celery framework.
  *
- * <p>This platform provides MongoDB-specific database operations
+ * <p>
+ * This platform provides MongoDB-specific database operations
  * including storage capabilities with the MongoDatabaseProvider.
  */
 public final class CeleryMongoDBPlatform extends AbstractCeleryPlatform {
 
-  private final IDatabaseProvider<IEntity, IQuery> provider = new MongoDatabaseProvider();
-
   /**
    * Creates a new CeleryMongoDBPlatform instance.
    *
-   * <p>The platform is configured with MongoDB storage capabilities
+   * <p>
+   * The platform is configured with MongoDB storage capabilities
    * and registered with the Celery framework.
    */
   public CeleryMongoDBPlatform() {
     super("mongodb", CeleryDatabaseType.MONGODB, CeleryPlatformType.STORAGE);
+    registerProvider(IDatabaseProvider.class, new MongoDatabaseProvider());
   }
 
   @Override
-  public @NotNull IDatabaseProvider<IEntity, IQuery> defaultProvider() {
-    return this.provider;
+  public @NotNull IProvider defaultProvider() {
+    return provider(IDatabaseProvider.class).orElseThrow();
   }
 }

@@ -16,3 +16,4 @@ include("celery")
 include("celery-api")
 
 include("celery-platform:celery-mongodb")
+include("celery-platform:celery-redis")

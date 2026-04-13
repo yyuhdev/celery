@@ -43,7 +43,9 @@ public final class EventBus {
    * Subscribes an {@link IEventHandler} from the event bus
    */
   @SuppressWarnings("unchecked")
-  public <T extends Message> void subscribe(final Class<T> eventType, final IEventHandler<T> handler) {
+  public <T extends Message> void subscribe(
+      final @NotNull Class<T> eventType,
+      final @NotNull IEventHandler<T> handler) {
     this.handlers.computeIfAbsent(eventType, k -> new CopyOnWriteArrayList<>())
         .add((IEventHandler<? super Message>) handler);
   }
@@ -51,7 +53,9 @@ public final class EventBus {
   /**
    * Unsubscribes an {@link IEventHandler} from the event bus
    */
-  public <T extends Message> void unsubscribe(final Class<T> eventType, final IEventHandler<T> handler) {
+  public <T extends Message> void unsubscribe(
+      final @NotNull Class<T> eventType,
+      final @NotNull IEventHandler<T> handler) {
     final var list = this.handlers.get(eventType);
 
     if (list != null) {

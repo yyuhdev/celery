@@ -40,34 +40,29 @@ public final class MongoDatabaseProvider implements IDatabaseProvider<IEntity, I
   public @NotNull CompletableFuture<Result<Long, String>> connect(final @NotNull Credentials credentials) {
     final var timer = Timer.start();
 
-    return CompletableFuture.supplyAsync(() -> {
-      try {
-        final String connectionString = String.format("mongodb://%s:%s@%s:%d",
-            credentials.user(), credentials.password(), credentials.ip(), credentials.port());
+    return CompletableFuture.supplyAsync(() -> Result.of(() -> {
+      final String connectionString = String.format("mongodb://%s:%s@%s:%d",
+          credentials.user(), credentials.password(), credentials.ip(), credentials.port());
 
-        final CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(new EntityCodecProvider());
-        final CodecRegistry codecRegistry = CodecRegistries.fromRegistries(
-            MongoClientSettings.getDefaultCodecRegistry(),
-            pojoCodecRegistry);
+      final CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(new EntityCodecProvider());
+      final CodecRegistry codecRegistry = CodecRegistries.fromRegistries(
+          MongoClientSettings.getDefaultCodecRegistry(),
+          pojoCodecRegistry);
 
-        final MongoClientSettings settings = MongoClientSettings.builder()
-            .applyConnectionString(new ConnectionString(connectionString))
-            .codecRegistry(codecRegistry)
-            .build();
+      final MongoClientSettings settings = MongoClientSettings.builder()
+          .applyConnectionString(new ConnectionString(connectionString))
+          .codecRegistry(codecRegistry)
+          .build();
 
-        this.mongoClient = MongoClients.create(settings);
-        this.database = mongoClient.getDatabase("celery");
+      this.mongoClient = MongoClients.create(settings);
+      this.database = mongoClient.getDatabase("celery");
 
-        return Result.ok(timer.end());
-      } catch (Exception e) {
-        return Result.err(e.getMessage());
-      }
-    });
+      return timer.end();
+    }).mapErr(Exception::getMessage));
   }
 
   @Override
-  @SuppressWarnings("unchecked")
-  public @NotNull CompletableFuture<Optional<IEntity>> get(final @NotNull IQuery<?> iQuery) {
+  public @NotNull CompletableFuture<Optional<IEntity>> get(final @NotNull IQuery<IEntity> iQuery) {
     return CompletableFuture.supplyAsync(() -> {
       final String collectionName = SchemaExtractor.getName(iQuery.entityClass());
       final IEntity entity = (IEntity) database.getCollection(collectionName, iQuery.entityClass())
@@ -78,7 +73,6 @@ public final class MongoDatabaseProvider implements IDatabaseProvider<IEntity, I
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public @NotNull CompletableFuture<List<IEntity>> find(final @NotNull IQuery<IEntity> query) {
     return CompletableFuture.supplyAsync(() -> {
       final String collectionName = SchemaExtractor.getName(query.entityClass());
@@ -159,11 +153,29 @@ public final class MongoDatabaseProvider implements IDatabaseProvider<IEntity, I
   }
 
   @Override
-  public @NotNull CompletableFuture<Void> delete(final @NotNull IQuery iQuery) {
+  public @NotNull CompletableFuture<Void> delete(final @NotNull IQuery<IEntity> iQuery) {
     return CompletableFuture.runAsync(() -> {
       final String collectionName = SchemaExtractor.getName(iQuery.entityClass());
 
       database.getCollection(collectionName).deleteOne(BsonQueryBuilder.buildFilter(iQuery));
+    });
+  }
+
+  @Override
+  public void close() {
+    this.mongoClient.close();
+  }
+
+  @Override
+  public CompletableFuture<Boolean> isConnected() {
+    return CompletableFuture.supplyAsync(() -> {
+      if (this.mongoClient == null) {
+        return false;
+      }
+
+      return Result.of(() -> this.mongoClient.listDatabaseNames().first())
+          .map(ignored -> true)
+          .unwrapOr(false);
     });
   }
 }

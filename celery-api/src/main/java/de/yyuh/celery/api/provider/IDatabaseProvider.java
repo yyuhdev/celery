@@ -19,14 +19,9 @@ import java.util.concurrent.CompletableFuture;
  * @param <T> the entity type this provider handles
  * @param <K> the query type used for operations
  */
-public interface IDatabaseProvider<T, K> {
+public interface IDatabaseProvider<T, K> extends IProvider {
 
-  /**
-   * Connects to the database using the provided credentials.
-   *
-   * @param credentials the database credentials
-   * @return a CompletableFuture containing the connection time in milliseconds on success
-   */
+  @Override
   @NotNull
   CompletableFuture<Result<Long, String>> connect(final Credentials credentials);
 
