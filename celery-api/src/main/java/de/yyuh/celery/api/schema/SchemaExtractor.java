@@ -85,6 +85,12 @@ public final class SchemaExtractor {
     return "CREATE TABLE IF NOT EXISTS " + tableName + " (" + columns + ");";
   }
 
+  /**
+   * Maps a Java type to its corresponding SQL type.
+   *
+   * @param type the Java class type to convert
+   * @return the SQL type string
+   */
   @NotNull
   private static String getSqlType(final Class<?> type) {
     if (type == String.class || type == java.util.UUID.class)

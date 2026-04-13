@@ -66,6 +66,12 @@ public final class DefaultSqlQueryBuilder implements ISqlQueryBuilder {
     return new ArrayList<>(query.filters().values());
   }
 
+  /**
+   * Appends a WHERE clause to the SQL query based on query filters.
+   *
+   * @param sb the StringBuilder to append to
+   * @param query the query containing filter conditions
+   */
   private void appendWhereClause(final StringBuilder sb, final IQuery<?> query) {
     Map<String, Object> filters = query.filters();
     if (!filters.isEmpty()) {
@@ -77,6 +83,15 @@ public final class DefaultSqlQueryBuilder implements ISqlQueryBuilder {
     }
   }
 
+  /**
+   * Returns the table name for an entity class.
+   *
+   * <p>If the class is annotated with @Repository, the annotation value
+   * is used. Otherwise, the simple class name is used in lowercase.
+   *
+   * @param entityClass the entity class
+   * @return the table name
+   */
   @NotNull
   private String getTableName(final Class<?> entityClass) {
     if (entityClass.isAnnotationPresent(Repository.class)) {

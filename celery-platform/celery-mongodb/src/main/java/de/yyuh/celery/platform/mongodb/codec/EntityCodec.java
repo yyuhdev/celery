@@ -163,6 +163,16 @@ public final class EntityCodec<T extends IEntity> implements Codec<T> {
     }
   }
 
+  /**
+   * Finds the record component matching a BSON field name.
+   *
+   * <p>First checks for the special "_id" field mapped to @Identifier,
+   * then checks for @Field annotations, and finally falls back to
+   * matching by Java field name.
+   *
+   * @param bsonName the BSON field name to match
+   * @return the matching RecordComponent, or null if not found
+   */
   private RecordComponent findComponent(@NotNull final String bsonName) {
 
     if ("_id".equals(bsonName)) {
@@ -188,6 +198,15 @@ public final class EntityCodec<T extends IEntity> implements Codec<T> {
     return null;
   }
 
+  /**
+   * Returns the database field name for a record component.
+   *
+   * <p>Returns "_id" for @Identifier, the @Field value for @Field,
+   * or the component's Java name as a fallback.
+   *
+   * @param component the record component to get the field name for
+   * @return the database field name
+   */
   @NotNull
   private String getFieldName(final RecordComponent component) {
     if (component.isAnnotationPresent(Identifier.class)) {

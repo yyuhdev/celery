@@ -19,6 +19,12 @@ public final class CeleryMongoDBPlatform extends AbstractCeleryPlatform {
 
   private final IDatabaseProvider<IEntity, IQuery> provider = new MongoDatabaseProvider();
 
+  /**
+   * Creates a new CeleryMongoDBPlatform instance.
+   *
+   * <p>The platform is configured with MongoDB storage capabilities
+   * and registered with the Celery framework.
+   */
   public CeleryMongoDBPlatform() {
     super("mongodb", CeleryDatabaseType.MONGODB, CeleryPlatformType.STORAGE);
   }

@@ -107,6 +107,18 @@ public final class MongoDatabaseProvider implements IDatabaseProvider<IEntity, I
     });
   }
 
+  /**
+   * Extracts the identifier value from an entity.
+   *
+   * <p>For record types, the identifier is retrieved from record components
+   * annotated with @Identifier. For regular classes, it is retrieved from
+   * fields annotated with @Identifier.
+   *
+   * @param entity the entity to extract the identifier from
+   * @return the identifier value
+   * @throws IllegalArgumentException if the entity has no @Identifier annotation
+   * @throws RuntimeException if the identifier cannot be accessed
+   */
   @NotNull
   private Object extractId(final @NotNull IEntity entity) {
     if (entity.getClass().isRecord()) {
