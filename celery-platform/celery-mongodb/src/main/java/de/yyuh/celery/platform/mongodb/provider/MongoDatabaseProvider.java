@@ -27,10 +27,11 @@ import java.util.concurrent.CompletableFuture;
 /**
  * MongoDB implementation of IDatabaseProvider for IEntity types.
  *
- * <p>This provider handles CRUD operations for entities stored in MongoDB,
+ * <p>
+ * This provider handles CRUD operations for entities stored in MongoDB,
  * using the EntityCodec for encoding and decoding record types.
  */
-public final class MongoDatabaseProvider implements IDatabaseProvider<IEntity, IQuery> {
+public final class MongoDatabaseProvider implements IDatabaseProvider<IEntity, IQuery<IEntity>> {
 
   private MongoClient mongoClient;
   private MongoDatabase database;
@@ -66,7 +67,7 @@ public final class MongoDatabaseProvider implements IDatabaseProvider<IEntity, I
 
   @Override
   @SuppressWarnings("unchecked")
-  public @NotNull CompletableFuture<Optional<IEntity>> get(final @NotNull IQuery iQuery) {
+  public @NotNull CompletableFuture<Optional<IEntity>> get(final @NotNull IQuery<?> iQuery) {
     return CompletableFuture.supplyAsync(() -> {
       final String collectionName = SchemaExtractor.getName(iQuery.entityClass());
       final IEntity entity = (IEntity) database.getCollection(collectionName, iQuery.entityClass())
@@ -110,14 +111,15 @@ public final class MongoDatabaseProvider implements IDatabaseProvider<IEntity, I
   /**
    * Extracts the identifier value from an entity.
    *
-   * <p>For record types, the identifier is retrieved from record components
+   * <p>
+   * For record types, the identifier is retrieved from record components
    * annotated with @Identifier. For regular classes, it is retrieved from
    * fields annotated with @Identifier.
    *
    * @param entity the entity to extract the identifier from
    * @return the identifier value
    * @throws IllegalArgumentException if the entity has no @Identifier annotation
-   * @throws RuntimeException if the identifier cannot be accessed
+   * @throws RuntimeException         if the identifier cannot be accessed
    */
   @NotNull
   private Object extractId(final @NotNull IEntity entity) {

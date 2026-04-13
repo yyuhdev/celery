@@ -9,6 +9,8 @@ import de.yyuh.celery.api.PlatformManager;
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.credentials.ICredentialProvider;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
+import de.yyuh.libs.core.event.EventBus;
+
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +18,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Main entry point for the Celery framework.
  *
- * <p>Celery provides a fluent API for registering platforms and
+ * <p>
+ * Celery provides a fluent API for registering platforms and
  * building the framework with resolved credentials. Use the
  * static factory method {@link #create()} to obtain a new instance.
  */
@@ -29,6 +32,8 @@ public final class Celery {
   private final List<ICredentialProvider> credentialProviders = new ArrayList<>();
   private final List<Class<? extends AbstractCeleryPlatform>> platforms = new ArrayList<>();
   private final List<AbstractCeleryPlatform> platformInstances = new ArrayList<>();
+
+  private final EventBus eventBus = new EventBus();
 
   private PlatformManager platformManager;
 
@@ -51,6 +56,16 @@ public final class Celery {
    */
   public static Celery getInstance() {
     return instance;
+  }
+
+  /**
+   * Returns the {@link EventBus} for this Celery instance;
+   *
+   * @return the event bus
+   */
+  @NotNull
+  public EventBus eventBus() {
+    return this.eventBus;
   }
 
   /**
@@ -116,7 +131,8 @@ public final class Celery {
   /**
    * Builds the Celery framework by initializing all registered platforms.
    *
-   * <p>This method instantiates all registered platforms, resolves credentials
+   * <p>
+   * This method instantiates all registered platforms, resolves credentials
    * for each platform, and establishes database connections.
    *
    * @return this Celery instance
