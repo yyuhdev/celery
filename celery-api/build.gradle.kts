@@ -7,6 +7,7 @@ dependencies {
     api(libs.gson)
     api(libs.protobuf.java)
     api(project(":core"))
+    api(libs.reflections)
 }
 
 tasks.test {

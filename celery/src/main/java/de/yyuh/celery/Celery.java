@@ -8,8 +8,8 @@ import java.util.Optional;
 import de.yyuh.celery.api.PlatformManager;
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.credentials.ICredentialProvider;
+import de.yyuh.celery.api.event.EventBus;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
-import de.yyuh.libs.core.event.EventBus;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -32,8 +32,6 @@ public final class Celery {
   private final List<ICredentialProvider> credentialProviders = new ArrayList<>();
   private final List<Class<? extends AbstractCeleryPlatform>> platforms = new ArrayList<>();
   private final List<AbstractCeleryPlatform> platformInstances = new ArrayList<>();
-
-  private final EventBus eventBus = new EventBus();
 
   private PlatformManager platformManager;
 
@@ -65,7 +63,7 @@ public final class Celery {
    */
   @NotNull
   public EventBus eventBus() {
-    return this.eventBus;
+    return EventBus.instance();
   }
 
   /**

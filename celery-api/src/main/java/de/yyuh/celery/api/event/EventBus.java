@@ -1,4 +1,4 @@
-package de.yyuh.libs.core.event;
+package de.yyuh.celery.api.event;
 
 import java.util.List;
 import java.util.Map;
@@ -38,6 +38,23 @@ import com.google.protobuf.Message;
 public final class EventBus {
 
   private final Map<Class<?>, List<IEventHandler<? super Message>>> handlers = new ConcurrentHashMap<>();
+
+  private static EventBus instance;
+
+  private EventBus() {
+  }
+
+  /**
+   * Returns the event bus's instance. If the Event bus is not instantiated, it
+   * instantiates itself
+   */
+  public static EventBus instance() {
+    if (instance == null) {
+      instance = new EventBus();
+    }
+
+    return instance;
+  }
 
   /**
    * Subscribes an {@link IEventHandler} from the event bus

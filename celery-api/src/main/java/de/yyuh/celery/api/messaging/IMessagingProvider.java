@@ -12,15 +12,8 @@ public interface IMessagingProvider extends IProvider {
   CompletableFuture<Void> publish(final @NotNull String channel, final @NotNull Message message);
 
   @NotNull
-  CompletableFuture<Void> subscribe(
-      final @NotNull String channel,
-      final @NotNull IMessageHandler handler);
+  CompletableFuture<Void> subscribe(final @NotNull String channel);
 
   @NotNull
   CompletableFuture<Void> unsubscribe(final @NotNull String channel);
-
-  @FunctionalInterface
-  interface IMessageHandler {
-    void handle(final @NotNull Message message);
-  }
 }

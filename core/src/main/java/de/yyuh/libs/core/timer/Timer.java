@@ -6,7 +6,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Measures elapsed time between start and end points.
  *
- * <p>Use this class to benchmark operations by starting a timer
+ * <p>
+ * Use this class to benchmark operations by starting a timer
  * at the beginning of an operation and calling end() to get
  * the elapsed time in milliseconds.
  */

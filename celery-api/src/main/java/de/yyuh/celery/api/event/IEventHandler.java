@@ -1,9 +1,9 @@
-package de.yyuh.libs.core.event;
+package de.yyuh.celery.api.event;
 
 import com.google.protobuf.Message;
 
 @FunctionalInterface
-public interface IEventHandler<T extends Message> {
+public interface IEventHandler<T> {
 
   /**
    * Handles a Protobuf {@link Message}
