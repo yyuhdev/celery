@@ -24,6 +24,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * MongoDB implementation of IDatabaseProvider for IEntity types.
+ *
+ * <p>This provider handles CRUD operations for entities stored in MongoDB,
+ * using the EntityCodec for encoding and decoding record types.
+ */
 public final class MongoDatabaseProvider implements IDatabaseProvider<IEntity, IQuery> {
 
   private MongoClient mongoClient;

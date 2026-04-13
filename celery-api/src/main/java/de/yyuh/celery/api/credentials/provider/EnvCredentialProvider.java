@@ -8,6 +8,15 @@ import org.jetbrains.annotations.Nullable;
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.credentials.ICredentialProvider;
 
+/**
+ * Credential provider that reads credentials from environment variables.
+ *
+ * <p>Environment variables follow the pattern: {@code {DATABASE_TYPE}_USER},
+ * {@code {DATABASE_TYPE}_PASSWORD}, {@code {DATABASE_TYPE}_HOST}, and
+ * {@code {DATABASE_TYPE}_PORT}.
+ *
+ * <p>For example, for MongoDB: {@code MONGODB_USER}, {@code MONGODB_PASSWORD}, etc.
+ */
 public final class EnvCredentialProvider implements ICredentialProvider {
 
   @Override

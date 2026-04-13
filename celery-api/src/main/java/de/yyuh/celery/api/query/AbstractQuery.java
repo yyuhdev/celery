@@ -6,6 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Abstract base implementation of IQuery providing common query functionality.
+ *
+ * <p>This class implements the query builder pattern and stores query
+ * parameters such as filters, limit, and offset.
+ *
+ * @param <T> the entity type being queried
+ */
 public abstract class AbstractQuery<T> implements IQuery<T> {
 
   private final Class<T> entityClass;
@@ -40,6 +48,12 @@ public abstract class AbstractQuery<T> implements IQuery<T> {
     return Optional.ofNullable(offset);
   }
 
+  /**
+   * Abstract builder for creating query instances.
+   *
+   * @param <T> the entity type
+   * @param <B> the builder type for method chaining
+   */
   @SuppressWarnings("unchecked")
   public abstract static class Builder<T, B extends Builder<T, B>> implements IQuery.Builder<T, B> {
     protected final Class<T> entityClass;
@@ -47,6 +61,11 @@ public abstract class AbstractQuery<T> implements IQuery<T> {
     protected Integer limit;
     protected Integer offset;
 
+    /**
+     * Creates a new builder for the given entity class.
+     *
+     * @param entityClass the class of the entity to query
+     */
     protected Builder(@NotNull Class<T> entityClass) {
       this.entityClass = entityClass;
     }

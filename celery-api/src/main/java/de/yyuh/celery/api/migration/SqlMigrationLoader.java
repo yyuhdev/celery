@@ -11,6 +11,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+/**
+ * Loads SQL migrations from a directory based on naming conventions.
+ *
+ * <p>Migration files must follow the naming pattern:
+ * {@code V{version}__{description}.(up|down).sql}
+ *
+ * <p>For each up migration found, the loader looks for a corresponding
+ * down migration with the same version and description.
+ *
+ * @see FileSqlMigration
+ * @see MigrationManager
+ */
 public final class SqlMigrationLoader {
 
   private static final Pattern FILENAME_PATTERN = Pattern.compile("V(\\d+)__(.+)\\.(up|down)\\.sql");
@@ -18,12 +30,29 @@ public final class SqlMigrationLoader {
   private final MigrationManager migrationManager;
   private final Function<String, CompletableFuture<Void>> sqlExecutor;
 
+  /**
+   * Creates a new SqlMigrationLoader.
+   *
+   * @param migrationManager the manager to register loaded migrations
+   * @param sqlExecutor the function to execute SQL statements
+   */
   public SqlMigrationLoader(@NotNull MigrationManager migrationManager,
       @NotNull Function<String, CompletableFuture<Void>> sqlExecutor) {
     this.migrationManager = migrationManager;
     this.sqlExecutor = sqlExecutor;
   }
 
+  /**
+   * Loads all migrations from the specified directory.
+   *
+   * <p>Only files ending with {@code .up.sql} are considered.
+   * Each up migration must have a corresponding down migration.
+   *
+   * @param directory the directory containing migration files
+   * @throws IOException if the directory cannot be read
+   * @throws IllegalArgumentException if the path is not a directory
+   * @throws RuntimeException if a down migration is missing
+   */
   public void loadFromDirectory(@NotNull Path directory) throws IOException {
     if (!Files.isDirectory(directory)) {
       throw new IllegalArgumentException("Path is not a directory: " + directory);
@@ -47,8 +76,6 @@ public final class SqlMigrationLoader {
       if (Files.exists(downFile)) {
         migrationManager.register(new FileSqlMigration(version, description, upFile, downFile, sqlExecutor));
       } else {
-        // Register without down migration or throw error?
-        // For now, let's require both for consistency with IMigration.
         throw new RuntimeException("Missing down migration for version " + version + ": " + downFile);
       }
     }

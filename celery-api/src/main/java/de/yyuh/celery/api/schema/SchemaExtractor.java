@@ -9,11 +9,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Extracts schema information from entity classes for database operations.
+ *
+ * <p>SchemaExtractor provides utilities to introspect entity classes and
+ * generate database-specific schema information such as table names,
+ * column mappings, and CREATE TABLE statements.
+ */
 public final class SchemaExtractor {
 
   private SchemaExtractor() {
   }
 
+  /**
+   * Returns the table or collection name for an entity class.
+   *
+   * <p>If the class is annotated with @Repository, the annotation value
+   * is used. Otherwise, the simple class name is used in lowercase.
+   *
+   * @param entityClass the entity class to get the name for
+   * @return the table or collection name
+   */
   @NotNull
   public static String getName(final @NotNull Class<?> entityClass) {
     if (entityClass.isAnnotationPresent(Repository.class)) {
@@ -22,6 +38,15 @@ public final class SchemaExtractor {
     return entityClass.getSimpleName().toLowerCase();
   }
 
+  /**
+   * Returns all fields of an entity class mapped to their database names.
+   *
+   * <p>Fields annotated with @Field use the annotation value as the database
+   * name. Unannotated fields use their Java field name.
+   *
+   * @param entityClass the entity class to extract fields from
+   * @return a map of database field names to their corresponding Field objects
+   */
   @NotNull
   public static Map<String, java.lang.reflect.Field> getFields(final @NotNull Class<?> entityClass) {
     final Map<String, java.lang.reflect.Field> fields = new HashMap<>();
@@ -38,6 +63,12 @@ public final class SchemaExtractor {
     return fields;
   }
 
+  /**
+   * Generates a CREATE TABLE SQL statement for an entity class.
+   *
+   * @param entityClass the entity class to generate the statement for
+   * @return the CREATE TABLE SQL statement
+   */
   @NotNull
   public static String generateCreateTableSql(final @NotNull Class<?> entityClass) {
     final String tableName = getName(entityClass);

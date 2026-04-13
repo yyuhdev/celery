@@ -6,6 +6,14 @@ import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Provides EntityCodec instances for IEntity record classes.
+ *
+ * <p>This codec provider is registered with MongoDB's codec registry
+ * and creates appropriate codecs for entities that are Java records.
+ *
+ * @see EntityCodec
+ */
 public final class EntityCodecProvider implements CodecProvider {
 
   @Override

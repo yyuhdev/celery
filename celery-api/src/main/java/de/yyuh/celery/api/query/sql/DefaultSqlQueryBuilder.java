@@ -10,6 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Default implementation of ISqlQueryBuilder for relational databases.
+ *
+ * <p>This builder generates SQL statements following standard SQL
+ * conventions, including SELECT, INSERT, UPDATE, and DELETE operations.
+ */
 public final class DefaultSqlQueryBuilder implements ISqlQueryBuilder {
 
   @Override

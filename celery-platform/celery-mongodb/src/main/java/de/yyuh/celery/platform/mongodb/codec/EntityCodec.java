@@ -18,6 +18,15 @@ import java.lang.reflect.RecordComponent;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * MongoDB Codec for encoding and decoding IEntity record types.
+ *
+ * <p>This codec handles the conversion between Java record components
+ * and MongoDB BSON documents, respecting @Identifier, @Field, and
+ * @Ignore annotations.
+ *
+ * @param <T> the entity type, must be a record
+ */
 public final class EntityCodec<T extends IEntity> implements Codec<T> {
 
   private final Class<T> clazz;
@@ -25,6 +34,13 @@ public final class EntityCodec<T extends IEntity> implements Codec<T> {
   private final Constructor<T> constructor;
   private final RecordComponent[] components;
 
+  /**
+   * Creates a new EntityCodec for the specified record class.
+   *
+   * @param clazz the entity record class
+   * @param registry the codec registry for nested types
+   * @throws IllegalArgumentException if the class is not a record
+   */
   public EntityCodec(
       @NotNull final Class<T> clazz,
       @NotNull final CodecRegistry registry) {
