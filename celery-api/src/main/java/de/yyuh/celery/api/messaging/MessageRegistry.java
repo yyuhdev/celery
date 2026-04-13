@@ -25,16 +25,19 @@ public final class MessageRegistry {
 
   static {
     TypeRegistry.Builder builder = TypeRegistry.newBuilder();
+
     findAllProtoClasses().forEach(entry -> {
       builder.add(entry.descriptor());
       PARSERS.put(entry.descriptor().getFullName(), entry.parser());
     });
+
     TYPE_REGISTRY = builder.build();
   }
 
   private record ProtoEntry(Descriptors.Descriptor descriptor, Parser<? extends Message> parser) {
   }
 
+  @NotNull
   private static List<ProtoEntry> findAllProtoClasses() {
     final var reflections = new Reflections("de.yyuh");
 
@@ -42,9 +45,11 @@ public final class MessageRegistry {
         .stream()
         .map(clazz -> {
           try {
-            var descriptor = (Descriptors.Descriptor) clazz.getMethod("getDescriptor").invoke(null);
+            final var descriptor = (Descriptors.Descriptor) clazz.getMethod("getDescriptor").invoke(null);
+
             @SuppressWarnings("unchecked")
-            var parser = (Parser<? extends Message>) clazz.getMethod("parser").invoke(null);
+            final var parser = (Parser<? extends Message>) clazz.getMethod("parser").invoke(null);
+
             return new ProtoEntry(descriptor, parser);
           } catch (Exception e) {
             return null;
