@@ -24,6 +24,7 @@
             <option value="$PROJECT_DIR$/celery-api" />
             <option value="$PROJECT_DIR$/celery-platform" />
             <option value="$PROJECT_DIR$/celery-platform/celery-mongodb" />
+            <option value="$PROJECT_DIR$/celery-platform/celery-redis" />
             <option value="$PROJECT_DIR$/core" />
           </set>
         </option>

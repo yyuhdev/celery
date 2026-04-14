@@ -1,14 +1,13 @@
 package de.yyuh.celery.platform.mongodb;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.yyuh.celery.api.CeleryDatabaseType;
 import de.yyuh.celery.api.CeleryPlatformType;
-import de.yyuh.celery.api.entity.IEntity;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
-import de.yyuh.celery.api.provider.IProvider;
 import de.yyuh.celery.api.provider.IDatabaseProvider;
-import de.yyuh.celery.api.query.IQuery;
+import de.yyuh.celery.api.provider.IProvider;
 import de.yyuh.celery.platform.mongodb.provider.MongoDatabaseProvider;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * MongoDB platform implementation for the Celery framework.
