@@ -74,9 +74,7 @@ public abstract class AbstractCeleryPlatform {
    * Returns the default provider for this platform.
    *
    * @return the default provider
-   * @deprecated Use {@link #provider(Class)} instead
    */
-  @Deprecated
   public abstract IProvider defaultProvider();
 
   /**

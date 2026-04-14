@@ -8,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 
-import club.revived.proto.v1.minigames.Envelope;
-
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.event.EventBus;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
@@ -17,13 +15,10 @@ import de.yyuh.celery.api.messaging.MessageRegistry;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;
 import io.lettuce.core.RedisClient;
-import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
-import io.lettuce.core.pubsub.api.sync.RedisPubSubCommands;
 
 public class RedisMessagingProvider implements IMessagingProvider {
 
@@ -105,16 +100,21 @@ public class RedisMessagingProvider implements IMessagingProvider {
 
   @Override
   public @NotNull CompletableFuture<Void> unsubscribe(final @NotNull String channel) {
-    return null;
+    return CompletableFuture.runAsync(() -> this.asyncCommands
+        .unsubscribe(channel.getBytes())
+        .toCompletableFuture()
+        .join());
   }
 
   @Override
   public void close() {
-
+    if (this.connection != null) {
+      this.connection.close();
+    }
   }
 
   @Override
   public @NotNull CompletableFuture<Boolean> isConnected() {
-    return null;
+    return CompletableFuture.supplyAsync(() -> this.connection != null && this.connection.isOpen());
   }
 }

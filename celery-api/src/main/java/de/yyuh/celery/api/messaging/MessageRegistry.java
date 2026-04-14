@@ -3,21 +3,20 @@ package de.yyuh.celery.api.messaging;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
-
 import org.reflections.Reflections;
 
 import com.google.protobuf.Any;
 import com.google.protobuf.Descriptors;
-import com.google.protobuf.ExtensionRegistryLite;
+import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.Parser;
 import com.google.protobuf.TypeRegistry;
-import com.google.protobuf.Descriptors.Descriptor;
+
+import de.yyuh.libs.core.result.Result;
 
 public final class MessageRegistry {
   private static final TypeRegistry TYPE_REGISTRY;
@@ -39,23 +38,20 @@ public final class MessageRegistry {
 
   @NotNull
   private static List<ProtoEntry> findAllProtoClasses() {
-    final var reflections = new Reflections("de.yyuh");
+    final var reflections = new Reflections("club.revived.v1.minigames");
 
     return reflections.getSubTypesOf(GeneratedMessageV3.class)
         .stream()
-        .map(clazz -> {
-          try {
-            final var descriptor = (Descriptors.Descriptor) clazz.getMethod("getDescriptor").invoke(null);
+        .map(clazz -> Result.of(() -> {
+          final var descriptor = (Descriptors.Descriptor) clazz.getMethod("getDescriptor").invoke(null);
 
-            @SuppressWarnings("unchecked")
-            final var parser = (Parser<? extends Message>) clazz.getMethod("parser").invoke(null);
+          @SuppressWarnings("unchecked")
+          final var parser = (Parser<? extends Message>) clazz.getMethod("parser").invoke(null);
 
-            return new ProtoEntry(descriptor, parser);
-          } catch (Exception e) {
-            return null;
-          }
-        })
-        .filter(Objects::nonNull)
+          return new ProtoEntry(descriptor, parser);
+        }))
+        .peek(result -> result.ifErr(e -> System.err.println("Failed to process proto class: " + e.getMessage())))
+        .flatMap(result -> result.ok().stream())
         .toList();
   }
 

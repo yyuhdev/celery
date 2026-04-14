@@ -10,6 +10,7 @@ import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.credentials.ICredentialProvider;
 import de.yyuh.celery.api.event.EventBus;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
+import de.yyuh.libs.core.result.Result;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -139,25 +140,27 @@ public final class Celery {
   @NotNull
   public Celery build() {
     for (final Class<? extends AbstractCeleryPlatform> platformClass : this.platforms) {
-      try {
-        final AbstractCeleryPlatform platform = platformClass.getDeclaredConstructor().newInstance();
-        this.platformInstances.add(platform);
+      Result.of(() -> platformClass.getDeclaredConstructor().newInstance())
+          .ifErr(exception -> {
+            throw new RuntimeException("Failed to initialize platform: " + platformClass.getName(), exception);
+          })
+          .ifOk(platform -> {
+            this.platformInstances.add(platform);
 
-        final Optional<Credentials> credentials = this.resolveCredentials(platform);
+            final Optional<Credentials> credentials = this.resolveCredentials(platform);
 
-        if (credentials.isEmpty()) {
-          throw new RuntimeException("Could not resolve credentials for platform: " + platform.getId());
-        }
+            if (credentials.isEmpty()) {
+              throw new RuntimeException("Could not resolve credentials for platform: " + platform.getId());
+            }
 
-        platform.defaultProvider().connect(credentials.get()).join()
-            .ifErr(log::error)
-            .ifOk(lg -> {
-              log.info(String.format("Connected to %s in %,dms", platform.getId(), lg));
-            });
-
-      } catch (Exception exception) {
-        throw new RuntimeException("Failed to initialize platform: " + platformClass.getName(), exception);
-      }
+            platform.defaultProvider().connect(credentials.get()).join()
+                .ifErr(connectException -> {
+                  log.error("Failed to connect to platform: " + platform.getId(), connectException);
+                })
+                .ifOk(connectTime -> {
+                  log.info(String.format("Connected to %s in %,dms", platform.getId(), connectTime));
+                });
+          });
     }
 
     this.platformManager = new PlatformManager(this.platformInstances);
