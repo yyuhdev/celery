@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="img/logo.png" alt="Longinus Logo" width="180">
+</div>
+
 # Celery
 
 A modular database abstraction framework for Java. Celery provides a unified API across multiple database backends while remaining fully extensible.
