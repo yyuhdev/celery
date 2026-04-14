@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+	<classpathentry kind="output" path="bin/default"/>
+	<classpathentry output="bin/main" kind="src" path="src/main/java">
+		<attributes>
+			<attribute name="gradle_scope" value="main"/>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry output="bin/main" kind="src" path="src/main">
+		<attributes>
+			<attribute name="gradle_scope" value="main"/>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry output="bin/main" kind="src" path="gen-java">
+		<attributes>
+			<attribute name="gradle_scope" value="main"/>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-25/"/>
+	<classpathentry kind="src" path="/celery-api">
+		<attributes>
+			<attribute name="without_test_code" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="/core">
+		<attributes>
+			<attribute name="without_test_code" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.influxdb/influxdb-client-java/7.5.0/d1e7965ecc2334e52dd636d3e646385038a98ec9/influxdb-client-java-7.5.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.influxdb/influxdb-client-java/7.5.0/17f0e2b211a509f0284059c9ba1ea2884b3875bc/influxdb-client-java-7.5.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.influxdb/influxdb-client-core/7.5.0/85e75f7c9a5471beeadb582c289232be2de2509a/influxdb-client-core-7.5.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.influxdb/influxdb-client-core/7.5.0/d52399cc5dad165b901175f05e5a22c8d09b79fd/influxdb-client-core-7.5.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-scalars/2.11.0/c453c90b9a65b49850ca7d13948bcdc1afc2d8e9/converter-scalars-2.11.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-scalars/2.11.0/2e2e12bbce77caded2ad7188ff8f3c599d6d0c4a/converter-scalars-2.11.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.11.0/4bdd51518a12394cd5b1adeac899a14669609fc1/converter-gson-2.11.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.11.0/9d1fe9d1662de0548e08e293041140a8e4026f81/converter-gson-2.11.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.11.0/b7a50b1ba86e50d99fd6c2030b8749869d4e10f/retrofit-2.11.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.11.0/6ca8c6caf842271f3232e075519fe04081ef7069/retrofit-2.11.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.12.0/ae6ec072a7ddfd4e225a36de1c185e76ebc7348d/okhttp-4.12.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.12.0/2f4525d4a200e97e1b87449c2cd9bd2e25b7e8cd/okhttp-4.12.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio-jvm/3.16.0/cb2657cc30a5af053b0448928a897e3b049502f9/okio-jvm-3.16.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio-jvm/3.16.0/60375cdf2fd0ed2a1dcd6db787095f732a31ff10/okio-jvm-3.16.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.8.21/20739e7aae2a2bfb66c4081b233ffea7b947cf77/kotlin-stdlib-jdk8-1.8.21-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.8.21/67f57e154437cd9e6e9cf368394b95814836ff88/kotlin-stdlib-jdk8-1.8.21.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.8.21/3641d7cb7650db9fe93a5361b1b88cbcefdb01e0/kotlin-stdlib-jdk7-1.8.21-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.8.21/7473b8cd3c0ef9932345baf569bc398e8a717046/kotlin-stdlib-jdk7-1.8.21.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.2.0/a2596f4aca441c6ba0ad915501c2bfa2e3c51c0b/kotlin-stdlib-2.2.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.2.0/fdfc65fbc42fda253a26f61dac3c0aca335fae96/kotlin-stdlib-2.2.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/26.0.2-1/31231ba3604386f473a7514fcf2026cad905ad6b/annotations-26.0.2-1-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/26.0.2-1/c7ce3cdeda3d18909368dfe5977332dfad326c6d/annotations-26.0.2-1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.mongodb/mongodb-driver-sync/5.7.0-alpha0/e8a5d9dfe360821ffeded8d6e6ae92ce9889e28b/mongodb-driver-sync-5.7.0-alpha0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.mongodb/mongodb-driver-sync/5.7.0-alpha0/ad1d7187878dab2065b68001346003654d93437f/mongodb-driver-sync-5.7.0-alpha0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.nats/jnats/2.25.1/f5f62c24b4655497940be7e6a67eb849c4c18392/jnats-2.25.1-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.nats/jnats/2.25.1/8a1f3cec491340889dc68eb1132dd99c9c708e0/jnats-2.25.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.lettuce/lettuce-core/7.4.0.RELEASE/742ebeb9a9cf8054b0b31d9b901528820456223e/lettuce-core-7.4.0.RELEASE-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.lettuce/lettuce-core/7.4.0.RELEASE/bdf51f964076d226927cdc04aae08c3395b885cb/lettuce-core-7.4.0.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.13.2/e28a0b248e9435c6b6863275b2e5c1569dfac888/gson-2.13.2-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.13.2/48b8230771e573b54ce6e867a9001e75977fe78e/gson-2.13.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/4.34.1/e58a4cdb6e165a045e761a3a571e856308935bc6/protobuf-java-4.34.1-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/4.34.1/e3b07cd3be66ec918b9fa4db9863c86d5eeea891/protobuf-java-4.34.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.mongodb/mongodb-driver-core/5.7.0-alpha0/bf04a66e58e38e70784c6abc701fbe3636eefac8/mongodb-driver-core-5.7.0-alpha0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.mongodb/mongodb-driver-core/5.7.0-alpha0/d8eab538aab8e4071dbca20a741dffc165c53e91/mongodb-driver-core-5.7.0-alpha0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.mongodb/bson/5.7.0-alpha0/aa0eb707486b035871853c0b8c92b297d7fb551a/bson-5.7.0-alpha0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.mongodb/bson/5.7.0-alpha0/a335399d68126d650b3761a9e2f8924372cca278/bson-5.7.0-alpha0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava3/rxjava/3.1.10/112044476dba9f35d8f75dd203cd33e0dcd68a44/rxjava-3.1.10-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava3/rxjava/3.1.10/d980c75b983334eeb9a7ea1a252d044f5e6cdf77/rxjava-3.1.10.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/adapter-rxjava3/2.11.0/2cded4030762d3ba9ce4e1f40cd00b1f6a095606/adapter-rxjava3-2.11.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/adapter-rxjava3/2.11.0/a748f34719661312ed02b8fe21d67ac647bb4b02/adapter-rxjava3-2.11.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.reflections/reflections/0.10.2/68391d7abbca924e397401333c5a9492531812b6/reflections-0.10.2-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.reflections/reflections/0.10.2/b638d7ca0e0fe0146b60a0e7ba232ad852a73b31/reflections-0.10.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.influxdb/influxdb-client-utils/7.5.0/e4da2a95dd306d07253d7e5f16a71d908171bfdc/influxdb-client-utils-7.5.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.influxdb/influxdb-client-utils/7.5.0/1a961d7e9e0f4d88b501b5b92b9fe807b0ff8bba/influxdb-client-utils-7.5.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/b19b5927c2c25b6c70f093767041e641ae0b1b35/jsr305-3.0.2-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/redis.clients.authentication/redis-authx-core/0.1.1-beta2/ac2c155466d5d18e31a995e288598093931f873e/redis-authx-core-0.1.1-beta2-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/redis.clients.authentication/redis-authx-core/0.1.1-beta2/4037345ff29fb22c737bab2ed116a34262718ae5/redis-authx-core-0.1.1-beta2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver-dns/4.2.5.Final/5350d8147ce885b71f4acd5ceaad7c5a61875921/netty-resolver-dns-4.2.5.Final-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver-dns/4.2.5.Final/6fcd8a0a443fb32cbfc0329efdac4b2ef025452c/netty-resolver-dns-4.2.5.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.2.5.Final/2b3ef4ca827bfd8e46d28471337a1134bc15169d/netty-handler-4.2.5.Final-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.2.5.Final/8598e3b5c42e123c62afd2ce0fc95da8344024c2/netty-handler-4.2.5.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-unix-common/4.2.5.Final/7fe7f5c3a543cf05a873e05eca19a2eb710586b8/netty-transport-native-unix-common-4.2.5.Final-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-unix-common/4.2.5.Final/d92a6258ec67443c62949df9b82f877b72903fe2/netty-transport-native-unix-common-4.2.5.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec-dns/4.2.5.Final/c10e49588122bf82b2cc219ec7f2b814d7615a7c/netty-codec-dns-4.2.5.Final-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec-dns/4.2.5.Final/a71936494765204eb9bf260fc3976283f582df75/netty-codec-dns-4.2.5.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec-base/4.2.5.Final/4b6ea0282d7243e575389dae49d6f4f657689b89/netty-codec-base-4.2.5.Final-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec-base/4.2.5.Final/21d10a714c0ae95ec575ae36b715ebb41b03107/netty-codec-base-4.2.5.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.2.5.Final/d759cb270f381469560091a65064820b5838fbc5/netty-transport-4.2.5.Final-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.2.5.Final/6598457ae8af1b5e830445b60d3479ddb2af2d43/netty-transport-4.2.5.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.2.5.Final/235cc88c058fd27597bbd1ac6b1174d7386e49d4/netty-resolver-4.2.5.Final-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.2.5.Final/301e2a663e66367f945832381a159fbb0de02dd2/netty-resolver-4.2.5.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.2.5.Final/c4dea47c0fee79655b2b6e9347ba0ee5e0a8458/netty-buffer-4.2.5.Final-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.2.5.Final/ec2a90c9909190759c0e4a6101efae52a7947ada/netty-buffer-4.2.5.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.2.5.Final/f1ec6a2feec1eb9400a890d8c2970ca55ed86b82/netty-common-4.2.5.Final-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.2.5.Final/da799ee8e1a5766d8b72475e1c51e221203cd3df/netty-common-4.2.5.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.projectreactor/reactor-core/3.6.6/9f27872ead7baa589969756352a503dde6133933/reactor-core-3.6.6-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/io.projectreactor/reactor-core/3.6.6/b337a57753cf1bf653a7eb1083c1117c449a353b/reactor-core-3.6.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.41.0/2324bf7861ca2a201f1d9638030b224aad2122e9/error_prone_annotations-2.41.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.41.0/4381275efdef6ddfae38f002c31e84cd001c97f0/error_prone_annotations-2.41.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/logging-interceptor/4.12.0/7a192f61dc08ffb393982f5d2cb012d800675062/logging-interceptor-4.12.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/logging-interceptor/4.12.0/e922c1f14d365c0f2bed140cc0825e18462c2778/logging-interceptor-4.12.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-csv/1.14.1/63872070241c316281491f8051152ff10ec09746/commons-csv-1.14.1-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-csv/1.14.1/467354980fade8528b6a9f9bdf7f4f19ab9b3373/commons-csv-1.14.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.4/d3cddd3497e618c6d3810ef439f13666f889abe4/reactive-streams-1.0.4-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.4/3864a1320d97d7b045f729a326e1e077661f31b7/reactive-streams-1.0.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.36/ae9c1aae0033af915cfa75d850eb9d880f21a701/slf4j-api-1.7.36-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.36/6c62681a2f655b49963a5983b8b0950a6120ae14/slf4j-api-1.7.36.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.28.0-GA/4e112a71eca1bebcadd85c5a07a9a26265eb12f4/javassist-3.28.0-GA-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.28.0-GA/9a958811a88381bb159cc2f5ed79c34a45c4af7a/javassist-3.28.0-GA.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.20.0/71533071559ab4d6b295cd711dcdb2203b103dcd/commons-io-2.20.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.20.0/36f3474daec2849c149e877614e7f979b2082cd2/commons-io-2.20.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.19.0/f133992014cbfedccce3acb9486816bcfd9d3425/commons-codec-1.19.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.19.0/8c0dbe3ae883fceda9b50a6c76e745e548073388/commons-codec-1.19.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.mongodb/bson-record-codec/5.7.0-alpha0/f13bbd1356611be5218bc8e58d8ae39ff6389dec/bson-record-codec-5.7.0-alpha0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.mongodb/bson-record-codec/5.7.0-alpha0/e9764627332d9de1b22cdb4b2d7c35b423804502/bson-record-codec-5.7.0-alpha0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.bouncycastle/bcprov-lts8on/2.73.9/23c336453e73f4f9c11d576a4ab53aa551ce7be4/bcprov-lts8on-2.73.9-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.bouncycastle/bcprov-lts8on/2.73.9/2d3e7e5e2e4eab6449ec6762ef66a9cb1337e284/bcprov-lts8on-2.73.9.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.jspecify/jspecify/1.0.0/f1a67bbcf2f9f282baf3821046563983f16ca9b2/jspecify-1.0.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.jspecify/jspecify/1.0.0/7425a601c1c7ec76645a78d22b8c6a627edee507/jspecify-1.0.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.testcontainers/junit-jupiter/1.20.4/222befbdad2b6e7882ccf0ac29aac3f4350688da/junit-jupiter-1.20.4-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.testcontainers/junit-jupiter/1.20.4/977e62d63e294828bfed88d1e99c2220ece8498a/junit-jupiter-1.20.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.testcontainers/mongodb/1.20.4/de1d4d7ed133d1b53321a2d9c672bea21e4feb2f/mongodb-1.20.4-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.testcontainers/mongodb/1.20.4/5929c630a8f66b3b06fd0a6d22c666e278b2cf99/mongodb-1.20.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.testcontainers/testcontainers/1.20.4/31e412d7de3dc1465fbb3b43784ca229a81d62ad/testcontainers-1.20.4-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.testcontainers/testcontainers/1.20.4/ee2fe3afc9fa6cb2e6a43233998f3633f761692f/testcontainers-1.20.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.rnorth.duct-tape/duct-tape/1.0.8/cf14d77239dd2a6fe0e03a2e8f29c6a80373be1/duct-tape-1.0.8-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.rnorth.duct-tape/duct-tape/1.0.8/92edc22a9ab2f3e17c9bf700aaee377d50e8b530/duct-tape-1.0.8.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.11.4/2a8cedde21fd75650a78c825f0439ccab44a5217/junit-jupiter-params-5.11.4-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.11.4/e4c86fbe2a39c60c6b87260ef7f7e7c1a1906481/junit-jupiter-params-5.11.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.11.4/c2973c17e3a51473b6827b7a5d3f7167b687f42d/junit-jupiter-api-5.11.4-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.11.4/308315b28e667db4091b2ba1f7aa220d1ddadb97/junit-jupiter-api-5.11.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.11.4/1acfe264ada9081bba59c937a8b0cae0619491bc/junit-platform-commons-1.11.4-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.11.4/8898eea3ed0da2641548d602c3e308804f166303/junit-platform-commons-1.11.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.11.4/4e79ee610aff59d79b5f229252ded392b7d48fd1/junit-jupiter-5.11.4-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.11.4/a699f024a4a4706b36bddbeb42d499aff9e09379/junit-jupiter-5.11.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-junit-jupiter/5.15.2/f2541ac9fa097ce660fff3634263fb15fb4134f3/mockito-junit-jupiter-5.15.2-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-junit-jupiter/5.15.2/290743787092b5d6a6642be9bb039917c6e772b/mockito-junit-jupiter-5.15.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/5.15.2/47a6f05f978f5a97449f9cc49f7a7d9d27e2d44e/mockito-core-5.15.2-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/5.15.2/87be4b1e0cc5febc07ab3197a8ff3ede56b37a79/mockito-core-5.15.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.assertj/assertj-core/3.27.3/b22102e6c76782205e2bb8d5a9c900cfeefbcabb/assertj-core-3.27.3-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.assertj/assertj-core/3.27.3/31f5d58a202bd5df4993fb10fa2cffd610c20d6f/assertj-core-3.27.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/afb8ff23cffb021c56f333953aebfe6e8818568e/opentest4j-1.3.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.2/e0787a997746ac32639e0bf3cb27af8dce8a3428/apiguardian-api-1.1.2-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.2/a231e0d844d2721b0fa1b238006d15c6ded6842a/apiguardian-api-1.1.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.15.11/dac99456547f4629e6e15d4045a81d67c438f06f/byte-buddy-1.15.11-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.15.11/f61886478e0f9ee4c21d09574736f0ff45e0a46c/byte-buddy-1.15.11.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.15.11/6849b24a46924986ccc1285704ba6e0d9569330c/byte-buddy-agent-1.15.11-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.15.11/a38b16385e867f59a641330f0362ebe742788ed8/byte-buddy-agent-1.15.11.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/junit/junit/4.13.2/33987872a811fe4d4001ed494b07854822257f42/junit-4.13.2-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/junit/junit/4.13.2/8ac9e16d933b6fb43bc7f576336b8f4d7eb5ba12/junit-4.13.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.github.docker-java/docker-java-api/3.4.0/2bf341e36511f7dedab46a30b328676e7d0718ea/docker-java-api-3.4.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.github.docker-java/docker-java-api/3.4.0/9ef23dcc93693f15e69b64632be096c38e31bc44/docker-java-api-3.4.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.github.docker-java/docker-java-transport-zerodep/3.4.0/afa689425f8cea1c47d70b4652e8b7aa2ca1738e/docker-java-transport-zerodep-3.4.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.github.docker-java/docker-java-transport-zerodep/3.4.0/c4ce6d8695cfdb0027872f99cc20f8f679f8a969/docker-java-transport-zerodep-3.4.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.24.0/a369c080d269f41c002855a37042b5f79f65fbfe/commons-compress-1.24.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.24.0/b4b1b5a3d9573b2970fddab236102c0a4d27d35e/commons-compress-1.24.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.10.3/a52bf9c42cb6a029577d0d701785a07554675713/jackson-annotations-2.10.3-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.10.3/f63b3b1da563767d04d2e4d3fc1ae0cdeffebe7/jackson-annotations-2.10.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.github.docker-java/docker-java-transport/3.4.0/10e24aca3619e4ffc1e6bea92f1c286bdbd45890/docker-java-transport-3.4.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/com.github.docker-java/docker-java-transport/3.4.0/c058705684d782effc4b2edfdef1a87544ba4af8/docker-java-transport-3.4.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.13.0/e55ddc56d092866b6d59822f825c253960a6e504/jna-5.13.0-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.13.0/1200e7ebeedbe0d10062093f32925a912020e747/jna-5.13.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.11.4/62890d34f46a222a73690cff58bc6ba477ac1214/junit-jupiter-engine-5.11.4-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.11.4/dc10ec209623986a68ea07f67cdc7d2a65a60355/junit-jupiter-engine-5.11.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.11.4/d705f6b0d147036b7d84dca5eaad35b41d64592a/junit-platform-launcher-1.11.4-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.11.4/3d83c201899d8c5e74e1a5d628eab900342a0e48/junit-platform-launcher-1.11.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.11.4/9e12d99def318784875efc0804bae79bc45c61f8/junit-platform-engine-1.11.4-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.11.4/21f61b123ad6ac8f7e73971bff3a096c8d8e1cd0/junit-platform-engine-1.11.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/3.3/5fef34eeee6816b0ba2170755a8a9db7744990c3/objenesis-3.3-sources.jar" kind="lib" path="/Users/yyuhontop/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/3.3/1049c09f1de4331e8193e579448d0916d75b7631/objenesis-3.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+</classpath>

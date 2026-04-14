@@ -165,7 +165,7 @@ public class User implements IEntity {
 High-performance event distribution:
 
 ```java
-EventBus eventBus = Celery.getInstance().eventBus();
+EventBus eventBus = celery.eventBus();
 eventBus.register(MyEvent.class, event -> { /* handle */ });
 eventBus.post(new MyEvent());
 ```
