@@ -10,7 +10,7 @@ import org.reflections.Reflections;
 import com.google.protobuf.Any;
 import com.google.protobuf.Descriptors;
 import com.google.protobuf.Descriptors.Descriptor;
-import com.google.protobuf.GeneratedMessageV3;
+import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.Parser;
@@ -18,29 +18,78 @@ import com.google.protobuf.TypeRegistry;
 
 import de.yyuh.libs.core.result.Result;
 
+/**
+ * Registry for managing and unpacking Protobuf Any messages.
+ *
+ * <p>
+ * This class scans a given package for all Protobuf message classes and builds
+ * a
+ * TypeRegistry to enable type-safe unpacking of {@link Any} messages.
+ *
+ * <p>
+ * Usage:
+ * 
+ * <pre>{@code
+ * MessageRegistry registry = MessageRegistry.create("com.example.myapp");
+ * Message message = registry.unpack(anyBytes);
+ * }</pre>
+ */
 public final class MessageRegistry {
-  private static final TypeRegistry TYPE_REGISTRY;
-  private static final Map<String, Parser<? extends Message>> PARSERS = new HashMap<>();
 
-  static {
-    TypeRegistry.Builder builder = TypeRegistry.newBuilder();
+  private final TypeRegistry typeRegistry;
 
-    findAllProtoClasses().forEach(entry -> {
+  private final Map<String, Parser<? extends Message>> parsers = new HashMap<>();
+
+  /**
+   * Constructs a new MessageRegistry by scanning the given package for Protobuf
+   * message classes.
+   *
+   * @param packageStr the package name to scan for Protobuf messages
+   */
+  private MessageRegistry(final @NotNull String packageStr) {
+    final TypeRegistry.Builder builder = TypeRegistry.newBuilder();
+
+    this.findAllProtoClasses(packageStr).forEach(entry -> {
       builder.add(entry.descriptor());
-      PARSERS.put(entry.descriptor().getFullName(), entry.parser());
+      parsers.put(entry.descriptor().getFullName(), entry.parser());
     });
 
-    TYPE_REGISTRY = builder.build();
+    this.typeRegistry = builder.build();
   }
 
+  /**
+   * Creates a new instance of the MessageRegistry
+   *
+   * @param packageStr Name of the package containing the Protobuf Messages
+   *
+   * @return new instance of {@link MessageRegistry}
+   */
+  public static MessageRegistry create(final @NotNull String packageStr) {
+    return new MessageRegistry(packageStr);
+  }
+
+  /**
+   * Internal record holding a Protobuf descriptor and its corresponding parser.
+   *
+   * @param descriptor the Protobuf message descriptor
+   * @param parser     the parser for deserializing messages of this type
+   */
   private record ProtoEntry(Descriptors.Descriptor descriptor, Parser<? extends Message> parser) {
   }
 
+  /**
+   * Scans the given package for all Protobuf message classes and creates
+   * ProtoEntry objects
+   * containing their descriptors and parsers.
+   *
+   * @param string the package name to scan
+   * @return list of ProtoEntry objects for all discovered Protobuf messages
+   */
   @NotNull
-  private static List<ProtoEntry> findAllProtoClasses() {
-    final var reflections = new Reflections("club.revived.v1.minigames");
+  private List<ProtoEntry> findAllProtoClasses(final @NotNull String string) {
+    final var reflections = new Reflections(string);
 
-    return reflections.getSubTypesOf(GeneratedMessageV3.class)
+    return reflections.getSubTypesOf(GeneratedMessage.class)
         .stream()
         .map(clazz -> Result.of(() -> {
           final var descriptor = (Descriptors.Descriptor) clazz.getMethod("getDescriptor").invoke(null);
@@ -55,16 +104,24 @@ public final class MessageRegistry {
         .toList();
   }
 
+  /**
+   * Unpacks a Protobuf Any message into its actual message type.
+   *
+   * @param bytes the serialized Any message
+   * @return the unpacked Protobuf message
+   * @throws InvalidProtocolBufferException if the message cannot be parsed or the
+   *                                        type is unknown
+   */
   @NotNull
-  public static Message unpack(final byte[] bytes) throws InvalidProtocolBufferException {
+  public Message unpack(final byte[] bytes) throws InvalidProtocolBufferException {
     final Any any = Any.parseFrom(bytes);
-    final Descriptor descriptor = TYPE_REGISTRY.getDescriptorForTypeUrl(any.getTypeUrl());
+    final Descriptor descriptor = this.typeRegistry.getDescriptorForTypeUrl(any.getTypeUrl());
 
     if (descriptor == null) {
       throw new InvalidProtocolBufferException("Unknown type: " + any.getTypeUrl());
     }
 
-    final Parser<? extends Message> parser = PARSERS.get(descriptor.getFullName());
+    final Parser<? extends Message> parser = this.parsers.get(descriptor.getFullName());
 
     if (parser == null) {
       throw new InvalidProtocolBufferException("No parser for: " + descriptor.getFullName());
