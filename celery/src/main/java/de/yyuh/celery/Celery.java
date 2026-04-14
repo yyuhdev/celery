@@ -5,16 +5,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.yyuh.celery.api.PlatformManager;
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.credentials.ICredentialProvider;
 import de.yyuh.celery.api.event.EventBus;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
 import de.yyuh.libs.core.result.Result;
-
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Main entry point for the Celery framework.
