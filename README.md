@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="img/logo.png" alt="Longinus Logo" width="180">
+  <img src="img/logo.png" alt="Longinus Logo">
 </div>
 
 # Celery
