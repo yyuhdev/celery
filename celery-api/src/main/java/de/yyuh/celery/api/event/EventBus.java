@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +40,7 @@ import com.google.protobuf.Message;
 public final class EventBus {
 
   private final Map<Class<?>, List<IEventHandler<? super Message>>> handlers = new ConcurrentHashMap<>();
+  private final ExecutorService srv = Executors.newVirtualThreadPerTaskExecutor();
 
   private static EventBus instance;
 
@@ -88,7 +91,7 @@ public final class EventBus {
 
     if (list != null) {
       for (final var handler : list) {
-        handler.handle(message);
+        this.srv.submit(() -> handler.handle(message));
       }
     }
   }
