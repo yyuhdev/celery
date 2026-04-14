@@ -65,7 +65,7 @@ public final class EventBus {
   @SuppressWarnings("unchecked")
   public <T extends Message> void subscribe(
       final @NotNull Class<T> eventType,
-      final @NotNull IEventHandler<T> handler) {
+      final @NotNull IEventHandler<? super T> handler) {
     this.handlers.computeIfAbsent(eventType, k -> new CopyOnWriteArrayList<>())
         .add((IEventHandler<? super Message>) handler);
   }
