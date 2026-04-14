@@ -175,3 +175,5 @@ eventBus.post(new MyEvent());
 ```bash
 ./gradlew build
 ```
+
+![vim](https://yyuh.beer/banners/vim-tenor.gif)
