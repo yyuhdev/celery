@@ -3,6 +3,7 @@ package de.yyuh.celery.api.messaging;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
@@ -36,23 +37,64 @@ import de.yyuh.libs.core.result.Result;
  */
 public final class MessageRegistry {
 
-  private final TypeRegistry typeRegistry;
+  private TypeRegistry typeRegistry;
 
   private final Map<String, Parser<? extends Message>> parsers = new HashMap<>();
 
+  private final List<String> packages = new CopyOnWriteArrayList<>();
+
+  private static MessageRegistry instance;
+
   /**
-   * Constructs a new MessageRegistry by scanning the given package for Protobuf
-   * message classes.
+   * Constructs a new MessageRegistry and intiates it
    *
    * @param packageStr the package name to scan for Protobuf messages
    */
-  private MessageRegistry(final @NotNull String packageStr) {
+  private MessageRegistry() {
+    instance = this;
+  }
+
+  /**
+   * Returns the Message Registry's instance
+   *
+   * @return the instance of Message Registry
+   */
+  @NotNull
+  public static MessageRegistry getInstance() {
+    if (instance == null) {
+      throw new IllegalStateException("MessageRegistry is not registered");
+    }
+
+    return instance;
+  }
+
+  /**
+   * Adds a package to the package registry for scanning later
+   *
+   * @param the package to scan through
+   *
+   * @return the Message Registry's instance
+   */
+  @NotNull
+  public MessageRegistry withPackage(final String packageStr) {
+    this.packages.add(packageStr);
+
+    return this;
+  }
+
+  /**
+   * Iterates through all given packages and then constructs a
+   * {@link TypeRegistry} out of all of them.
+   */
+  public void register() {
     final TypeRegistry.Builder builder = TypeRegistry.newBuilder();
 
-    this.findAllProtoClasses(packageStr).forEach(entry -> {
-      builder.add(entry.descriptor());
-      parsers.put(entry.descriptor().getFullName(), entry.parser());
-    });
+    for (final var packageStr : this.packages) {
+      this.findAllProtoClasses(packageStr).forEach(entry -> {
+        builder.add(entry.descriptor());
+        parsers.put(entry.descriptor().getFullName(), entry.parser());
+      });
+    }
 
     this.typeRegistry = builder.build();
   }
@@ -65,7 +107,7 @@ public final class MessageRegistry {
    * @return new instance of {@link MessageRegistry}
    */
   public static MessageRegistry create(final @NotNull String packageStr) {
-    return new MessageRegistry(packageStr);
+    return new MessageRegistry();
   }
 
   /**
