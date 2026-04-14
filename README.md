@@ -176,4 +176,4 @@ eventBus.post(new MyEvent());
 ./gradlew build
 ```
 
-![vim](https://yyuh.beer/banners/vim-tenor.gif)
+<img src="https://yyuh.beer/banners/vim-tenor.gif" width="88" height="33" />
