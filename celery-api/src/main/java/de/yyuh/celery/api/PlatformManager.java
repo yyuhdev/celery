@@ -12,7 +12,8 @@ import java.util.Optional;
 /**
  * Manages registered platforms and provides lookup capabilities.
  *
- * <p>PlatformManager is a singleton that maintains a registry of
+ * <p>
+ * PlatformManager is a singleton that maintains a registry of
  * platform instances and provides methods to find platforms and
  * their associated database providers.
  */
@@ -78,15 +79,15 @@ public final class PlatformManager {
   /**
    * Finds the database provider for a platform and database type combination.
    *
-   * @param type the platform type
+   * @param type         the platform type
    * @param databaseType the database type
-   * @param <T> the entity type
-   * @param <K> the query type
+   * @param <T>          the entity type
+   * @param <K>          the query type
    * @return an Optional containing the provider if found
    */
   @NotNull
   @SuppressWarnings("unchecked")
-  public <T extends IEntity, K extends IQuery> Optional<IDatabaseProvider<T, K>> getProvider(
+  public <T extends IEntity, K extends IQuery<IEntity>> Optional<IDatabaseProvider<T, K>> getProvider(
       final @NotNull CeleryPlatformType type, final @NotNull IDatabaseType databaseType) {
     return this.platformInstances.stream()
         .filter(platform -> platform.getCeleryPlatformType() == type && platform.getDatabaseType() == databaseType)

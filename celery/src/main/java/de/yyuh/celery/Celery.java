@@ -3,7 +3,9 @@ package de.yyuh.celery;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -13,6 +15,8 @@ import de.yyuh.celery.api.PlatformManager;
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.credentials.ICredentialProvider;
 import de.yyuh.celery.api.event.EventBus;
+import de.yyuh.celery.api.messaging.IMessagingProvider;
+import de.yyuh.celery.api.messaging.MessageBus;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
 import de.yyuh.libs.core.result.Result;
 
@@ -22,7 +26,7 @@ import de.yyuh.libs.core.result.Result;
  * <p>
  * Celery provides a fluent API for registering platforms and
  * building the framework with resolved credentials. Use the
- * static factory method {@link #create()} to obtain a new instance.
+ * static factory method {@link #builder()} to obtain a new builder instance.
  */
 public final class Celery {
 
@@ -34,18 +38,35 @@ public final class Celery {
   private final List<Class<? extends AbstractCeleryPlatform>> platforms = new ArrayList<>();
   private final List<AbstractCeleryPlatform> platformInstances = new ArrayList<>();
 
+  private final Map<String, MessageBus> messageBusses = new ConcurrentHashMap<>();
+
+  private final String id;
+
   private PlatformManager platformManager;
 
-  private Celery() {
+  Celery(final String id) {
+    this.id = id;
+  }
+
+  /**
+   * Creates a new Celery builder.
+   *
+   * @return a new CeleryBuilder instance
+   */
+  @NotNull
+  public static CeleryBuilder builder() {
+    return new CeleryBuilder();
   }
 
   /**
    * Creates a new Celery instance and sets it as the singleton.
    *
    * @return a new Celery instance
+   * @deprecated Use {@link #builder()} instead
    */
+  @Deprecated
   public static Celery create() {
-    return instance = new Celery();
+    return instance = new Celery("null");
   }
 
   /**
@@ -73,56 +94,29 @@ public final class Celery {
    * @return the platform manager
    */
   @NotNull
-  public PlatformManager platformManager() {
-    return this.platformManager;
-  }
-
-  /**
-   * Finds a platform by its ID.
-   *
-   * @param id the platform ID
-   * @return an Optional containing the platform if found
-   * @deprecated Use {@link PlatformManager#getPlatform(String)} instead
-   */
-  @NotNull
-  @Deprecated
   public Optional<AbstractCeleryPlatform> getPlatformById(final @NotNull String id) {
     return this.platformManager.getPlatform(id);
   }
 
-  /**
-   * Registers a platform class for initialization.
-   *
-   * @param clazz the platform class to register
-   * @return this Celery instance for method chaining
-   */
   @NotNull
-  public Celery registerPlatform(final Class<? extends AbstractCeleryPlatform> clazz) {
+  public Optional<MessageBus> getMessageBus(final String id) {
+    return Optional.ofNullable(this.messageBusses.get(id));
+  }
+
+  @NotNull
+  Celery registerPlatform(final Class<? extends AbstractCeleryPlatform> clazz) {
     this.platforms.add(clazz);
     return this;
   }
 
-  /**
-   * Registers multiple platform classes for initialization.
-   *
-   * @param clazz the platform classes to register
-   * @return this Celery instance for method chaining
-   */
-  @NotNull
   @SafeVarargs
-  public final Celery registerPlatforms(final Class<? extends AbstractCeleryPlatform>... clazz) {
+  final Celery registerPlatforms(final Class<? extends AbstractCeleryPlatform>... clazz) {
     this.platforms.addAll(Arrays.asList(clazz));
     return this;
   }
 
-  /**
-   * Registers a credential provider.
-   *
-   * @param provider the credential provider to register
-   * @return this Celery instance for method chaining
-   */
   @NotNull
-  public Celery registerCredentialProvider(final @NotNull ICredentialProvider provider) {
+  Celery registerCredentialProvider(final @NotNull ICredentialProvider provider) {
     this.credentialProviders.add(provider);
     return this;
   }
@@ -153,12 +147,23 @@ public final class Celery {
               throw new RuntimeException("Could not resolve credentials for platform: " + platform.getId());
             }
 
-            platform.defaultProvider().connect(credentials.get()).join()
+            final var provider = platform.defaultProvider();
+
+            provider.connect(credentials.get()).join()
                 .ifErr(connectException -> {
                   log.error("Failed to connect to platform: " + platform.getId(), connectException);
                 })
                 .ifOk(connectTime -> {
                   log.info(String.format("Connected to %s in %,dms", platform.getId(), connectTime));
+
+                  if (provider instanceof final IMessagingProvider messageHandler) {
+                    final var messagebus = MessageBus.builder()
+                        .messagingProvider(messageHandler)
+                        .serviceId(this.id)
+                        .build();
+
+                    this.messageBusses.put(platform.getId(), messagebus);
+                  }
                 });
           });
     }
