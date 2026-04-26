@@ -13,7 +13,6 @@ import com.google.protobuf.Message;
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.event.EventBus;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
-import de.yyuh.celery.api.messaging.MessageBus;
 import de.yyuh.celery.api.messaging.MessageRegistry;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;

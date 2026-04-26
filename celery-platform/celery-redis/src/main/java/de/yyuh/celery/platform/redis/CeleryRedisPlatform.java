@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * <p>
  * This platform provides Redis-specific messaging operations
- * including Pub/Sub capabilities with the RedisMessagingProvider.
+ * including Pub/Sub capabilities with the {@code RedisMessagingProvider}.
  */
 public final class CeleryRedisPlatform extends AbstractCeleryPlatform {
 
