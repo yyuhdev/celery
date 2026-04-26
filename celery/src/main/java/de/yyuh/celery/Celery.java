@@ -44,6 +44,11 @@ public final class Celery {
 
   private PlatformManager platformManager;
 
+  /**
+   * Creates a new Celery instance with the specified ID.
+   *
+   * @param id the unique identifier for this Celery instance
+   */
   Celery(final String id) {
     this.id = id;
   }
@@ -93,28 +98,58 @@ public final class Celery {
    *
    * @return the platform manager
    */
+  /**
+   * Returns the platform with the specified ID.
+   *
+   * @param id the platform ID to search for
+   * @return an Optional containing the platform if found
+   */
   @NotNull
   public Optional<AbstractCeleryPlatform> getPlatformById(final @NotNull String id) {
     return this.platformManager.getPlatform(id);
   }
 
+  /**
+   * Returns the message bus with the specified ID.
+   *
+   * @param id the message bus ID to search for
+   * @return an Optional containing the message bus if found
+   */
   @NotNull
   public Optional<MessageBus> getMessageBus(final String id) {
     return Optional.ofNullable(this.messageBusses.get(id));
   }
 
+  /**
+   * Registers a platform class for initialization.
+   *
+   * @param clazz the platform class to register
+   * @return this Celery instance for chaining
+   */
   @NotNull
   Celery registerPlatform(final Class<? extends AbstractCeleryPlatform> clazz) {
     this.platforms.add(clazz);
     return this;
   }
 
+  /**
+   * Registers multiple platform classes for initialization.
+   *
+   * @param clazz the platform classes to register
+   * @return this Celery instance for chaining
+   */
   @SafeVarargs
   final Celery registerPlatforms(final Class<? extends AbstractCeleryPlatform>... clazz) {
     this.platforms.addAll(Arrays.asList(clazz));
     return this;
   }
 
+  /**
+   * Registers a credential provider for resolving credentials.
+   *
+   * @param provider the credential provider to register
+   * @return this Celery instance for chaining
+   */
   @NotNull
   Celery registerCredentialProvider(final @NotNull ICredentialProvider provider) {
     this.credentialProviders.add(provider);
@@ -173,6 +208,12 @@ public final class Celery {
     return this;
   }
 
+  /**
+   * Resolves credentials for a platform using registered credential providers.
+   *
+   * @param platform the platform to resolve credentials for
+   * @return an Optional containing the resolved credentials
+   */
   @NotNull
   private Optional<Credentials> resolveCredentials(final @NotNull AbstractCeleryPlatform platform) {
     for (final ICredentialProvider provider : this.credentialProviders) {

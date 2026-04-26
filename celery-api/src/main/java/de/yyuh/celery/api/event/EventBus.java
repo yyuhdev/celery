@@ -48,8 +48,9 @@ public final class EventBus {
   }
 
   /**
-   * Returns the event bus's instance. If the Event bus is not instantiated, it
-   * instantiates itself
+   * Returns the singleton EventBus instance.
+   *
+   * @return the EventBus instance
    */
   public static EventBus instance() {
     if (instance == null) {
@@ -60,7 +61,11 @@ public final class EventBus {
   }
 
   /**
-   * Subscribes an {@link IEventHandler} from the event bus
+   * Subscribes a handler for an event type.
+   *
+   * @param <T>      the event type
+   * @param eventType the event class to subscribe to
+   * @param handler the handler to invoke when the event is published
    */
   @SuppressWarnings("unchecked")
   public <T extends Message> void subscribe(
@@ -71,7 +76,11 @@ public final class EventBus {
   }
 
   /**
-   * Unsubscribes an {@link IEventHandler} from the event bus
+   * Unsubscribes a handler from an event type.
+   *
+   * @param <T>      the event type
+   * @param eventType the event class to unsubscribe from
+   * @param handler the handler to remove
    */
   public <T extends Message> void unsubscribe(
       final @NotNull Class<T> eventType,
@@ -84,7 +93,9 @@ public final class EventBus {
   }
 
   /**
-   * Publishes an event to the event bus
+   * Publishes an event to all subscribers.
+   *
+   * @param message the event to publish
    */
   public void publish(final @NotNull Message message) {
     final var list = this.handlers.get(message.getClass());

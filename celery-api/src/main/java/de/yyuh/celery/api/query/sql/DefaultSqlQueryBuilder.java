@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 /**
  * Default implementation of ISqlQueryBuilder for relational databases.
  *
- * <p>This builder generates SQL statements following standard SQL
+ * <p>
+ * This builder generates SQL statements following standard SQL
  * conventions, including SELECT, INSERT, UPDATE, and DELETE operations.
  */
 public final class DefaultSqlQueryBuilder implements ISqlQueryBuilder {
@@ -69,7 +70,7 @@ public final class DefaultSqlQueryBuilder implements ISqlQueryBuilder {
   /**
    * Appends a WHERE clause to the SQL query based on query filters.
    *
-   * @param sb the StringBuilder to append to
+   * @param sb    the StringBuilder to append to
    * @param query the query containing filter conditions
    */
   private void appendWhereClause(final StringBuilder sb, final IQuery<?> query) {
@@ -86,7 +87,8 @@ public final class DefaultSqlQueryBuilder implements ISqlQueryBuilder {
   /**
    * Returns the table name for an entity class.
    *
-   * <p>If the class is annotated with @Repository, the annotation value
+   * <p>
+   * If the class is annotated with @Repository, the annotation value
    * is used. Otherwise, the simple class name is used in lowercase.
    *
    * @param entityClass the entity class
