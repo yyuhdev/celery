@@ -19,6 +19,7 @@ public final class CeleryRedisPlatform extends AbstractCeleryPlatform {
 
   public CeleryRedisPlatform() {
     super("redis", CeleryDatabaseType.REDIS, CeleryPlatformType.PUBSUB);
+
     registerProvider(IMessagingProvider.class, new RedisMessagingProvider());
   }
 
