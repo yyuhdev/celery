@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>celery-api</name>
+	<name>core</name>
 	<comment></comment>
-	<projects>
-		<project>core</project>
-	</projects>
-	<buildSpec>
-		<buildCommand>
-			<name>org.eclipse.jdt.core.javabuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
-			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-	</buildSpec>
+	<projects/>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
 	</natures>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments/>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
+			<arguments/>
+		</buildCommand>
+	</buildSpec>
 	<linkedResources>
 		<link>
 			<name>gen-java</name>
 			<type>2</type>
-			<location>/home/yyuh/dev/revived/libs/proto/gen/java</location>
+			<location>/Users/yyuhontop/Dev/libs/proto/gen/java</location>
+		</link>
+		<link>
+			<name>gen-java</name>
+			<type>2</type>
+			<location>/home/yyuh/dev/libs/proto/gen/java</location>
 		</link>
 	</linkedResources>
 	<filteredResources>
 		<filter>
 			<id>1</id>
-			<name></name>
 			<type>30</type>
+			<name/>
 			<matcher>
 				<id>org.eclipse.core.resources.regexFilterMatcher</id>
 				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>

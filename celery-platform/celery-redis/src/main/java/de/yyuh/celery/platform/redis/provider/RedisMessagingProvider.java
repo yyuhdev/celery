@@ -63,7 +63,7 @@ public class RedisMessagingProvider implements IMessagingProvider {
       public void message(final byte[] ch, final byte[] body) {
         if (Arrays.equals(ch, channel.getBytes())) {
           try {
-            final var message = MessageRegistry.unpack(body);
+            final var message = MessageRegistry.getInstance().unpack(body);
 
             EventBus.instance().publish(message);
           } catch (final InvalidProtocolBufferException e) {
