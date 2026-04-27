@@ -24,6 +24,8 @@ public abstract class AbstractCeleryPlatform {
   private final CeleryPlatformType celeryPlatformType;
   private final Map<Class<? extends IProvider>, IProvider> providers = new HashMap<>();
 
+  private String serviceId;
+
   /**
    * Creates a new platform with the specified configuration.
    *
@@ -101,5 +103,17 @@ public abstract class AbstractCeleryPlatform {
    */
   public <P extends IProvider> Optional<P> provider(final @NotNull Class<P> providerClass) {
     return Optional.ofNullable(providerClass.cast(this.providers.get(providerClass)));
+  }
+
+  public Map<Class<? extends IProvider>, IProvider> getProviders() {
+    return providers;
+  }
+
+  public String getServiceId() {
+    return serviceId;
+  }
+
+  public void setServiceId(String serviceId) {
+    this.serviceId = serviceId;
   }
 }

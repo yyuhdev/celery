@@ -61,6 +61,14 @@ public final class PlatformManager {
         .findFirst();
   }
 
+  @NotNull
+  public Optional<AbstractCeleryPlatform> getPlatform(
+      final @NotNull Class<? extends AbstractCeleryPlatform> platformClass) {
+    return this.platformInstances.stream()
+        .filter(platform -> platform.getClass().equals(platformClass))
+        .findFirst();
+  }
+
   /**
    * Finds the default platform for a database type.
    *

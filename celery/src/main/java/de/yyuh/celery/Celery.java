@@ -176,6 +176,8 @@ public final class Celery {
           .ifOk(platform -> {
             this.platformInstances.add(platform);
 
+            platform.setServiceId(this.id);
+
             final Optional<Credentials> credentials = this.resolveCredentials(platform);
 
             if (credentials.isEmpty()) {

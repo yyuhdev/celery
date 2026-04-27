@@ -24,12 +24,12 @@
 		<link>
 			<name>gen-java</name>
 			<type>2</type>
-			<location>/Users/yyuhontop/Dev/libs/proto/gen/java</location>
+			<location>/home/yyuh/dev/revived/libs/proto/gen/java</location>
 		</link>
 	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>1777235125514</id>
+			<id>1</id>
 			<name></name>
 			<type>30</type>
 			<matcher>

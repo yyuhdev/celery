@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>celery-api</name>
-	<comment></comment>
+	<name>celery-logging</name>
+	<comment>Project celery-logging created by Buildship.</comment>
 	<projects>
-		<project>core</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -21,16 +20,9 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>gen-java</name>
-			<type>2</type>
-			<location>/home/yyuh/dev/revived/libs/proto/gen/java</location>
-		</link>
-	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>1</id>
+			<id>1777315106680</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
