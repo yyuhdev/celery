@@ -8,13 +8,6 @@ import de.yyuh.celery.api.provider.IProvider;
 import de.yyuh.celery.platform.redis.provider.RedisMessagingProvider;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Redis platform implementation for the Celery framework.
- *
- * <p>
- * This platform provides Redis-specific messaging operations
- * including Pub/Sub capabilities with the {@code RedisMessagingProvider}.
- */
 public final class CeleryRedisPlatform extends AbstractCeleryPlatform {
 
   public CeleryRedisPlatform() {

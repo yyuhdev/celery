@@ -17,5 +17,6 @@ include("celery-api")
 
 include("celery-platform:celery-mongodb")
 include("celery-platform:celery-redis")
+include("celery-platform:celery-redis-cache")
 include("celery-platform:celery-nats")
 include("celery-cluster")
