@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>libs-fix-libs</name>
+	<name>celery-nats-cluster</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -20,9 +20,16 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>gen-java</name>
+			<type>2</type>
+			<location>/home/yyuh/dev/revived/libs/proto/gen/java</location>
+		</link>
+	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>1</id>
+			<id>1777390768931</id>
 			<name></name>
 			<type>30</type>
 			<matcher>

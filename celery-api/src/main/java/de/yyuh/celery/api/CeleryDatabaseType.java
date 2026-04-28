@@ -5,7 +5,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Enum implementing IDatabaseType for all supported databases.
  *
- * <p>Each database type defines its default port and the platform
+ * <p>
+ * Each database type defines its default port and the platform
  * category it best serves (storage, pubsub, or cache).
  */
 public enum CeleryDatabaseType implements IDatabaseType {

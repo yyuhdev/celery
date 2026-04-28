@@ -5,7 +5,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Represents a type of database supported by the Celery framework.
  *
- * <p>Each database type defines its default port and the preferred
+ * <p>
+ * Each database type defines its default port and the preferred
  * platform category for storage.
  */
 public interface IDatabaseType {
