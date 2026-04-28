@@ -12,7 +12,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Interface for providers that support automatic reconnection on connection loss
+ * Interface for providers that support automatic reconnection on connection
+ * loss
  * or timeout.
  *
  * <p>
@@ -126,7 +127,8 @@ public interface IReconnectable extends IProvider {
    * Starts automatic background reconnection monitoring.
    *
    * <p>
-   * Periodically checks {@link #isConnected()} and calls {@link #connect(Credentials)}
+   * Periodically checks {@link #isConnected()} and calls
+   * {@link #connect(Credentials)}
    * if the provider is disconnected. Only one monitor is active at a time;
    * calling this when already active is a no-op.
    *
@@ -147,8 +149,8 @@ public interface IReconnectable extends IProvider {
     state.scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
       final var t = new Thread(r, "reconnect-" + getClass().getSimpleName());
       t.setDaemon(true);
-      t.setUncaughtExceptionHandler((thread, ex) ->
-          RECONNECT_LOG.log(Level.ERROR, "Uncaught exception in reconnect monitor", ex));
+      t.setUncaughtExceptionHandler(
+          (thread, ex) -> RECONNECT_LOG.log(Level.ERROR, "Uncaught exception in reconnect monitor", ex));
       return t;
     });
 
@@ -157,8 +159,7 @@ public interface IReconnectable extends IProvider {
         () -> attemptReconnect(state),
         options.healthCheckInterval().toMillis(),
         options.healthCheckInterval().toMillis(),
-        TimeUnit.MILLISECONDS
-    );
+        TimeUnit.MILLISECONDS);
     state.healthCheckFuture = future;
 
     RECONNECT_LOG.log(Level.INFO, "Auto-reconnect enabled for {0}", getClass().getSimpleName());
