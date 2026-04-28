@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.provider.ICacheProvider;
+import de.yyuh.celery.api.provider.IReconnectable;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;
 import io.lettuce.core.RedisClient;
@@ -15,7 +16,7 @@ import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;
 
-public class RedisCacheProvider implements ICacheProvider {
+public class RedisCacheProvider implements IReconnectable, ICacheProvider {
 
   private RedisAsyncCommands<byte[], byte[]> asyncCommands;
   private StatefulRedisConnection<byte[], byte[]> connection;

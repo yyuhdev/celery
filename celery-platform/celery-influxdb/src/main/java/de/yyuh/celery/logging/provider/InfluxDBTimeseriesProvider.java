@@ -16,12 +16,13 @@ import com.influxdb.client.write.Point;
 
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.entity.ILogEntry;
+import de.yyuh.celery.api.provider.IReconnectable;
 import de.yyuh.celery.api.provider.ITimeseriesProvider;
 import de.yyuh.celery.api.query.IQuery;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;
 
-public final class InfluxDBTimeseriesProvider implements ITimeseriesProvider {
+public final class InfluxDBTimeseriesProvider implements IReconnectable, ITimeseriesProvider {
 
   private InfluxDBClient influxDBClient;
   private String organization;

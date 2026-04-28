@@ -18,6 +18,7 @@ import de.yyuh.celery.api.event.EventBus;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
 import de.yyuh.celery.api.messaging.MessageBus;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
+import de.yyuh.celery.api.provider.IReconnectable;
 import de.yyuh.libs.core.result.Result;
 
 /**
@@ -192,6 +193,10 @@ public final class Celery {
                 })
                 .ifOk(connectTime -> {
                   log.info(String.format("Connected to %s in %,dms", platform.getId(), connectTime));
+
+                  if (provider instanceof IReconnectable reconnectable) {
+                    reconnectable.startAutoReconnect(credentials.get());
+                  }
 
                   if (provider instanceof final IMessagingProvider messageHandler) {
                     final var messagebus = MessageBus.builder()

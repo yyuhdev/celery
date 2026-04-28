@@ -14,6 +14,7 @@ import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.event.EventBus;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
 import de.yyuh.celery.api.messaging.MessageRegistry;
+import de.yyuh.celery.api.provider.IReconnectable;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;
 import io.nats.client.Connection;
@@ -22,7 +23,7 @@ import io.nats.client.Nats;
 import io.nats.client.Options;
 import io.nats.client.Connection.Status;
 
-public final class NatsMessagingProvider implements IMessagingProvider {
+public final class NatsMessagingProvider implements IReconnectable, IMessagingProvider {
 
   private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
   private Connection connection;

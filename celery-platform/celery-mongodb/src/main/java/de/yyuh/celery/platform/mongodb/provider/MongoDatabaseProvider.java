@@ -9,6 +9,7 @@ import de.yyuh.celery.api.annotation.Identifier;
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.entity.IEntity;
 import de.yyuh.celery.api.provider.IDatabaseProvider;
+import de.yyuh.celery.api.provider.IReconnectable;
 import de.yyuh.celery.api.query.IQuery;
 import de.yyuh.celery.api.schema.SchemaExtractor;
 import de.yyuh.celery.platform.mongodb.codec.EntityCodecProvider;
@@ -31,7 +32,7 @@ import java.util.concurrent.CompletableFuture;
  * This provider handles CRUD operations for entities stored in MongoDB,
  * using the EntityCodec for encoding and decoding record types.
  */
-public final class MongoDatabaseProvider implements IDatabaseProvider<IEntity, IQuery<IEntity>> {
+public final class MongoDatabaseProvider implements IReconnectable, IDatabaseProvider<IEntity, IQuery<IEntity>> {
 
   private MongoClient mongoClient;
   private MongoDatabase database;

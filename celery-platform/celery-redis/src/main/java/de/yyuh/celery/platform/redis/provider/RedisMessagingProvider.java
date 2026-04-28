@@ -12,6 +12,7 @@ import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.event.EventBus;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
 import de.yyuh.celery.api.messaging.MessageRegistry;
+import de.yyuh.celery.api.provider.IReconnectable;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;
 import io.lettuce.core.RedisClient;
@@ -20,7 +21,7 @@ import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
 
-public class RedisMessagingProvider implements IMessagingProvider {
+public class RedisMessagingProvider implements IReconnectable, IMessagingProvider {
 
   private RedisPubSubAsyncCommands<byte[], byte[]> asyncCommands;
   private StatefulRedisPubSubConnection<byte[], byte[]> connection;
