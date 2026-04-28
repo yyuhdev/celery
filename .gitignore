@@ -35,3 +35,4 @@ bin/
 
 .DS_Store
 limbo/src/main/java/club/revived/limbo/LimboManager.java
+.classpath

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>celery-logging</name>
-	<comment>Project celery-logging created by Buildship.</comment>
+	<name>celery-influxdb</name>
+	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -22,7 +22,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1777315106680</id>
+			<id>1</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
