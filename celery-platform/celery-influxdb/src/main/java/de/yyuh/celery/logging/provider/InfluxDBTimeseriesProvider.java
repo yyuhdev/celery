@@ -22,6 +22,7 @@ import de.yyuh.celery.api.query.IQuery;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;
 
+// TODO: Implement
 public final class InfluxDBTimeseriesProvider implements IReconnectable, ITimeseriesProvider {
 
   private InfluxDBClient influxDBClient;

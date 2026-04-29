@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  nats1:
+    image: nats:2-alpine
+    command: >
+      nats-server
+      --name nats1
+      --cluster_name celery-cluster
+      --routes nats-route://nats1:6222,nats-route://nats2:6222,nats-route://nats3:6222
+      --cluster nats://0.0.0.0:6222
+      --auth compose-token
+    ports:
+      - "4222"
+
+  nats2:
+    image: nats:2-alpine
+    command: >
+      nats-server
+      --name nats2
+      --cluster_name celery-cluster
+      --routes nats-route://nats1:6222,nats-route://nats2:6222,nats-route://nats3:6222
+      --cluster nats://0.0.0.0:6222
+      --auth compose-token
+    ports:
+      - "4222"
+
+  nats3:
+    image: nats:2-alpine
+    command: >
+      nats-server
+      --name nats3
+      --cluster_name celery-cluster
+      --routes nats-route://nats1:6222,nats-route://nats2:6222,nats-route://nats3:6222
+      --cluster nats://0.0.0.0:6222
+      --auth compose-token
+    ports:
+      - "4222"

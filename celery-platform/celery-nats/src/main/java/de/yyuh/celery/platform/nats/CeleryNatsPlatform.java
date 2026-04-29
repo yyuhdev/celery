@@ -25,6 +25,6 @@ public final class CeleryNatsPlatform extends AbstractCeleryPlatform {
 
   @Override
   public IProvider defaultProvider() {
-    return new NatsMessagingProvider();
+    return provider(IMessagingProvider.class).orElseThrow();
   }
 }

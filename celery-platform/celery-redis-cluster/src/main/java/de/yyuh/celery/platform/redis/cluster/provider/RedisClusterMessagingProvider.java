@@ -58,6 +58,29 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
       this.connection = this.client.connectPubSub(ByteArrayCodec.INSTANCE);
       this.asyncCommands = this.connection.async();
 
+      // Wait for cluster to be ready
+      boolean clusterReady = false;
+      for (int i = 0; i < 60; i++) {
+        try {
+          final String info = this.connection.sync().clusterInfo();
+          if (info.contains("cluster_state:ok")) {
+            clusterReady = true;
+            break;
+          }
+        } catch (Exception ignored) {
+          // cluster still forming
+        }
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          throw new RuntimeException("Interrupted while waiting for cluster", e);
+        }
+      }
+      if (!clusterReady) {
+        throw new RuntimeException("Redis cluster not ready after 60s");
+      }
+
       return timer.end();
     }).mapErr(Exception::getMessage));
   }
