@@ -62,7 +62,7 @@ Or simply add to `CeleryDatabaseType` enum if you want it built-in.
 Base interface for all providers:
 
 ```java
-public class MyDatabaseProvider implements IDatabaseProvider<Entity, Query> {
+public class MyDatabaseProvider implements IDatabaseProvider<IEntity, IQuery<IEntity>> {
     @Override
     public @NotNull CompletableFuture<Result<Long, String>> connect(Credentials credentials) {
         // Initialize connection
@@ -78,9 +78,35 @@ public class MyDatabaseProvider implements IDatabaseProvider<Entity, Query> {
         // Cleanup resources
     }
 }
+
 ```
 
-### 3. Extend AbstractCeleryPlatform
+### 3. Automatic reconnecting
+
+Alongside IDatabaseProvider there is the IReconnectable interface allowing you to automaticly connect back to your database when connection is lost. It works right out of the box
+
+```java
+
+public class MyDatabaseProvider implements IDatabaseProvider<IEntity, IQuery<Entity>>, IReconnectable {
+    @Override
+    public @NotNull CompletableFuture<Result<Long, String>> connect(Credentials credentials) {
+        // Initialize connection
+    }
+
+    @Override
+    public @NotNull CompletableFuture<Boolean> isConnected() {
+        // Check connection status
+    }
+
+    @Override
+    public void close() {
+        // Cleanup resources
+    }
+}
+
+```
+
+### 4. Extend AbstractCeleryPlatform
 
 ```java
 public class MyPlatform extends AbstractCeleryPlatform {
@@ -96,7 +122,7 @@ public class MyPlatform extends AbstractCeleryPlatform {
 }
 ```
 
-### 4. Register with Celery
+### 5. Register with Celery
 
 ```java
 Celery.create()
