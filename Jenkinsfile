@@ -17,7 +17,17 @@ spec:
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                checkout([$class: 'GitSCM',
+                    branches: [[name: "*/v3"]],
+                    userRemoteConfigs: scm.userRemoteConfigs,
+                    extensions: [
+                        [$class: 'SubmoduleOption',
+                            recursiveSubmodules: true,
+                            parentCredentials: true,
+                            trackingSubmodules: false
+                        ]
+                    ]
+                ])
             }
         }
 
