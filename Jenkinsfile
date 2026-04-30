@@ -9,6 +9,18 @@ spec:
   - name: gradle
     image: gradle:jdk-25-and-25
     command: ['sleep', '999999']
+    env:
+    - name: DOCKER_HOST
+      value: tcp://localhost:2375
+    - name: TESTCONTAINERS_RYUK_DISABLED
+      value: "true"
+  - name: dind
+    image: docker:dind
+    securityContext:
+      privileged: true
+    env:
+    - name: DOCKER_TLS_CERTDIR
+      value: ""
 """
             defaultContainer 'gradle'
         }
