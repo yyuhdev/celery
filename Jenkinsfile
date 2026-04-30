@@ -21,6 +21,17 @@ spec:
             }
         }
 
+        stage('Setup') {
+            steps {
+              sh '''
+                set -e
+                curl -sSL https://github.com/bufbuild/buf/releases/latest/download/buf-Linux-x86_64 -o buf
+                chmod +x buf
+                export PATH=$PWD:$PATH
+              '''
+            }
+        }
+
         stage('Integration Testing') {
             steps {
                 sh 'gradle testing:test'
