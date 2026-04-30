@@ -8,10 +8,6 @@ import de.yyuh.celery.api.query.IQuery;
 import de.yyuh.celery.platform.mongodb.CeleryMongoDBPlatform;
 import de.yyuh.celery.platform.redis.cache.CeleryRedisCachePlatform;
 import org.junit.jupiter.api.*;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -21,36 +17,13 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class CeleryIntegrationTest {
-
-  @Container
-  static final GenericContainer<?> MONGO = new GenericContainer<>(
-      DockerImageName.parse("mongo:7.0"))
-      .withExposedPorts(27017)
-      .withEnv("MONGO_INITDB_ROOT_USERNAME", "root")
-      .withEnv("MONGO_INITDB_ROOT_PASSWORD", "root");
-
-  @Container
-  static final GenericContainer<?> REDIS = new GenericContainer<>(
-      DockerImageName.parse("docker.dragonflydb.io/dragonflydb/dragonfly"))
-      .withExposedPorts(6379)
-      .withCommand("--requirepass=testpass");
+class CeleryIntegrationTest extends BaseCeleryIntegrationTest {
 
   static Celery celery;
 
   @BeforeAll
   static void setUp() {
-    System.setProperty("MONGODB_USER", MONGO.getEnvMap().getOrDefault("MONGO_INITDB_ROOT_USERNAME", "root"));
-    System.setProperty("MONGODB_PASSWORD", MONGO.getEnvMap().getOrDefault("MONGO_INITDB_ROOT_PASSWORD", "root"));
-    System.setProperty("MONGODB_HOST", MONGO.getHost());
-    System.setProperty("MONGODB_PORT", String.valueOf(MONGO.getMappedPort(27017)));
-
-    System.setProperty("REDIS_PASSWORD", "testpass");
-    System.setProperty("REDIS_HOST", REDIS.getHost());
-    System.setProperty("REDIS_PORT", String.valueOf(REDIS.getMappedPort(6379)));
-
     celery = Celery.builder()
         .withId("test-service")
         .registerCredentialProvider(new SystemPropertyCredentialProvider())

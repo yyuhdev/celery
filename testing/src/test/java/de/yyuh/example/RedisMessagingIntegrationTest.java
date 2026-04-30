@@ -7,32 +7,16 @@ import de.yyuh.celery.Celery;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
 import de.yyuh.celery.platform.redis.CeleryRedisPlatform;
 import org.junit.jupiter.api.*;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class RedisMessagingIntegrationTest {
-
-  @Container
-  static final GenericContainer<?> REDIS = new GenericContainer<>(
-      DockerImageName.parse("docker.dragonflydb.io/dragonflydb/dragonfly"))
-      .withExposedPorts(6379)
-      .withCommand("--requirepass=redis-token");
+class RedisMessagingIntegrationTest extends BaseCeleryIntegrationTest {
 
   static Celery celery;
 
   @BeforeAll
   static void setUp() {
-    System.setProperty("REDIS_USER", "default");
-    System.setProperty("REDIS_PASSWORD", "redis-token");
-    System.setProperty("REDIS_HOST", REDIS.getHost());
-    System.setProperty("REDIS_PORT", String.valueOf(REDIS.getMappedPort(6379)));
-
     celery = Celery.builder()
         .withId("test-service-redis-msg")
         .registerCredentialProvider(new SystemPropertyCredentialProvider())

@@ -1,0 +1,32 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27017"
+
+  redis:
+    image: docker.dragonflydb.io/dragonflydb/dragonfly
+    command: --requirepass=testpass
+    ports:
+      - "6379"
+
+  nats:
+    image: nats:2-alpine
+    command: nats-server --auth nats-token
+    ports:
+      - "4222"
+
+  influxdb:
+    image: influxdb:2.7
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: admin12345
+      DOCKER_INFLUXDB_INIT_ORG: celery
+      DOCKER_INFLUXDB_INIT_BUCKET: logging
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: my-super-secret-token
+    ports:
+      - "8086"

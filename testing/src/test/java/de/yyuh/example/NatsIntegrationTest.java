@@ -7,32 +7,16 @@ import de.yyuh.celery.Celery;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
 import de.yyuh.celery.platform.nats.CeleryNatsPlatform;
 import org.junit.jupiter.api.*;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class NatsIntegrationTest {
-
-  @Container
-  static final GenericContainer<?> NATS = new GenericContainer<>(
-      DockerImageName.parse("nats:2-alpine"))
-      .withExposedPorts(4222)
-      .withCommand("nats-server", "--auth", "nats-token");
+class NatsIntegrationTest extends BaseCeleryIntegrationTest {
 
   static Celery celery;
 
   @BeforeAll
   static void setUp() {
-    System.setProperty("NATS_USER", "nats");
-    System.setProperty("NATS_PASSWORD", "nats-token");
-    System.setProperty("NATS_HOST", NATS.getHost());
-    System.setProperty("NATS_PORT", String.valueOf(NATS.getMappedPort(4222)));
-
     celery = Celery.builder()
         .withId("test-service-nats")
         .registerCredentialProvider(new SystemPropertyCredentialProvider())
