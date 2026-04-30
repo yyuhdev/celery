@@ -11,16 +11,26 @@ spec:
     command: ['sleep', '999999']
     env:
     - name: DOCKER_HOST
-      value: tcp://localhost:2375
+      value: unix:///var/run/docker.sock
     - name: TESTCONTAINERS_RYUK_DISABLED
       value: "true"
+    volumeMounts:
+    - name: docker-sock
+      mountPath: /var/run
   - name: dind
-    image: docker:dind
+    image: docker:dind-rootless
     securityContext:
-      privileged: true
+      runAsUser: 1000
+      runAsGroup: 1000
     env:
     - name: DOCKER_TLS_CERTDIR
       value: ""
+    volumeMounts:
+    - name: docker-sock
+      mountPath: /var/run
+  volumes:
+  - name: docker-sock
+    emptyDir: {}
 """
             defaultContainer 'gradle'
         }
