@@ -7,7 +7,7 @@ kind: Pod
 spec:
   containers:
   - name: gradle
-    image: gradle:8.5-jdk17
+    image: gradle:jdk-25-and-25
     command: ['sleep', '999999']
 """
             defaultContainer 'gradle'
