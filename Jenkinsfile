@@ -21,20 +21,27 @@ spec:
             }
         }
 
-        stage('Setup') {
+        stage('Setup Buf') {
             steps {
-              sh '''
+                sh '''
                 set -e
-                curl -sSL https://github.com/bufbuild/buf/releases/latest/download/buf-Linux-x86_64 -o buf
-                chmod +x buf
-                export PATH=$PWD:$PATH
-              '''
+
+                BUF_VERSION=1.66.1
+
+                curl -sSL \
+                https://github.com/bufbuild/buf/releases/download/v${BUF_VERSION}/buf-Linux-x86_64 \
+                -o /usr/local/bin/buf
+
+                chmod +x /usr/local/bin/buf
+
+                /usr/local/bin/buf --version
+                '''
             }
         }
 
         stage('Integration Testing') {
             steps {
-                sh 'gradle testing:test'
+                sh './gradlew testing:test --no-daemon'
             }
         }
     }
