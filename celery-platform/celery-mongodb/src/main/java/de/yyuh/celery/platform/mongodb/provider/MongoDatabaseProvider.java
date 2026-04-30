@@ -86,8 +86,9 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
   }
 
   @Override
+  @Deprecated(forRemoval = true)
   public @NotNull CompletableFuture<List<IEntity>> getAll() {
-    return CompletableFuture.completedFuture(new ArrayList<>());
+    throw new UnsupportedOperationException("getAll is unsupported for the IEntity type!");
   }
 
   @Override
