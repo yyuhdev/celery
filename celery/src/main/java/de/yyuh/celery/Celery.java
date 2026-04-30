@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mongodb.annotations.NotThreadSafe;
+
 import de.yyuh.celery.api.PlatformManager;
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.credentials.ICredentialProvider;
@@ -95,11 +97,6 @@ public final class Celery {
   }
 
   /**
-   * Returns the PlatformManager for this Celery instance.
-   *
-   * @return the platform manager
-   */
-  /**
    * Returns the platform with the specified ID.
    *
    * @param id the platform ID to search for
@@ -108,6 +105,17 @@ public final class Celery {
   @NotNull
   public Optional<AbstractCeleryPlatform> getPlatformById(final @NotNull String id) {
     return this.platformManager.getPlatform(id);
+  }
+
+  /**
+   * Returns the platform for the given {@code Class}
+   *
+   * @param clazz the platform class t osearch for
+   * @return an Optional containing the platform if found
+   */
+  @NotNull
+  public Optional<AbstractCeleryPlatform> getPlatform(final @NotNull Class<? extends AbstractCeleryPlatform> clazz) {
+    return this.platformManager.getPlatform(clazz);
   }
 
   /**
