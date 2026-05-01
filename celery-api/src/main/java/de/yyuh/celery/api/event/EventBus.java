@@ -13,8 +13,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.protobuf.Message;
 
-import jdk.internal.loader.AbstractClassLoaderValue.Sub;
-
 /**
  * A high-performance, reflection-free event bus for Protobuf {@link Message}
  * types.
