@@ -179,7 +179,7 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
             final String host = parts[0];
             final int port = parts.length > 1 ? Integer.parseInt(parts[1]) : credentials.port();
 
-            return buildUri(host, port, "'" + credentials.password() + "'");
+            return buildUri(host, port, credentials.password());
           })
           .toArray(RedisURI[]::new);
     }

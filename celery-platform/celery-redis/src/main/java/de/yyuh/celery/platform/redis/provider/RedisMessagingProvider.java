@@ -16,6 +16,7 @@ import de.yyuh.celery.api.provider.IReconnectable;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;
 import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisURI;
 import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
@@ -31,15 +32,15 @@ public class RedisMessagingProvider implements IReconnectable, IMessagingProvide
     final var timer = Timer.start();
 
     return CompletableFuture.supplyAsync(() -> Result.of(() -> {
-      final String url;
+      final var uriBuilder = RedisURI.builder()
+          .withHost(credentials.ip())
+          .withPort(credentials.port());
 
       if (credentials.password() != null && !credentials.password().isBlank()) {
-        url = "redis://'" + credentials.password() + "'@" + credentials.ip() + ":" + credentials.port();
-      } else {
-        url = "redis://" + credentials.ip() + ":" + credentials.port();
+        uriBuilder.withPassword(credentials.password().toCharArray());
       }
 
-      final RedisClient client = RedisClient.create(url);
+      final RedisClient client = RedisClient.create(uriBuilder.build());
 
       this.connection = client.connectPubSub(ByteArrayCodec.INSTANCE);
       this.asyncCommands = this.connection.async();
