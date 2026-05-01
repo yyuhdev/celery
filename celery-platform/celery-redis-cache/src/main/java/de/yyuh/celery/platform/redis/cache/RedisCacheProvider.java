@@ -29,7 +29,7 @@ public class RedisCacheProvider implements IReconnectable, ICacheProvider {
       final String url;
 
       if (credentials.password() != null && !credentials.password().isBlank()) {
-        url = "redis://" + credentials.password() + "@" + credentials.ip() + ":" + credentials.port();
+        url = "redis://'" + credentials.password() + "'@" + credentials.ip() + ":" + credentials.port();
       } else {
         url = "redis://" + credentials.ip() + ":" + credentials.port();
       }
