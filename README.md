@@ -1,3 +1,5 @@
+[![wakatime](https://wakatime.com/badge/user/dd51c621-143b-4311-843c-7ee475851640/project/c75f6f08-0f92-4625-bd63-eba8e066a276.svg)](https://wakatime.com/badge/user/dd51c621-143b-4311-843c-7ee475851640/project/c75f6f08-0f92-4625-bd63-eba8e066a276)
+
 <div align="center">
   <img src="img/logo.png" alt="Longinus Logo" height="240">
 </div>
