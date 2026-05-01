@@ -36,22 +36,27 @@ final class CeleryTestContainers {
 
     System.setProperty("MONGODB_USER", "root");
     System.setProperty("MONGODB_PASSWORD", "root");
-    System.setProperty("MONGODB_HOST", COMPOSE.getServiceHost("mongodb", 27017));
+    // Use localhost directly: DockerComposeContainer.getServiceHost() can
+    // return internal compose network IPs in Docker-in-Docker setups (e.g.
+    // Kubernetes Jenkins agents) which are unreachable from the test JVM.
+    // All compose services are bound to the Docker host and accessible via
+    // localhost on the mapped ports.
+    System.setProperty("MONGODB_HOST", "localhost");
     System.setProperty("MONGODB_PORT", String.valueOf(COMPOSE.getServicePort("mongodb", 27017)));
 
     System.setProperty("REDIS_USER", "default");
     System.setProperty("REDIS_PASSWORD", "testpass");
-    System.setProperty("REDIS_HOST", COMPOSE.getServiceHost("redis", 6379));
+    System.setProperty("REDIS_HOST", "localhost");
     System.setProperty("REDIS_PORT", String.valueOf(COMPOSE.getServicePort("redis", 6379)));
 
     System.setProperty("NATS_USER", "nats");
     System.setProperty("NATS_PASSWORD", "nats-token");
-    System.setProperty("NATS_HOST", COMPOSE.getServiceHost("nats", 4222));
+    System.setProperty("NATS_HOST", "localhost");
     System.setProperty("NATS_PORT", String.valueOf(COMPOSE.getServicePort("nats", 4222)));
 
     System.setProperty("INFLUXDB_USER", "admin");
     System.setProperty("INFLUXDB_PASSWORD", "my-super-secret-token");
-    System.setProperty("INFLUXDB_HOST", COMPOSE.getServiceHost("influxdb", 8086));
+    System.setProperty("INFLUXDB_HOST", "localhost");
     System.setProperty("INFLUXDB_PORT", String.valueOf(COMPOSE.getServicePort("influxdb", 8086)));
 
     started = true;
