@@ -6,7 +6,7 @@ dependencies {
     api(libs.jetbrainsannotations)
     api(libs.gson)
     api(libs.protobuf.java)
-    api(project(":core"))
+    api(project(":shared"))
     api(libs.reflections)
 }
 

@@ -10,7 +10,7 @@ dependencies {
     api(libs.lettuce)
     api(libs.gson)
     api(libs.protobuf.java)
-    api(project(":core"))
+    api(project(":shared"))
     api(project(":celery-api"))
 
     testImplementation(libs.junit.jupiter)

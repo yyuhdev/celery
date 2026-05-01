@@ -14,7 +14,7 @@ dependencies {
     api(libs.mongo)
     api(libs.gson)
     api(libs.protobuf.java)
-    api(project(":core"))
+    api(project(":shared"))
     api(project(":celery-api"))
 }
 

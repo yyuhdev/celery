@@ -11,7 +11,7 @@ plugins {
 }
 
 rootProject.name = "libs-fix"
-include("core")
+include("shared")
 include("celery")
 include("celery-api")
 
