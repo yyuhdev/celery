@@ -14,7 +14,8 @@ import java.util.stream.Collectors;
 /**
  * Extracts schema information from entity classes for database operations.
  *
- * <p>SchemaExtractor provides utilities to introspect entity classes and
+ * <p>
+ * SchemaExtractor provides utilities to introspect entity classes and
  * generate database-specific schema information such as table names,
  * column mappings, and CREATE TABLE statements. Both Java {@code record}
  * types and regular POJOs are supported.
@@ -27,7 +28,8 @@ public final class SchemaExtractor {
   /**
    * Returns the table or collection name for an entity class.
    *
-   * <p>If the class is annotated with @Repository, the annotation value
+   * <p>
+   * If the class is annotated with @Repository, the annotation value
    * is used. Otherwise, the simple class name is used in lowercase.
    *
    * @param entityClass the entity class to get the name for
@@ -44,7 +46,8 @@ public final class SchemaExtractor {
   /**
    * Returns all fields of an entity class mapped to their database names.
    *
-   * <p>Fields annotated with @Field use the annotation value as the database
+   * <p>
+   * Fields annotated with @Field use the annotation value as the database
    * name. Unannotated fields use their Java field name.
    *
    * @param entityClass the entity class to extract fields from
@@ -80,7 +83,8 @@ public final class SchemaExtractor {
   /**
    * Returns the ordered list of database column names for an entity class.
    *
-   * <p>Works for both records and POJOs. Resolves {@code @Field} names and
+   * <p>
+   * Works for both records and POJOs. Resolves {@code @Field} names and
    * excludes {@code @Ignore}, static, and transient members.
    *
    * @param entityClass the entity class to introspect
@@ -110,7 +114,8 @@ public final class SchemaExtractor {
   /**
    * Generates a CREATE TABLE SQL statement for an entity class.
    *
-   * <p>Columns annotated with {@code @Identifier} get a {@code PRIMARY KEY}
+   * <p>
+   * Columns annotated with {@code @Identifier} get a {@code PRIMARY KEY}
    * constraint. Columns annotated with {@code @Ignore} are excluded.
    * Both records and POJOs are supported.
    *
@@ -135,10 +140,6 @@ public final class SchemaExtractor {
 
     return "CREATE TABLE IF NOT EXISTS " + tableName + " (" + columnDefs + ");";
   }
-
-  // ──────────────────────────────────────────────────────────────
-  // Column resolution
-  // ──────────────────────────────────────────────────────────────
 
   /**
    * Resolves persistable columns for a class, handling both records and POJOs.
@@ -201,10 +202,6 @@ public final class SchemaExtractor {
     return component.getName();
   }
 
-  // ──────────────────────────────────────────────────────────────
-  // SQL type mapping
-  // ──────────────────────────────────────────────────────────────
-
   /**
    * Maps a Java type to its corresponding SQL type.
    *
@@ -213,22 +210,28 @@ public final class SchemaExtractor {
    */
   @NotNull
   private static String getSqlType(final Class<?> type) {
-    if (type == String.class || type == java.util.UUID.class)
+    if (type == String.class || type == UUID.class) {
       return "VARCHAR(255)";
-    if (type == int.class || type == Integer.class)
+    }
+
+    if (type == int.class || type == Integer.class) {
       return "INT";
-    if (type == long.class || type == Long.class)
+    }
+
+    if (type == long.class || type == Long.class) {
       return "BIGINT";
-    if (type == boolean.class || type == Boolean.class)
+    }
+
+    if (type == boolean.class || type == Boolean.class) {
       return "BOOLEAN";
-    if (type == double.class || type == Double.class || type == float.class || type == Float.class)
+    }
+
+    if (type == double.class || type == Double.class || type == float.class || type == Float.class) {
       return "DOUBLE";
+    }
+
     return "TEXT";
   }
-
-  // ──────────────────────────────────────────────────────────────
-  // Column metadata
-  // ──────────────────────────────────────────────────────────────
 
   /**
    * Internal metadata for a resolved database column.
