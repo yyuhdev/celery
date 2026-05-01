@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>core</name>
+	<name>testing</name>
 	<comment></comment>
 	<projects/>
 	<natures>
@@ -27,6 +27,11 @@
 			<name>gen-java</name>
 			<type>2</type>
 			<location>/home/yyuh/dev/libs/proto/gen/java</location>
+		</link>
+		<link>
+			<name>gen-java</name>
+			<type>2</type>
+			<location>/home/yyuh/dev/revived/libs/proto/gen/java</location>
 		</link>
 	</linkedResources>
 	<filteredResources>

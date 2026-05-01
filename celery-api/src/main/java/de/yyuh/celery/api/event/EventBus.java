@@ -1,15 +1,19 @@
 package de.yyuh.celery.api.event;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.protobuf.Message;
+
+import jdk.internal.loader.AbstractClassLoaderValue.Sub;
 
 /**
  * A high-performance, reflection-free event bus for Protobuf {@link Message}
@@ -30,7 +34,7 @@ import com.google.protobuf.Message;
  *
  * <p>
  * Example usage:
- * 
+ *
  * <pre>{@code
  * EventBus bus = new EventBus();
  * bus.subscribe(PlayerJoinProto.class, e -> System.out.println("joined: " + e.getName()));
@@ -39,7 +43,13 @@ import com.google.protobuf.Message;
  */
 public final class EventBus {
 
-  private final Map<Class<?>, List<IEventHandler<? super Message>>> handlers = new ConcurrentHashMap<>();
+  private record Subscription(
+      @NotNull Subscriber subscriber,
+      @NotNull IEventHandler<? super Message> handler,
+      long registeredAt) {
+  }
+
+  private final Map<Class<?>, List<Subscription>> subscriptions = new ConcurrentHashMap<>();
   private final ExecutorService srv = Executors.newVirtualThreadPerTaskExecutor();
 
   private static EventBus instance;
@@ -63,32 +73,65 @@ public final class EventBus {
   /**
    * Subscribes a handler for an event type.
    *
-   * @param <T>      the event type
-   * @param eventType the event class to subscribe to
-   * @param handler the handler to invoke when the event is published
+   * @param <T>        the event type
+   * @param subscriber {@code Subscription} specific values
+   * @param handler    the handler to invoke when the event is published
    */
   @SuppressWarnings("unchecked")
-  public <T extends Message> void subscribe(
+  public <T extends Message> Subscription subscribe(
+      final @NotNull Subscriber subscriber,
+      final @NotNull IEventHandler<? super T> handler) {
+    final var eventType = (Class<T>) subscriber.getMessage().getClass();
+
+    final var subscription = new Subscription(
+        subscriber,
+        (IEventHandler<? super Message>) handler,
+        System.nanoTime());
+
+    this.subscriptions.computeIfAbsent(eventType, k -> new CopyOnWriteArrayList<>())
+        .add(subscription);
+
+    return subscription;
+
+  }
+
+  /**
+   * Subscribes a handler for an event type. Defaults to a permanent
+   * {@code Subscription}
+   *
+   * @param <T>       the event type
+   * @param eventType the event class to subscribe to
+   * @param handler   the handler to invoke when the event is published
+   */
+  @SuppressWarnings("unchecked")
+  public <T extends Message> Subscription subscribe(
       final @NotNull Class<T> eventType,
       final @NotNull IEventHandler<? super T> handler) {
-    this.handlers.computeIfAbsent(eventType, k -> new CopyOnWriteArrayList<>())
-        .add((IEventHandler<? super Message>) handler);
+    final var subscription = new Subscription(
+        new Subscriber(null, null),
+        (IEventHandler<? super Message>) handler,
+        System.nanoTime());
+
+    this.subscriptions.computeIfAbsent(eventType, k -> new CopyOnWriteArrayList<>())
+        .add(subscription);
+
+    return subscription;
   }
 
   /**
    * Unsubscribes a handler from an event type.
    *
-   * @param <T>      the event type
+   * @param <T>       the event type
    * @param eventType the event class to unsubscribe from
-   * @param handler the handler to remove
+   * @param handler   the handler to remove
    */
   public <T extends Message> void unsubscribe(
       final @NotNull Class<T> eventType,
-      final @NotNull IEventHandler<T> handler) {
-    final var list = this.handlers.get(eventType);
+      final @NotNull Subscription subscription) {
+    final var list = this.subscriptions.get(eventType);
 
     if (list != null) {
-      list.remove(handler);
+      list.removeIf(sub -> sub.handler == subscription.handler);
     }
   }
 
@@ -98,12 +141,46 @@ public final class EventBus {
    * @param message the event to publish
    */
   public void publish(final @NotNull Message message) {
-    final var list = this.handlers.get(message.getClass());
+    final var list = this.subscriptions.get(message.getClass());
 
-    if (list != null) {
-      for (final var handler : list) {
-        this.srv.submit(() -> handler.handle(message));
-      }
+    if (list == null) {
+      return;
     }
+
+    final var now = System.nanoTime();
+    final var it = list.iterator();
+
+    while (it.hasNext()) {
+      final var sub = it.next();
+
+      if (isExpired(sub, now)) {
+        list.remove(sub);
+        continue;
+      }
+
+      sub.subscriber.setTimesCalled(sub.subscriber.getTimesCalled() + 1);
+      this.srv.submit(() -> sub.handler.handle(message));
+    }
+  }
+
+  private boolean isExpired(
+      final @NotNull Subscription sub,
+      final long now) {
+    final var subscriber = sub.subscriber;
+    final var expiry = subscriber.getExpiry();
+
+    if (expiry.getTimeUnit() == null) {
+      return subscriber.getTimesCalled() >= expiry.getExpireAfter();
+    }
+
+    if (expiry == null || expiry.getExpireAfter() <= 0) {
+      return false;
+    }
+
+    final var elapsed = now - sub.registeredAt;
+    final var unit = expiry.getTimeUnit() != null ? expiry.getTimeUnit() : TimeUnit.SECONDS;
+    final var threshold = unit.toNanos(expiry.getExpireAfter());
+
+    return elapsed >= threshold;
   }
 }

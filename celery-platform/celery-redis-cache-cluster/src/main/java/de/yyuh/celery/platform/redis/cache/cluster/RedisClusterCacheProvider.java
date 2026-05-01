@@ -49,7 +49,6 @@ public final class RedisClusterCacheProvider implements IReconnectable, ICachePr
       this.connection = this.client.connect(ByteArrayCodec.INSTANCE);
       this.asyncCommands = this.connection.async();
 
-      // Wait for cluster to be ready (e.g. after Docker Compose init)
       boolean clusterReady = false;
       for (int i = 0; i < 60; i++) {
         try {
@@ -59,7 +58,6 @@ public final class RedisClusterCacheProvider implements IReconnectable, ICachePr
             break;
           }
         } catch (Exception ignored) {
-          // cluster still forming
         }
         try {
           Thread.sleep(1000);
