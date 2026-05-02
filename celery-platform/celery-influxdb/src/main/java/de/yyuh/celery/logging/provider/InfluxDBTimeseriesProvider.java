@@ -35,8 +35,9 @@ public final class InfluxDBTimeseriesProvider implements IReconnectable, ITimese
 
     return CompletableFuture.supplyAsync(() -> Result.of(() -> {
       final String url = String.format("http://%s:%d", credentials.ip(), credentials.port());
-      this.organization = "celery";
-      this.bucket = "logging";
+
+      this.organization = credentials.user();
+      this.bucket = credentials.bucket();
 
       this.influxDBClient = InfluxDBClientFactory.create(url, credentials.password().toCharArray(), organization,
           bucket);

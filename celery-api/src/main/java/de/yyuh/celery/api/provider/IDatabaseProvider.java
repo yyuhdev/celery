@@ -12,7 +12,8 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Provides database operations for a specific entity type.
  *
- * <p>This interface defines the core CRUD operations that database
+ * <p>
+ * This interface defines the core CRUD operations that database
  * providers must implement. Operations are asynchronous and return
  * CompletableFuture for non-blocking execution.
  *

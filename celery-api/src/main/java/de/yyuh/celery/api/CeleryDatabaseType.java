@@ -11,6 +11,18 @@ import org.jetbrains.annotations.NotNull;
  */
 public enum CeleryDatabaseType implements IDatabaseType {
 
+  S3 {
+    @Override
+    public @NotNull CeleryPlatformType defaultPlatform() {
+      return CeleryPlatformType.FILE_STORAGE;
+    }
+
+    @Override
+    public int defaultPort() {
+      return 80;
+    }
+  },
+
   DRAGONFLYDB {
     @Override
     public int defaultPort() {
@@ -79,9 +91,19 @@ public enum CeleryDatabaseType implements IDatabaseType {
 
     @Override
     public @NotNull CeleryPlatformType defaultPlatform() {
-      return CeleryPlatformType.STORAGE;
+      return CeleryPlatformType.TIMESERIES;
     }
   };
 
   public abstract int defaultPort();
+
+  @Override
+  public String toString() {
+    return super.toString();
+  }
+
+  @Override
+  public @NotNull CeleryPlatformType defaultPlatform() {
+    return null;
+  }
 }

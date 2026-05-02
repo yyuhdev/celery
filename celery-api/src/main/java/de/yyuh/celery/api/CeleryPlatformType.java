@@ -12,5 +12,6 @@ public enum CeleryPlatformType {
   STORAGE,
   PUBSUB,
   CACHE,
-  TIMESERIES
+  TIMESERIES,
+  FILE_STORAGE
 }

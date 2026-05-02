@@ -2,23 +2,28 @@ package de.yyuh.celery.api.credentials.provider;
 
 import java.util.Optional;
 
-import de.yyuh.celery.api.IDatabaseType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import de.yyuh.celery.api.IDatabaseType;
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.credentials.ICredentialProvider;
 
 /**
  * Credential provider that reads credentials from environment variables.
  *
- * <p>Environment variables follow the pattern: {@code {DATABASE_TYPE}_USER},
+ * <p>
+ * Environment variables follow the pattern: {@code {DATABASE_TYPE}_USER},
  * {@code {DATABASE_TYPE}_PASSWORD}, {@code {DATABASE_TYPE}_HOST}, and
  * {@code {DATABASE_TYPE}_PORT}.
  *
- * <p>For example, for MongoDB: {@code MONGODB_USER}, {@code MONGODB_PASSWORD}, etc.
+ * <p>
+ * For example, for MongoDB: {@code MONGODB_USER}, {@code MONGODB_PASSWORD},
+ * etc.
  */
 public final class EnvCredentialProvider implements ICredentialProvider {
 
+  // TODO: Probably refactor at some point
   @Override
   public @NotNull Optional<Credentials> create(final @NotNull IDatabaseType credentialType) {
     final String prefix = credentialType.name();
@@ -27,7 +32,12 @@ public final class EnvCredentialProvider implements ICredentialProvider {
           envOrNull(prefix + "_USER"),
           envOrNull(prefix + "_PASSWORD"),
           envOrDefault(prefix + "_HOST", "localhost"),
-          portOrDefault(prefix + "_PORT", credentialType.defaultPort())));
+          portOrDefault(prefix + "_PORT", credentialType.defaultPort()),
+          envOrNull(prefix + "_BUCKET"),
+          envOrNull(prefix + "_ACCESS_KEY"),
+          envOrNull(prefix + "_ACCESS_KEY_ID"),
+          envOrNull(prefix + "_REGION")));
+
     } catch (final IllegalStateException e) {
       return Optional.empty();
     }
