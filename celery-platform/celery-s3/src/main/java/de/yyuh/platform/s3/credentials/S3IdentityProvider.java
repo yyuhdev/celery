@@ -7,11 +7,11 @@ import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 
 // S3 is such a shithole
-public final class S3IdentitiyProvider implements AwsCredentialsProvider {
+public final class S3IdentityProvider implements AwsCredentialsProvider {
 
   private final Credentials credentials;
 
-  public S3IdentitiyProvider(final Credentials credentials) {
+  public S3IdentityProvider(final Credentials credentials) {
     this.credentials = credentials;
   }
 

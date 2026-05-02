@@ -11,7 +11,7 @@ import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.provider.IFileStorageProvider;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;
-import de.yyuh.platform.s3.credentials.S3IdentitiyProvider;
+import de.yyuh.platform.s3.credentials.S3IdentityProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.regions.Region;
@@ -36,7 +36,7 @@ public final class S3FileStorageProvider implements IFileStorageProvider {
 
       this.s3Client = S3Client.builder()
           .region(region)
-          .credentialsProvider(new S3IdentitiyProvider(credentials))
+          .credentialsProvider(new S3IdentityProvider(credentials))
           .build();
 
       return timer.end();
