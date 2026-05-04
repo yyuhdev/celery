@@ -1,0 +1,6 @@
+services:
+  nats:
+    image: nats:2-alpine
+    command: nats-server --auth nats-token
+    ports:
+      - "4222"

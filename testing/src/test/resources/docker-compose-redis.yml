@@ -1,0 +1,6 @@
+services:
+  redis:
+    image: docker.dragonflydb.io/dragonflydb/dragonfly
+    command: --requirepass=testpass
+    ports:
+      - "6379"

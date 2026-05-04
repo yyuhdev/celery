@@ -102,6 +102,10 @@ public final class NatsMessagingProvider implements IReconnectable, IMessagingPr
   @Override
   public @NotNull CompletableFuture<Boolean> isConnected() {
     return CompletableFuture.supplyAsync(() -> {
+      if (this.connection == null) {
+        return false;
+      }
+
       final var status = this.connection.getStatus();
 
       return status == Status.CONNECTED;

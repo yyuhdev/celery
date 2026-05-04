@@ -165,7 +165,9 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
 
   @Override
   public void close() {
-    this.mongoClient.close();
+    if (this.mongoClient != null) {
+      this.mongoClient.close();
+    }
   }
 
   @Override
