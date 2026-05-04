@@ -15,6 +15,7 @@ import de.yyuh.celery.api.event.EventBus;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
 import de.yyuh.celery.api.messaging.MessageRegistry;
 import de.yyuh.celery.api.provider.IReconnectable;
+import de.yyuh.libs.core.injection.Inject;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;
 import io.lettuce.core.RedisURI;
@@ -44,6 +45,9 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
   private RedisClusterPubSubAsyncCommands<byte[], byte[]> asyncCommands;
   private StatefulRedisClusterPubSubConnection<byte[], byte[]> connection;
   private RedisClusterClient client;
+
+  @Inject
+  private EventBus eventBus;
 
   private final Map<String, RedisClusterPubSubListener<byte[], byte[]>> listeners = new ConcurrentHashMap<>();
 
@@ -100,7 +104,8 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
         if (Arrays.equals(ch, channel.getBytes())) {
           try {
             final var message = MessageRegistry.getInstance().unpack(body);
-            EventBus.instance().publish(message);
+            eventBus.publish(message);
+
           } catch (final InvalidProtocolBufferException e) {
             e.printStackTrace();
           }

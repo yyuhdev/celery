@@ -15,6 +15,7 @@ import de.yyuh.celery.api.event.EventBus;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
 import de.yyuh.celery.api.messaging.MessageRegistry;
 import de.yyuh.celery.api.provider.IReconnectable;
+import de.yyuh.libs.core.injection.Inject;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;
 import io.nats.client.Connection;
@@ -30,6 +31,9 @@ public final class NatsMessagingProvider implements IReconnectable, IMessagingPr
 
   private final Map<String, Dispatcher> dispatchers = new ConcurrentHashMap<>();
 
+  @Inject
+  private EventBus eventBus;
+
   @Override
   public @NotNull CompletableFuture<Void> publish(
       final @NotNull String channel,
@@ -44,7 +48,8 @@ public final class NatsMessagingProvider implements IReconnectable, IMessagingPr
       final var dispatcher = this.connection.createDispatcher();
       dispatcher.subscribe(channel, msg -> Result.of(() -> {
         final var message = MessageRegistry.getInstance().unpack(msg.getData());
-        EventBus.instance().publish(message);
+
+        this.eventBus.publish(message);
 
         return null;
       }));

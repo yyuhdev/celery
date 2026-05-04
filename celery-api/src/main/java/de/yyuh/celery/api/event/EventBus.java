@@ -1,6 +1,5 @@
 package de.yyuh.celery.api.event;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -49,24 +48,6 @@ public final class EventBus {
 
   private final Map<Class<?>, List<Subscription>> subscriptions = new ConcurrentHashMap<>();
   private final ExecutorService srv = Executors.newVirtualThreadPerTaskExecutor();
-
-  private static EventBus instance;
-
-  private EventBus() {
-  }
-
-  /**
-   * Returns the singleton EventBus instance.
-   *
-   * @return the EventBus instance
-   */
-  public static EventBus instance() {
-    if (instance == null) {
-      instance = new EventBus();
-    }
-
-    return instance;
-  }
 
   /**
    * Subscribes a handler for an event type.

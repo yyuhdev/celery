@@ -11,8 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mongodb.annotations.NotThreadSafe;
-
 import de.yyuh.celery.api.PlatformManager;
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.credentials.ICredentialProvider;
@@ -20,7 +18,9 @@ import de.yyuh.celery.api.event.EventBus;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
 import de.yyuh.celery.api.messaging.MessageBus;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
+import de.yyuh.celery.api.provider.IProvider;
 import de.yyuh.celery.api.provider.IReconnectable;
+import de.yyuh.libs.core.injection.Injector;
 import de.yyuh.libs.core.result.Result;
 
 /**
@@ -46,6 +46,9 @@ public final class Celery {
   private final String id;
 
   private PlatformManager platformManager;
+  private EventBus eventBus;
+
+  private final Injector injector = new Injector();
 
   /**
    * Creates a new Celery instance with the specified ID.
@@ -72,7 +75,7 @@ public final class Celery {
    * @return a new Celery instance
    * @deprecated Use {@link #builder()} instead
    */
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public static Celery create() {
     return instance = new Celery("null");
   }
@@ -84,16 +87,6 @@ public final class Celery {
    */
   public static Celery getInstance() {
     return instance;
-  }
-
-  /**
-   * Returns the {@link EventBus} for this Celery instance;
-   *
-   * @return the event bus
-   */
-  @NotNull
-  public EventBus eventBus() {
-    return EventBus.instance();
   }
 
   /**
@@ -193,34 +186,55 @@ public final class Celery {
               throw new RuntimeException("Could not resolve credentials for platform: " + platform.getId());
             }
 
-            final var provider = platform.defaultProvider();
+            final var result = this.connectPlatform(platform, credentials.get());
 
-            provider.connect(credentials.get()).join()
-                .ifErr(connectException -> {
-                  log.error("Failed to connect to platform: " + platform.getId(), connectException);
-                })
-                .ifOk(connectTime -> {
-                  log.info(String.format("Connected to %s in %,dms", platform.getId(), connectTime));
+            if (result.isErr()) {
+              throw new RuntimeException("Could not connect to platform: " + platform.getId());
+            }
 
-                  if (provider instanceof IReconnectable reconnectable) {
-                    reconnectable.startAutoReconnect(credentials.get());
-                  }
-
-                  if (provider instanceof final IMessagingProvider messageHandler) {
-                    final var messagebus = MessageBus.builder()
-                        .messagingProvider(messageHandler)
-                        .serviceId(this.id)
-                        .build();
-
-                    this.messageBusses.put(platform.getId(), messagebus);
-                  }
-                });
+            this.injectProviderVariables(platform);
           });
     }
 
     this.platformManager = new PlatformManager(this.platformInstances);
+    this.eventBus = new EventBus();
 
     return this;
+  }
+
+  private void injectProviderVariables(final AbstractCeleryPlatform platform) {
+    this.injector.bind(EventBus.class, this.eventBus);
+    this.injector.bind(MessageBus.class, this.messageBusses.get(platform.getId()));
+
+    this.injector.inject(platform.defaultProvider());
+  }
+
+  @NotNull
+  private Result<IProvider, String> connectPlatform(
+      final @NotNull AbstractCeleryPlatform platform,
+      final @NotNull Credentials credentials) {
+    final var provider = platform.defaultProvider();
+
+    return provider.connect(credentials).join()
+        .ifErr(connectException -> {
+          log.error("Failed to connect to platform: " + platform.getId(), connectException);
+        })
+        .ifOk(connectTime -> {
+          log.info(String.format("Connected to %s in %,dms", platform.getId(), connectTime));
+
+          if (provider instanceof IReconnectable reconnectable) {
+            reconnectable.startAutoReconnect(credentials);
+          }
+
+          if (provider instanceof final IMessagingProvider messageHandler) {
+            final var messagebus = MessageBus.builder()
+                .messagingProvider(messageHandler)
+                .serviceId(this.id)
+                .build();
+
+            this.messageBusses.put(platform.getId(), messagebus);
+          }
+        }).map(_ -> provider);
   }
 
   /**
