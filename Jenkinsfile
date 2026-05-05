@@ -72,5 +72,11 @@ spec:
                 sh './gradlew build -x test'
             }
         }
+
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: '**/build/libs/*.jar', fingerprint: true
+            }
+        }
     }
 }
