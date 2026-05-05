@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
-import com.sun.jdi.event.Event;
 
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.event.EventBus;
@@ -31,6 +30,9 @@ public class RedisMessagingProvider implements IReconnectable, IMessagingProvide
 
   @Inject
   private EventBus eventBus;
+
+  @Inject
+  private MessageRegistry messageRegistry;
 
   @Override
   public @NotNull CompletableFuture<Result<Long, String>> connect(final @NotNull Credentials credentials) {
@@ -70,7 +72,7 @@ public class RedisMessagingProvider implements IReconnectable, IMessagingProvide
       public void message(final byte[] ch, final byte[] body) {
         if (Arrays.equals(ch, channel.getBytes())) {
           try {
-            final var message = MessageRegistry.getInstance().unpack(body);
+            final var message = messageRegistry.unpack(body);
 
             eventBus.publish(message);
           } catch (final InvalidProtocolBufferException e) {

@@ -17,6 +17,7 @@ import de.yyuh.celery.api.credentials.ICredentialProvider;
 import de.yyuh.celery.api.event.EventBus;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
 import de.yyuh.celery.api.messaging.MessageBus;
+import de.yyuh.celery.api.messaging.MessageRegistry;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
 import de.yyuh.celery.api.provider.IProvider;
 import de.yyuh.celery.api.provider.IReconnectable;
@@ -44,6 +45,7 @@ public final class Celery {
   private final Map<String, MessageBus> messageBusses = new ConcurrentHashMap<>();
 
   private final String id;
+  private final MessageRegistry messageRegistry = new MessageRegistry();
 
   private PlatformManager platformManager;
   private EventBus eventBus;
@@ -205,6 +207,7 @@ public final class Celery {
   private void injectProviderVariables(final AbstractCeleryPlatform platform) {
     this.injector.bind(EventBus.class, this.eventBus);
     this.injector.bind(MessageBus.class, this.messageBusses.get(platform.getId()));
+    this.injector.bind(MessageRegistry.class, this.messageRegistry);
 
     this.injector.inject(platform.defaultProvider());
   }
@@ -252,5 +255,21 @@ public final class Celery {
       }
     }
     return Optional.empty();
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public MessageRegistry getMessageRegistry() {
+    return messageRegistry;
+  }
+
+  public PlatformManager getPlatformManager() {
+    return platformManager;
+  }
+
+  public EventBus getEventBus() {
+    return eventBus;
   }
 }

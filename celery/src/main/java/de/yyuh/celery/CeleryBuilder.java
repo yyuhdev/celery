@@ -7,6 +7,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import de.yyuh.celery.api.credentials.ICredentialProvider;
+import de.yyuh.celery.api.messaging.MessageRegistry;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
 
 /**

@@ -34,6 +34,9 @@ public final class NatsMessagingProvider implements IReconnectable, IMessagingPr
   @Inject
   private EventBus eventBus;
 
+  @Inject
+  private MessageRegistry messageRegistry;
+
   @Override
   public @NotNull CompletableFuture<Void> publish(
       final @NotNull String channel,
@@ -47,7 +50,7 @@ public final class NatsMessagingProvider implements IReconnectable, IMessagingPr
     return CompletableFuture.runAsync(() -> {
       final var dispatcher = this.connection.createDispatcher();
       dispatcher.subscribe(channel, msg -> Result.of(() -> {
-        final var message = MessageRegistry.getInstance().unpack(msg.getData());
+        final var message = this.messageRegistry.unpack(msg.getData());
 
         this.eventBus.publish(message);
 

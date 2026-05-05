@@ -29,7 +29,7 @@ import de.yyuh.libs.core.result.Result;
  *
  * <p>
  * Usage:
- * 
+ *
  * <pre>{@code
  * MessageRegistry registry = MessageRegistry.create("com.example.myapp");
  * Message message = registry.unpack(anyBytes);
@@ -43,29 +43,12 @@ public final class MessageRegistry {
 
   private final List<String> packages = new CopyOnWriteArrayList<>();
 
-  private static MessageRegistry instance;
-
   /**
    * Constructs a new MessageRegistry and intiates it
    *
    * @param packageStr the package name to scan for Protobuf messages
    */
-  private MessageRegistry() {
-    instance = this;
-  }
-
-  /**
-   * Returns the Message Registry's instance
-   *
-   * @return the instance of Message Registry
-   */
-  @NotNull
-  public static MessageRegistry getInstance() {
-    if (instance == null) {
-      throw new IllegalStateException("MessageRegistry is not registered");
-    }
-
-    return instance;
+  public MessageRegistry() {
   }
 
   /**
@@ -97,17 +80,6 @@ public final class MessageRegistry {
     }
 
     this.typeRegistry = builder.build();
-  }
-
-  /**
-   * Creates a new instance of the MessageRegistry
-   *
-   * @param packageStr Name of the package containing the Protobuf Messages
-   *
-   * @return new instance of {@link MessageRegistry}
-   */
-  public static MessageRegistry create(final @NotNull String packageStr) {
-    return new MessageRegistry();
   }
 
   /**

@@ -49,6 +49,9 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
   @Inject
   private EventBus eventBus;
 
+  @Inject
+  private MessageRegistry messageRegistry;
+
   private final Map<String, RedisClusterPubSubListener<byte[], byte[]>> listeners = new ConcurrentHashMap<>();
 
   @Override
@@ -103,7 +106,7 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
       public void message(final RedisClusterNode node, final byte[] ch, final byte[] body) {
         if (Arrays.equals(ch, channel.getBytes())) {
           try {
-            final var message = MessageRegistry.getInstance().unpack(body);
+            final var message = messageRegistry.unpack(body);
             eventBus.publish(message);
 
           } catch (final InvalidProtocolBufferException e) {

@@ -55,6 +55,9 @@ public final class NatsClusterMessagingProvider implements IReconnectable, IMess
   @Inject
   private EventBus eventBus;
 
+  @Inject
+  private MessageRegistry messageRegistry;
+
   @Override
   public @NotNull CompletableFuture<Void> publish(
       final @NotNull String channel,
@@ -69,7 +72,7 @@ public final class NatsClusterMessagingProvider implements IReconnectable, IMess
     return CompletableFuture.runAsync(() -> {
       final var dispatcher = this.connection.createDispatcher();
       dispatcher.subscribe(channel, QUEUE_GROUP, msg -> Result.of(() -> {
-        final var message = MessageRegistry.getInstance().unpack(msg.getData());
+        final var message = this.messageRegistry.unpack(msg.getData());
         this.eventBus.publish(message);
 
         return null;
