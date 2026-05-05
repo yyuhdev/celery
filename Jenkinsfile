@@ -66,5 +66,11 @@ spec:
                 sh './gradlew testing:test --no-daemon'
             }
         }
+
+        stage('Building') {
+            steps {
+                sh './gradlew build -x test'
+            }
+        }
     }
 }
