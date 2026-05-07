@@ -15,14 +15,25 @@ import de.yyuh.celery.platform.nats.provider.NatsMessagingProvider;
  * including Pub/Sub capabilities with the {@code NatsMessagingProvider}.
  *
  */
+/**
+ * NATS platform implementation for the Celery framework.
+ *
+ * <p>This platform connects to a single NATS server and provides
+ * Pub/Sub messaging via {@link NatsMessagingProvider}.
+ * Messages are encoded as Protobuf byte arrays.
+ */
 public final class CeleryNatsPlatform extends AbstractCeleryPlatform {
 
+  /**
+   * Creates a new CeleryNatsPlatform with the NATS messaging provider.
+   */
   public CeleryNatsPlatform() {
     super("nats", CeleryDatabaseType.NATS, CeleryPlatformType.PUBSUB);
 
     super.registerProvider(IMessagingProvider.class, new NatsMessagingProvider());
   }
 
+  /** {@inheritDoc} */
   @Override
   public IProvider defaultProvider() {
     return provider(IMessagingProvider.class).orElseThrow();

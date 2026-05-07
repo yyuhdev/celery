@@ -56,6 +56,7 @@ public final class CeleryInfluxDBPlatform extends AbstractCeleryPlatform {
     super.registerProvider(ITimeseriesProvider.class, new InfluxDBTimeseriesProvider());
   }
 
+  /** {@inheritDoc} */
   @Override
   public IProvider defaultProvider() {
     return super.provider(ITimeseriesProvider.class).orElseThrow();

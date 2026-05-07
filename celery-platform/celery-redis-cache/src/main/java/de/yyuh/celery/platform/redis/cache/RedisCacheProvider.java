@@ -17,11 +17,23 @@ import io.lettuce.core.codec.ByteArrayCodec;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;
 
-public class RedisCacheProvider implements IReconnectable, ICacheProvider {
+/**
+ * Redis implementation of {@link ICacheProvider}.
+ *
+ * <p>
+ * This provider connects to a single Redis instance via Lettuce and
+ * provides key-value cache operations with TTL support. Values are stored
+ * as byte arrays using {@link ByteArrayCodec}.
+ *
+ * <p>
+ * Auto-reconnect is supported through {@link IReconnectable}.
+ */
+public final class RedisCacheProvider implements IReconnectable, ICacheProvider {
 
   private RedisAsyncCommands<byte[], byte[]> asyncCommands;
   private StatefulRedisConnection<byte[], byte[]> connection;
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Result<Long, String>> connect(final @NotNull Credentials credentials) {
     final var timer = Timer.start();
@@ -44,6 +56,7 @@ public class RedisCacheProvider implements IReconnectable, ICacheProvider {
     }).mapErr(Exception::getMessage));
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> set(
       final @NotNull String key,
@@ -54,6 +67,7 @@ public class RedisCacheProvider implements IReconnectable, ICacheProvider {
         .thenApply(v -> null);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Optional<byte[]>> get(final @NotNull String key) {
     return this.asyncCommands.get(key.getBytes())
@@ -61,6 +75,7 @@ public class RedisCacheProvider implements IReconnectable, ICacheProvider {
         .thenApply(o -> Optional.ofNullable(o));
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> delete(final @NotNull String key) {
     return this.asyncCommands.del(key.getBytes())
@@ -68,6 +83,7 @@ public class RedisCacheProvider implements IReconnectable, ICacheProvider {
         .thenApply(v -> null);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Boolean> exists(final @NotNull String key) {
     return this.asyncCommands.exists(key.getBytes())
@@ -75,6 +91,7 @@ public class RedisCacheProvider implements IReconnectable, ICacheProvider {
         .thenApply(count -> count > 0);
   }
 
+  /** {@inheritDoc} */
   @Override
   public void close() {
     if (this.connection != null) {
@@ -82,6 +99,7 @@ public class RedisCacheProvider implements IReconnectable, ICacheProvider {
     }
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Boolean> isConnected() {
     return CompletableFuture.supplyAsync(() -> this.connection != null && this.connection.isOpen());

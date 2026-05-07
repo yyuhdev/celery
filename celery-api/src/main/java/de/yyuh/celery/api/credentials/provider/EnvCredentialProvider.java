@@ -24,6 +24,7 @@ import de.yyuh.celery.api.credentials.ICredentialProvider;
 public final class EnvCredentialProvider implements ICredentialProvider {
 
   // TODO: Probably refactor at some point
+  /** {@inheritDoc} */
   @Override
   public @NotNull Optional<Credentials> create(final @NotNull IDatabaseType credentialType) {
     final String prefix = credentialType.name();

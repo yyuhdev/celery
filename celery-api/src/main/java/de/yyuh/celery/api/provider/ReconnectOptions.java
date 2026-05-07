@@ -21,6 +21,10 @@ public record ReconnectOptions(
     @NotNull Duration healthCheckInterval
 ) {
 
+  /**
+   * Default reconnection options: 10 retries, 1s initial delay, 1min max delay,
+   * 2x backoff multiplier, 30s health check interval.
+   */
   public static final ReconnectOptions DEFAULT = new ReconnectOptions(
       10,
       Duration.ofSeconds(1),

@@ -159,62 +159,74 @@ public sealed interface Result<T, E> permits Result.Ok, Result.Err {
         throw new IllegalArgumentException("Ok value must not be null");
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isOk() {
       return true;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull T unwrap() {
       return value;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull T unwrapOr(final @NotNull T defaultValue) {
       return value;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull T unwrapOrElse(final @NotNull Function<E, T> fn) {
       return value;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull E unwrapErr() {
       throw new NoSuchElementException("Called unwrapErr() on Ok: " + value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public <U> @NotNull Result<U, E> map(final @NotNull Function<T, U> fn) {
       return Result.ok(fn.apply(value));
     }
 
+    /** {@inheritDoc} */
     @Override
     public <F> @NotNull Result<T, F> mapErr(final @NotNull Function<E, F> fn) {
       return Result.ok(value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public <U> @NotNull Result<U, E> flatMap(final @NotNull Function<T, Result<U, E>> fn) {
       return fn.apply(value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull Result<T, E> ifOk(final @NotNull Consumer<T> action) {
       action.accept(value);
       return this;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull Result<T, E> ifErr(final @NotNull Consumer<E> action) {
       return this;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull Optional<T> ok() {
       return Optional.of(value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull Optional<E> err() {
       return Optional.empty();
@@ -234,62 +246,74 @@ public sealed interface Result<T, E> permits Result.Ok, Result.Err {
         throw new IllegalArgumentException("Err value must not be null");
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean isOk() {
       return false;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull T unwrap() {
       throw new NoSuchElementException("Called unwrap() on Err: " + error);
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull T unwrapOr(final @NotNull T defaultValue) {
       return defaultValue;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull T unwrapOrElse(final @NotNull Function<E, T> fn) {
       return fn.apply(error);
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull E unwrapErr() {
       return error;
     }
 
+    /** {@inheritDoc} */
     @Override
     public <U> @NotNull Result<U, E> map(final @NotNull Function<T, U> fn) {
       return Result.err(error);
     }
 
+    /** {@inheritDoc} */
     @Override
     public <F> @NotNull Result<T, F> mapErr(final @NotNull Function<E, F> fn) {
       return Result.err(fn.apply(error));
     }
 
+    /** {@inheritDoc} */
     @Override
     public <U> @NotNull Result<U, E> flatMap(final @NotNull Function<T, Result<U, E>> fn) {
       return Result.err(error);
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull Result<T, E> ifOk(final @NotNull Consumer<T> action) {
       return this;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull Result<T, E> ifErr(final @NotNull Consumer<E> action) {
       action.accept(error);
       return this;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull Optional<T> ok() {
       return Optional.empty();
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull Optional<E> err() {
       return Optional.of(error);

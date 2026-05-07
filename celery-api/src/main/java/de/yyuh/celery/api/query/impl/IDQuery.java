@@ -46,6 +46,7 @@ public class IDQuery<T> extends AbstractQuery<T> {
       filter("id", id);
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull IDQuery<T> build() {
       return new IDQuery<>(this);

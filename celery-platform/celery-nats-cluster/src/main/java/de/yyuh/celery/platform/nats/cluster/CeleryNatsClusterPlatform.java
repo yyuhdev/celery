@@ -29,6 +29,7 @@ public final class CeleryNatsClusterPlatform extends AbstractCeleryPlatform {
     registerProvider(IMessagingProvider.class, new NatsClusterMessagingProvider());
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull IProvider defaultProvider() {
     return provider(IMessagingProvider.class).orElseThrow();

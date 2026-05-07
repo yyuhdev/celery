@@ -20,11 +20,21 @@ import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+/**
+ * Amazon S3 implementation of {@link IFileStorageProvider}.
+ *
+ * <p>This provider connects to an S3 bucket using the AWS SDK and supports
+ * uploading, downloading, and deleting files. Credentials must include the
+ * bucket name, region, access key ID, and secret access key.
+ *
+ * <p>Operations are asynchronous and execute on the common ForkJoinPool.
+ */
 public final class S3FileStorageProvider implements IFileStorageProvider {
 
   private S3Client s3Client;
   private String bucket;
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Result<Long, String>> connect(final Credentials credentials) {
     final var timer = Timer.start();
@@ -44,6 +54,7 @@ public final class S3FileStorageProvider implements IFileStorageProvider {
 
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> delete(final String path) {
     return CompletableFuture.runAsync(() -> {
@@ -54,6 +65,7 @@ public final class S3FileStorageProvider implements IFileStorageProvider {
     });
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Optional<File>> get(final String path, final String dest) {
     final var destPath = Path.of(dest);
@@ -70,6 +82,7 @@ public final class S3FileStorageProvider implements IFileStorageProvider {
     });
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> save(
       final File file,
@@ -84,11 +97,13 @@ public final class S3FileStorageProvider implements IFileStorageProvider {
     });
   }
 
+  /** {@inheritDoc} */
   @Override
   public void close() {
     this.s3Client.close();
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Boolean> isConnected() {
     return CompletableFuture.supplyAsync(() -> Result.of(() -> {

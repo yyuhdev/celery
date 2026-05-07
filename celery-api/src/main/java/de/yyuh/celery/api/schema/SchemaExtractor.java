@@ -47,6 +47,18 @@ public final class SchemaExtractor {
     return entityClass.getSimpleName().toLowerCase();
   }
 
+  /**
+   * Extracts the identifier value from an entity.
+   *
+   * <p>Scans the entity's fields or record components for the field
+   * annotated with {@link Identifier} and returns its value.
+   * Supports both Java records and regular POJOs.
+   *
+   * @param entity the entity to extract the identifier from
+   * @return the identifier value
+   * @throws IllegalStateException if no identifier field is found or
+   *                               the identifier value is null
+   */
   @NotNull
   public static Object extractId(final @NotNull IEntity entity) {
     if (entity.getClass().isRecord()) {

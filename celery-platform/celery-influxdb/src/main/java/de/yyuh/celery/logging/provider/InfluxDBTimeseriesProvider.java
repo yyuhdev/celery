@@ -22,13 +22,25 @@ import de.yyuh.celery.api.query.IQuery;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;
 
-// TODO: Implement
+/**
+ * InfluxDB implementation of {@link ITimeseriesProvider}.
+ *
+ * <p>This provider connects to an InfluxDB instance and supports saving
+ * log entries as InfluxDB points. Querying ({@link #find}) is not yet
+ * implemented.
+ *
+ * <p>Connection is established via HTTP using the credentials' IP, port,
+ * username (organization), and password (token). Auto-reconnect is
+ * supported through {@link IReconnectable}.
+ */
+// TODO: Implement find() with Flux queries
 public final class InfluxDBTimeseriesProvider implements IReconnectable, ITimeseriesProvider {
 
   private InfluxDBClient influxDBClient;
   private String organization;
   private String bucket;
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Result<Long, String>> connect(final @NotNull Credentials credentials) {
     final var timer = Timer.start();
@@ -45,6 +57,7 @@ public final class InfluxDBTimeseriesProvider implements IReconnectable, ITimese
     }).mapErr(Exception::getMessage));
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> delete(final @NotNull Instant timestamp) {
     return CompletableFuture.runAsync(() -> {
@@ -61,6 +74,9 @@ public final class InfluxDBTimeseriesProvider implements IReconnectable, ITimese
     });
   }
 
+  /**
+   * Not yet implemented. Returns an empty list.
+   */
   @Override
   public @NotNull CompletableFuture<List<ILogEntry>> find(final @NotNull IQuery<ILogEntry> query) {
     return CompletableFuture.supplyAsync(() -> {
@@ -68,6 +84,7 @@ public final class InfluxDBTimeseriesProvider implements IReconnectable, ITimese
     });
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> save(final @NotNull ILogEntry entity) {
     return CompletableFuture.runAsync(() -> {
@@ -86,6 +103,7 @@ public final class InfluxDBTimeseriesProvider implements IReconnectable, ITimese
     });
   }
 
+  /** {@inheritDoc} */
   @Override
   public void close() {
     if (this.influxDBClient != null) {
@@ -94,6 +112,7 @@ public final class InfluxDBTimeseriesProvider implements IReconnectable, ITimese
     }
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Boolean> isConnected() {
     return CompletableFuture.supplyAsync(() -> {

@@ -54,6 +54,7 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
 
   private final Map<String, RedisClusterPubSubListener<byte[], byte[]>> listeners = new ConcurrentHashMap<>();
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Result<Long, String>> connect(final @NotNull Credentials credentials) {
     final var timer = Timer.start();
@@ -90,6 +91,7 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
     }).mapErr(Exception::getMessage));
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> publish(
       final @NotNull String channel,
@@ -99,9 +101,11 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
         .thenApply(status -> null);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> subscribe(final @NotNull String channel) {
     final RedisClusterPubSubListener<byte[], byte[]> listener = new RedisClusterPubSubListener<byte[], byte[]>() {
+      /** {@inheritDoc} */
       @Override
       public void message(final RedisClusterNode node, final byte[] ch, final byte[] body) {
         if (Arrays.equals(ch, channel.getBytes())) {
@@ -115,22 +119,27 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
         }
       }
 
+      /** {@inheritDoc} */
       @Override
       public void message(final RedisClusterNode node, final byte[] pattern, final byte[] ch, final byte[] body) {
       }
 
+      /** {@inheritDoc} */
       @Override
       public void subscribed(final RedisClusterNode node, final byte[] ch, final long count) {
       }
 
+      /** {@inheritDoc} */
       @Override
       public void psubscribed(final RedisClusterNode node, final byte[] pattern, final long count) {
       }
 
+      /** {@inheritDoc} */
       @Override
       public void unsubscribed(final RedisClusterNode node, final byte[] ch, final long count) {
       }
 
+      /** {@inheritDoc} */
       @Override
       public void punsubscribed(final RedisClusterNode node, final byte[] pattern, final long count) {
       }
@@ -144,6 +153,7 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
         .thenApply(v -> null);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> unsubscribe(final @NotNull String channel) {
     final var listener = this.listeners.remove(channel);
@@ -157,6 +167,7 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
         .thenApply(v -> null);
   }
 
+  /** {@inheritDoc} */
   @Override
   public void close() {
     if (this.connection != null) {
@@ -167,6 +178,7 @@ public final class RedisClusterMessagingProvider implements IReconnectable, IMes
     }
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Boolean> isConnected() {
     return CompletableFuture.supplyAsync(() -> this.connection != null && this.connection.isOpen());

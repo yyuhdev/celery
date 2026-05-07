@@ -103,9 +103,9 @@ public final class Celery {
   }
 
   /**
-   * Returns the platform for the given {@code Class}
+   * Returns the platform for the given concrete class.
    *
-   * @param clazz the platform class t osearch for
+   * @param clazz the platform class to search for
    * @return an Optional containing the platform if found
    */
   @NotNull
@@ -114,7 +114,7 @@ public final class Celery {
   }
 
   /**
-   * Returns the message bus with the specified ID.
+   * Returns the message bus associated with the given platform or service ID.
    *
    * @param id the message bus ID to search for
    * @return an Optional containing the message bus if found
@@ -125,7 +125,7 @@ public final class Celery {
   }
 
   /**
-   * Registers a platform class for initialization.
+   * Registers a platform class for initialization during {@link #build()}.
    *
    * @param clazz the platform class to register
    * @return this Celery instance for chaining
@@ -137,7 +137,7 @@ public final class Celery {
   }
 
   /**
-   * Registers multiple platform classes for initialization.
+   * Registers multiple platform classes for initialization during {@link #build()}.
    *
    * @param clazz the platform classes to register
    * @return this Celery instance for chaining
@@ -149,7 +149,7 @@ public final class Celery {
   }
 
   /**
-   * Registers a credential provider for resolving credentials.
+   * Registers a credential provider for resolving database credentials.
    *
    * @param provider the credential provider to register
    * @return this Celery instance for chaining
@@ -257,18 +257,38 @@ public final class Celery {
     return Optional.empty();
   }
 
+  /**
+   * Returns the unique identifier for this Celery instance.
+   *
+   * @return the service ID
+   */
   public String getId() {
     return id;
   }
 
+  /**
+   * Returns the Protobuf message registry used for type-safe message unpacking.
+   *
+   * @return the message registry
+   */
   public MessageRegistry getMessageRegistry() {
     return messageRegistry;
   }
 
+  /**
+   * Returns the platform manager that holds all registered platforms.
+   *
+   * @return the platform manager
+   */
   public PlatformManager getPlatformManager() {
     return platformManager;
   }
 
+  /**
+   * Returns the event bus used for local Protobuf event dispatching.
+   *
+   * @return the event bus
+   */
   public EventBus getEventBus() {
     return eventBus;
   }

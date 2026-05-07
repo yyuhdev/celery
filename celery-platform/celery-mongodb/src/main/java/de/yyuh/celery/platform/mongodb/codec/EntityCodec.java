@@ -70,6 +70,7 @@ public final class EntityCodec<T extends IEntity> implements Codec<T> {
     }
   }
 
+  /** {@inheritDoc} */
   @Override
   public void encode(
       @NotNull final BsonWriter writer,
@@ -110,6 +111,7 @@ public final class EntityCodec<T extends IEntity> implements Codec<T> {
     writer.writeEndDocument();
   }
 
+  /** {@inheritDoc} */
   @Override
   public T decode(
       @NotNull final BsonReader reader,
@@ -220,6 +222,7 @@ public final class EntityCodec<T extends IEntity> implements Codec<T> {
     return component.getName();
   }
 
+  /** {@inheritDoc} */
   @Override
   public Class<T> getEncoderClass() {
     return clazz;

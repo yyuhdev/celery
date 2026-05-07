@@ -24,6 +24,7 @@ public final class CeleryRedisCacheClusterPlatform extends AbstractCeleryPlatfor
     registerProvider(ICacheProvider.class, new RedisClusterCacheProvider());
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull IProvider defaultProvider() {
     return provider(ICacheProvider.class).orElseThrow();

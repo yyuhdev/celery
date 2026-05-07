@@ -21,6 +21,11 @@ public abstract class AbstractQuery<T> implements IQuery<T> {
   private final Integer limit;
   private final Integer offset;
 
+  /**
+   * Constructs a query from a builder.
+   *
+   * @param builder the builder containing query parameters
+   */
   protected AbstractQuery(Builder<T, ?> builder) {
     this.entityClass = builder.entityClass;
     this.filters = Collections.unmodifiableMap(new HashMap<>(builder.filters));
@@ -28,21 +33,25 @@ public abstract class AbstractQuery<T> implements IQuery<T> {
     this.offset = builder.offset;
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull Class<T> entityClass() {
     return entityClass;
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull Map<String, Object> filters() {
     return filters;
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull Optional<Integer> limit() {
     return Optional.ofNullable(limit);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull Optional<Integer> offset() {
     return Optional.ofNullable(offset);
@@ -70,18 +79,21 @@ public abstract class AbstractQuery<T> implements IQuery<T> {
       this.entityClass = entityClass;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull B filter(@NotNull String key, @NotNull Object value) {
       this.filters.put(key, value);
       return (B) this;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull B limit(int limit) {
       this.limit = limit;
       return (B) this;
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull B offset(int offset) {
       this.offset = offset;

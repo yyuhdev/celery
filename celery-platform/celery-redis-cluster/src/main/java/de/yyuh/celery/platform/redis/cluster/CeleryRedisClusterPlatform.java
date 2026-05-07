@@ -25,6 +25,7 @@ public final class CeleryRedisClusterPlatform extends AbstractCeleryPlatform {
     registerProvider(IMessagingProvider.class, new RedisClusterMessagingProvider());
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull IProvider defaultProvider() {
     return provider(IMessagingProvider.class).orElseThrow();

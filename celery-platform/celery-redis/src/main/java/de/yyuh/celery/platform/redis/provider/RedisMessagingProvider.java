@@ -23,7 +23,17 @@ import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
 
-public class RedisMessagingProvider implements IReconnectable, IMessagingProvider {
+/**
+ * Redis Pub/Sub messaging provider.
+ *
+ * <p>This provider connects to a single Redis instance via Lettuce and
+ * uses Redis Pub/Sub for message distribution. Messages are encoded as
+ * Protobuf byte arrays. Incoming messages are unpacked via the
+ * {@link MessageRegistry} and dispatched through the {@link EventBus}.
+ *
+ * <p>Auto-reconnect is supported through {@link IReconnectable}.
+ */
+public final class RedisMessagingProvider implements IReconnectable, IMessagingProvider {
 
   private RedisPubSubAsyncCommands<byte[], byte[]> asyncCommands;
   private StatefulRedisPubSubConnection<byte[], byte[]> connection;
@@ -34,6 +44,7 @@ public class RedisMessagingProvider implements IReconnectable, IMessagingProvide
   @Inject
   private MessageRegistry messageRegistry;
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Result<Long, String>> connect(final @NotNull Credentials credentials) {
     final var timer = Timer.start();
@@ -56,6 +67,7 @@ public class RedisMessagingProvider implements IReconnectable, IMessagingProvide
     }).mapErr(Exception::getMessage));
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> publish(
       final @NotNull String channel,
@@ -65,9 +77,11 @@ public class RedisMessagingProvider implements IReconnectable, IMessagingProvide
         .thenApply(status -> null);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> subscribe(final @NotNull String channel) {
     this.connection.addListener(new RedisPubSubListener<>() {
+      /** {@inheritDoc} */
       @Override
       public void message(final byte[] ch, final byte[] body) {
         if (Arrays.equals(ch, channel.getBytes())) {
@@ -81,22 +95,27 @@ public class RedisMessagingProvider implements IReconnectable, IMessagingProvide
         }
       }
 
+      /** {@inheritDoc} */
       @Override
       public void message(byte[] pattern, byte[] ch, byte[] body) {
       }
 
+      /** {@inheritDoc} */
       @Override
       public void subscribed(byte[] ch, long count) {
       }
 
+      /** {@inheritDoc} */
       @Override
       public void psubscribed(byte[] pattern, long count) {
       }
 
+      /** {@inheritDoc} */
       @Override
       public void unsubscribed(byte[] ch, long count) {
       }
 
+      /** {@inheritDoc} */
       @Override
       public void punsubscribed(byte[] pattern, long count) {
       }
@@ -107,6 +126,7 @@ public class RedisMessagingProvider implements IReconnectable, IMessagingProvide
         .thenApply(v -> null);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> unsubscribe(final @NotNull String channel) {
     return CompletableFuture.runAsync(() -> this.asyncCommands
@@ -115,6 +135,7 @@ public class RedisMessagingProvider implements IReconnectable, IMessagingProvide
         .join());
   }
 
+  /** {@inheritDoc} */
   @Override
   public void close() {
     if (this.connection != null) {
@@ -122,6 +143,7 @@ public class RedisMessagingProvider implements IReconnectable, IMessagingProvide
     }
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Boolean> isConnected() {
     return CompletableFuture.supplyAsync(() -> this.connection != null && this.connection.isOpen());

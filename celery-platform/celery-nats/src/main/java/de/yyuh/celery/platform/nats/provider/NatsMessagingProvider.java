@@ -24,6 +24,16 @@ import io.nats.client.Nats;
 import io.nats.client.Options;
 import io.nats.client.Connection.Status;
 
+/**
+ * NATS implementation of {@link IMessagingProvider} for Pub/Sub messaging.
+ *
+ * <p>This provider connects to a single NATS server and supports publishing
+ * and subscribing to channels. Messages are encoded as Protobuf byte arrays.
+ * Incoming messages are unpacked via the {@link MessageRegistry} and dispatched
+ * through the {@link EventBus}.
+ *
+ * <p>Auto-reconnect is supported through {@link IReconnectable}.
+ */
 public final class NatsMessagingProvider implements IReconnectable, IMessagingProvider {
 
   private final ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
@@ -37,6 +47,7 @@ public final class NatsMessagingProvider implements IReconnectable, IMessagingPr
   @Inject
   private MessageRegistry messageRegistry;
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> publish(
       final @NotNull String channel,
@@ -45,6 +56,7 @@ public final class NatsMessagingProvider implements IReconnectable, IMessagingPr
         this.executorService);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> subscribe(final @NotNull String channel) {
     return CompletableFuture.runAsync(() -> {
@@ -61,6 +73,7 @@ public final class NatsMessagingProvider implements IReconnectable, IMessagingPr
     }, this.executorService);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> unsubscribe(final @NotNull String channel) {
     return CompletableFuture.runAsync(() -> {
@@ -74,6 +87,7 @@ public final class NatsMessagingProvider implements IReconnectable, IMessagingPr
     }, this.executorService);
   }
 
+  /** {@inheritDoc} */
   @Override
   public void close() {
     Result.of(() -> {
@@ -83,6 +97,7 @@ public final class NatsMessagingProvider implements IReconnectable, IMessagingPr
     });
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Result<Long, String>> connect(final @NotNull Credentials credentials) {
     final var timer = Timer.start();
@@ -102,6 +117,7 @@ public final class NatsMessagingProvider implements IReconnectable, IMessagingPr
     }).mapErr(Exception::getMessage));
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Boolean> isConnected() {
     return CompletableFuture.supplyAsync(() -> {

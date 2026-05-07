@@ -58,6 +58,7 @@ public final class NatsClusterMessagingProvider implements IReconnectable, IMess
   @Inject
   private MessageRegistry messageRegistry;
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> publish(
       final @NotNull String channel,
@@ -67,6 +68,7 @@ public final class NatsClusterMessagingProvider implements IReconnectable, IMess
         this.executorService);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> subscribe(final @NotNull String channel) {
     return CompletableFuture.runAsync(() -> {
@@ -82,6 +84,7 @@ public final class NatsClusterMessagingProvider implements IReconnectable, IMess
     }, this.executorService);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> unsubscribe(final @NotNull String channel) {
     return CompletableFuture.runAsync(() -> {
@@ -95,6 +98,7 @@ public final class NatsClusterMessagingProvider implements IReconnectable, IMess
     }, this.executorService);
   }
 
+  /** {@inheritDoc} */
   @Override
   public void close() {
     Result.of(() -> {
@@ -104,6 +108,7 @@ public final class NatsClusterMessagingProvider implements IReconnectable, IMess
     });
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Result<Long, String>> connect(final @NotNull Credentials credentials) {
     final var timer = Timer.start();
@@ -126,6 +131,7 @@ public final class NatsClusterMessagingProvider implements IReconnectable, IMess
     }).mapErr(Exception::getMessage));
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Boolean> isConnected() {
     return CompletableFuture.supplyAsync(() -> {

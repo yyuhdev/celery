@@ -38,6 +38,7 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
   private MongoClient mongoClient;
   private MongoDatabase database;
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Result<Long, String>> connect(final @NotNull Credentials credentials) {
     final var timer = Timer.start();
@@ -63,6 +64,7 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
     }).mapErr(Exception::getMessage));
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Optional<IEntity>> get(final @NotNull IQuery<IEntity> iQuery) {
     return CompletableFuture.supplyAsync(() -> {
@@ -75,6 +77,7 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
     });
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<List<IEntity>> find(final @NotNull IQuery<IEntity> query) {
     return CompletableFuture.supplyAsync(() -> {
@@ -106,6 +109,7 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
     });
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> delete(final @NotNull IQuery<IEntity> iQuery) {
     return CompletableFuture.runAsync(() -> {
@@ -115,6 +119,7 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
     });
   }
 
+  /** {@inheritDoc} */
   @Override
   public void close() {
     if (this.mongoClient != null) {
@@ -122,6 +127,7 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
     }
   }
 
+  /** {@inheritDoc} */
   @Override
   public CompletableFuture<Boolean> isConnected() {
     return CompletableFuture.supplyAsync(() -> {

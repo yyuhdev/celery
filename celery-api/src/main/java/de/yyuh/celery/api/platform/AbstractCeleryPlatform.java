@@ -105,14 +105,29 @@ public abstract class AbstractCeleryPlatform {
     return Optional.ofNullable(providerClass.cast(this.providers.get(providerClass)));
   }
 
+  /**
+   * Returns all registered providers for this platform.
+   *
+   * @return an unmodifiable view of the provider map
+   */
   public Map<Class<? extends IProvider>, IProvider> getProviders() {
     return providers;
   }
 
+  /**
+   * Returns the service ID associated with this platform.
+   *
+   * @return the service ID, or {@code null} if not set
+   */
   public String getServiceId() {
     return serviceId;
   }
 
+  /**
+   * Sets the service ID for this platform.
+   *
+   * @param serviceId the service identifier
+   */
   public void setServiceId(String serviceId) {
     this.serviceId = serviceId;
   }

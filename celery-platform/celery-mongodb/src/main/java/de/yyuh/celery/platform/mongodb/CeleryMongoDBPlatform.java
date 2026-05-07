@@ -30,6 +30,7 @@ public final class CeleryMongoDBPlatform extends AbstractCeleryPlatform {
     registerProvider(IDatabaseProvider.class, new MongoDatabaseProvider());
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull IProvider defaultProvider() {
     return provider(IDatabaseProvider.class).orElseThrow();

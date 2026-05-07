@@ -48,6 +48,7 @@ public class UUIDQuery<T> extends AbstractQuery<T> {
       filter("uuid", uuid);
     }
 
+    /** {@inheritDoc} */
     @Override
     public @NotNull UUIDQuery<T> build() {
       return new UUIDQuery<>(this);

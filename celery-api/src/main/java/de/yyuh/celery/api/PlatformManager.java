@@ -61,6 +61,12 @@ public final class PlatformManager {
         .findFirst();
   }
 
+  /**
+   * Finds a platform by its concrete class type.
+   *
+   * @param platformClass the concrete platform class to search for
+   * @return an Optional containing the platform if found
+   */
   @NotNull
   public Optional<AbstractCeleryPlatform> getPlatform(
       final @NotNull Class<? extends AbstractCeleryPlatform> platformClass) {

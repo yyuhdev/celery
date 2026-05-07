@@ -38,6 +38,7 @@ public final class RedisClusterCacheProvider implements IReconnectable, ICachePr
   private StatefulRedisClusterConnection<byte[], byte[]> connection;
   private RedisClusterClient client;
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Result<Long, String>> connect(final @NotNull Credentials credentials) {
     final var timer = Timer.start();
@@ -74,6 +75,7 @@ public final class RedisClusterCacheProvider implements IReconnectable, ICachePr
     }).mapErr(Exception::getMessage));
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> set(
       final @NotNull String key,
@@ -84,6 +86,7 @@ public final class RedisClusterCacheProvider implements IReconnectable, ICachePr
         .thenApply(v -> null);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Optional<byte[]>> get(final @NotNull String key) {
     return this.asyncCommands.get(key.getBytes())
@@ -91,6 +94,7 @@ public final class RedisClusterCacheProvider implements IReconnectable, ICachePr
         .thenApply(Optional::ofNullable);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Void> delete(final @NotNull String key) {
     return this.asyncCommands.del(key.getBytes())
@@ -98,6 +102,7 @@ public final class RedisClusterCacheProvider implements IReconnectable, ICachePr
         .thenApply(v -> null);
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Boolean> exists(final @NotNull String key) {
     return this.asyncCommands.exists(key.getBytes())
@@ -105,6 +110,7 @@ public final class RedisClusterCacheProvider implements IReconnectable, ICachePr
         .thenApply(count -> count > 0);
   }
 
+  /** {@inheritDoc} */
   @Override
   public void close() {
     if (this.connection != null) {
@@ -115,6 +121,7 @@ public final class RedisClusterCacheProvider implements IReconnectable, ICachePr
     }
   }
 
+  /** {@inheritDoc} */
   @Override
   public @NotNull CompletableFuture<Boolean> isConnected() {
     return CompletableFuture.supplyAsync(() -> this.connection != null && this.connection.isOpen());
