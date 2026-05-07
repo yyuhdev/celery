@@ -32,6 +32,7 @@ public final class EnvCredentialProvider implements ICredentialProvider {
           envOrNull(prefix + "_USER"),
           envOrNull(prefix + "_PASSWORD"),
           envOrDefault(prefix + "_HOST", "localhost"),
+          envOrNull(prefix + "_DATABASE"),
           portOrDefault(prefix + "_PORT", credentialType.defaultPort()),
           envOrNull(prefix + "_BUCKET"),
           envOrNull(prefix + "_ACCESS_KEY"),

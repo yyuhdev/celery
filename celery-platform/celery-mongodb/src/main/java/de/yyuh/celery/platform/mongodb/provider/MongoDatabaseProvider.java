@@ -1,11 +1,20 @@
 package de.yyuh.celery.platform.mongodb.provider;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
+import org.bson.codecs.configuration.CodecRegistries;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.jetbrains.annotations.NotNull;
+
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import de.yyuh.celery.api.annotation.Identifier;
+
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.entity.IEntity;
 import de.yyuh.celery.api.provider.IDatabaseProvider;
@@ -16,14 +25,6 @@ import de.yyuh.celery.platform.mongodb.codec.EntityCodecProvider;
 import de.yyuh.celery.platform.mongodb.query.BsonQueryBuilder;
 import de.yyuh.libs.core.result.Result;
 import de.yyuh.libs.core.timer.Timer;
-import org.bson.codecs.configuration.CodecRegistries;
-import org.bson.codecs.configuration.CodecRegistry;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * MongoDB implementation of IDatabaseProvider for IEntity types.
@@ -56,7 +57,7 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
           .build();
 
       this.mongoClient = MongoClients.create(settings);
-      this.database = mongoClient.getDatabase("celery");
+      this.database = mongoClient.getDatabase(credentials.database());
 
       return timer.end();
     }).mapErr(Exception::getMessage));
@@ -69,6 +70,7 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
       final IEntity entity = (IEntity) database.getCollection(collectionName, iQuery.entityClass())
           .find(BsonQueryBuilder.buildFilter(iQuery))
           .first();
+
       return Optional.ofNullable(entity);
     });
   }
@@ -96,62 +98,12 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
   public @NotNull CompletableFuture<Void> save(final @NotNull IEntity entity) {
     return CompletableFuture.runAsync(() -> {
       final String collectionName = SchemaExtractor.getName(entity.getClass());
-      final Object id = this.extractId(entity);
+      final Object id = SchemaExtractor.extractId(entity);
 
       database.getCollection(collectionName, (Class<IEntity>) entity.getClass())
           .replaceOne(new org.bson.Document("_id", id), entity,
               new com.mongodb.client.model.ReplaceOptions().upsert(true));
     });
-  }
-
-  /**
-   * Extracts the identifier value from an entity.
-   *
-   * <p>
-   * For record types, the identifier is retrieved from record components
-   * annotated with @Identifier. For regular classes, it is retrieved from
-   * fields annotated with @Identifier.
-   *
-   * @param entity the entity to extract the identifier from
-   * @return the identifier value
-   * @throws IllegalArgumentException if the entity has no @Identifier annotation
-   * @throws RuntimeException         if the identifier cannot be accessed
-   */
-  @NotNull
-  private Object extractId(final @NotNull IEntity entity) {
-    if (entity.getClass().isRecord()) {
-      for (final var component : entity.getClass().getRecordComponents()) {
-        if (component.isAnnotationPresent(Identifier.class)) {
-          try {
-            final Object value = component.getAccessor().invoke(entity);
-            if (value == null) {
-              throw new IllegalArgumentException("Identifier value for " + entity.getClass().getName() + " is null");
-            }
-            return value;
-          } catch (Exception exception) {
-            throw new RuntimeException("Failed to access identifier for " + entity.getClass().getName(), exception);
-          }
-        }
-      }
-    } else {
-      for (final var field : entity.getClass().getDeclaredFields()) {
-        if (field.isAnnotationPresent(Identifier.class)) {
-          field.setAccessible(true);
-          try {
-            final Object value = field.get(entity);
-            if (value == null) {
-              throw new IllegalArgumentException("Identifier value for " + entity.getClass().getName() + " is null");
-            }
-            return value;
-          } catch (IllegalAccessException exception) {
-            throw new RuntimeException("Failed to access identifier for " + entity.getClass().getName(), exception);
-          }
-        }
-      }
-    }
-
-    throw new IllegalArgumentException(
-        "Could not find @Identifier annotation for entity " + entity.getClass().getName());
   }
 
   @Override

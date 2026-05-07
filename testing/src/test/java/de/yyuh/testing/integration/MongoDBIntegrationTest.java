@@ -127,6 +127,7 @@ final class MongoDBIntegrationTest {
         MONGO_USER,
         MONGO_PASS,
         MONGO.getHost(),
+        "neow",
         MONGO.getMappedPort(27017),
         null, null, null, null);
   }

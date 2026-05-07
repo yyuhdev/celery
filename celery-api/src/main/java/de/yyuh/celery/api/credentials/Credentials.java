@@ -17,6 +17,7 @@ public record Credentials(
     String user,
     String password,
     String ip,
+    String database,
     int port,
 
     // InfluxDB & S3

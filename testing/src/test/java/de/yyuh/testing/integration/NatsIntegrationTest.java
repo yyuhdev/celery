@@ -81,6 +81,7 @@ final class NatsIntegrationTest {
         null,
         "nats-token",
         NATS.getHost(),
+        "celery",
         NATS.getMappedPort(4222),
         null, null, null, null);
 

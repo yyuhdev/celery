@@ -1,15 +1,19 @@
 package de.yyuh.celery.api.schema;
 
+import java.lang.reflect.Modifier;
+import java.lang.reflect.RecordComponent;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.jetbrains.annotations.NotNull;
+
 import de.yyuh.celery.api.annotation.Field;
 import de.yyuh.celery.api.annotation.Identifier;
 import de.yyuh.celery.api.annotation.Ignore;
 import de.yyuh.celery.api.annotation.Repository;
-import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.Modifier;
-import java.lang.reflect.RecordComponent;
-import java.util.*;
-import java.util.stream.Collectors;
+import de.yyuh.celery.api.entity.IEntity;
+import de.yyuh.libs.core.result.Result;
 
 /**
  * Extracts schema information from entity classes for database operations.
@@ -43,6 +47,106 @@ public final class SchemaExtractor {
     return entityClass.getSimpleName().toLowerCase();
   }
 
+  @NotNull
+  public static Object extractId(final @NotNull IEntity entity) {
+    if (entity.getClass().isRecord()) {
+      final var result = extractIdFromRecord(entity);
+
+      if (result.isOk()) {
+        return result.ok().get();
+      }
+    }
+
+    final var result = extractIdFromPOJO(entity);
+
+    if (result.isOk()) {
+      return result.ok().get();
+    }
+
+    throw new IllegalStateException("Unable to process entity");
+  }
+
+  @NotNull
+  private static Result<Object, String> extractIdFromPOJO(final IEntity entity) {
+    return Result.of(() -> {
+      final var components = entity.getClass().getDeclaredFields();
+
+      final var valueOpt = Arrays.stream(components)
+          .filter(component -> component.isAnnotationPresent(Identifier.class))
+          .map(component -> {
+            component.setAccessible(true);
+            final var extractedFieldResult = extractValueFromField(component, entity);
+            final var objectOpt = extractedFieldResult.ok();
+
+            if (objectOpt.isEmpty()) {
+              throw new IllegalArgumentException(extractedFieldResult.err().get());
+            }
+
+            return objectOpt.get();
+          })
+          .findFirst();
+
+      return valueOpt.get();
+    }).mapErr(Exception::getMessage);
+  }
+
+  @NotNull
+  private static Result<Object, String> extractIdFromRecord(final IEntity entity) {
+    return Result.of(() -> {
+      final var components = entity.getClass().getRecordComponents();
+
+      final var valueOpt = Arrays.stream(components)
+          .filter(component -> component.isAnnotationPresent(Identifier.class))
+          .map(component -> {
+            final var invokedAccessor = invokeAccessor(component, entity);
+            final var objectOpt = invokedAccessor.ok();
+
+            if (objectOpt.isEmpty()) {
+              throw new IllegalArgumentException(invokedAccessor.err().get());
+            }
+
+            return objectOpt.get();
+          })
+          .findFirst();
+
+      return valueOpt.get();
+    }).mapErr(Exception::getMessage);
+  }
+
+  @NotNull
+  private static Result<Object, String> extractValueFromField(
+      final java.lang.reflect.Field component,
+      final IEntity entity) {
+    return Result.of(() -> {
+      component.setAccessible(true);
+
+      final Object value = component.get(entity);
+
+      if (value == null) {
+        throw new IllegalArgumentException(
+            "Identifier value for " + entity.getClass().getName() + " is null");
+      }
+
+      return value;
+
+    }).mapErr(Exception::getMessage);
+  }
+
+  @NotNull
+  private static Result<Object, String> invokeAccessor(final RecordComponent component, final IEntity entity) {
+    return Result.of(() -> {
+      final Object value = component.getAccessor().invoke(entity);
+
+      if (value == null) {
+        throw new IllegalArgumentException(
+            "Identifier value for " + entity.getClass().getName() + " is null");
+      }
+
+      return value;
+
+    }).mapErr(Exception::getMessage);
+  }
+
   /**
    * Returns all fields of an entity class mapped to their database names.
    *
@@ -56,21 +160,24 @@ public final class SchemaExtractor {
    *             on {@code getDeclaredFields()} which cannot resolve annotations
    *             from record components.
    */
-  @Deprecated
   @NotNull
+  @Deprecated(forRemoval = true)
   public static Map<String, java.lang.reflect.Field> getFields(final @NotNull Class<?> entityClass) {
     final Map<String, java.lang.reflect.Field> fields = new LinkedHashMap<>();
 
     for (java.lang.reflect.Field field : entityClass.getDeclaredFields()) {
       final int mod = field.getModifiers();
+
       if (Modifier.isStatic(mod) || Modifier.isTransient(mod)) {
         continue;
       }
+
       if (field.isAnnotationPresent(Ignore.class)) {
         continue;
       }
 
       String name = field.getName();
+
       if (field.isAnnotationPresent(Field.class)) {
         name = field.getAnnotation(Field.class).value();
       }
@@ -78,167 +185,5 @@ public final class SchemaExtractor {
       fields.put(name, field);
     }
     return fields;
-  }
-
-  /**
-   * Returns the ordered list of database column names for an entity class.
-   *
-   * <p>
-   * Works for both records and POJOs. Resolves {@code @Field} names and
-   * excludes {@code @Ignore}, static, and transient members.
-   *
-   * @param entityClass the entity class to introspect
-   * @return ordered list of database column names (never {@code null})
-   */
-  @NotNull
-  public static List<String> getColumnNames(final @NotNull Class<?> entityClass) {
-    return resolveColumns(entityClass).stream()
-        .map(ColumnMeta::name)
-        .collect(Collectors.toList());
-  }
-
-  /**
-   * Returns the database column name for the {@code @Identifier} field, if any.
-   *
-   * @param entityClass the entity class to introspect
-   * @return the identifier column name, or {@code empty} if none is annotated
-   */
-  @NotNull
-  public static Optional<String> getIdentifierColumnName(final @NotNull Class<?> entityClass) {
-    return resolveColumns(entityClass).stream()
-        .filter(ColumnMeta::isIdentifier)
-        .map(ColumnMeta::name)
-        .findFirst();
-  }
-
-  /**
-   * Generates a CREATE TABLE SQL statement for an entity class.
-   *
-   * <p>
-   * Columns annotated with {@code @Identifier} get a {@code PRIMARY KEY}
-   * constraint. Columns annotated with {@code @Ignore} are excluded.
-   * Both records and POJOs are supported.
-   *
-   * @param entityClass the entity class to generate the statement for
-   * @return the CREATE TABLE SQL statement
-   */
-  @NotNull
-  public static String generateCreateTableSql(final @NotNull Class<?> entityClass) {
-    final String tableName = getName(entityClass);
-    final List<ColumnMeta> columns = resolveColumns(entityClass);
-
-    final String columnDefs = columns.stream()
-        .map(col -> {
-          final String sqlType = getSqlType(col.type());
-          final String name = col.name();
-          if (col.isIdentifier()) {
-            return name + " " + sqlType + " PRIMARY KEY";
-          }
-          return name + " " + sqlType;
-        })
-        .collect(Collectors.joining(", "));
-
-    return "CREATE TABLE IF NOT EXISTS " + tableName + " (" + columnDefs + ");";
-  }
-
-  /**
-   * Resolves persistable columns for a class, handling both records and POJOs.
-   */
-  @NotNull
-  private static List<ColumnMeta> resolveColumns(final @NotNull Class<?> entityClass) {
-    if (entityClass.isRecord()) {
-      return resolveRecordColumns(entityClass);
-    }
-    return resolvePojoColumns(entityClass);
-  }
-
-  @NotNull
-  private static List<ColumnMeta> resolveRecordColumns(final @NotNull Class<?> recordClass) {
-    final List<ColumnMeta> columns = new ArrayList<>();
-
-    for (final RecordComponent component : recordClass.getRecordComponents()) {
-      if (component.isAnnotationPresent(Ignore.class)) {
-        continue;
-      }
-
-      columns.add(new ColumnMeta(
-          resolveColumnName(component),
-          component.getType(),
-          component.isAnnotationPresent(Identifier.class)));
-    }
-
-    return columns;
-  }
-
-  @NotNull
-  private static List<ColumnMeta> resolvePojoColumns(final @NotNull Class<?> pojoClass) {
-    final List<ColumnMeta> columns = new ArrayList<>();
-
-    for (final java.lang.reflect.Field field : pojoClass.getDeclaredFields()) {
-      final int mod = field.getModifiers();
-      if (Modifier.isStatic(mod) || Modifier.isTransient(mod)) {
-        continue;
-      }
-      if (field.isAnnotationPresent(Ignore.class)) {
-        continue;
-      }
-
-      columns.add(new ColumnMeta(
-          field.isAnnotationPresent(Field.class)
-              ? field.getAnnotation(Field.class).value()
-              : field.getName(),
-          field.getType(),
-          field.isAnnotationPresent(Identifier.class)));
-    }
-
-    return columns;
-  }
-
-  @NotNull
-  private static String resolveColumnName(final @NotNull RecordComponent component) {
-    if (component.isAnnotationPresent(Field.class)) {
-      return component.getAnnotation(Field.class).value();
-    }
-    return component.getName();
-  }
-
-  /**
-   * Maps a Java type to its corresponding SQL type.
-   *
-   * @param type the Java class type to convert
-   * @return the SQL type string
-   */
-  @NotNull
-  private static String getSqlType(final Class<?> type) {
-    if (type == String.class || type == UUID.class) {
-      return "VARCHAR(255)";
-    }
-
-    if (type == int.class || type == Integer.class) {
-      return "INT";
-    }
-
-    if (type == long.class || type == Long.class) {
-      return "BIGINT";
-    }
-
-    if (type == boolean.class || type == Boolean.class) {
-      return "BOOLEAN";
-    }
-
-    if (type == double.class || type == Double.class || type == float.class || type == Float.class) {
-      return "DOUBLE";
-    }
-
-    return "TEXT";
-  }
-
-  /**
-   * Internal metadata for a resolved database column.
-   */
-  private record ColumnMeta(
-      @NotNull String name,
-      @NotNull Class<?> type,
-      boolean isIdentifier) {
   }
 }

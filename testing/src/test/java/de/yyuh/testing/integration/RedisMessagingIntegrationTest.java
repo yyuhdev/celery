@@ -81,6 +81,7 @@ final class RedisMessagingIntegrationTest {
         null,
         "testpass",
         REDIS.getHost(),
+        null,
         REDIS.getMappedPort(6379),
         null, null, null, null);
 

@@ -77,6 +77,7 @@ final class InfluxDBIntegrationTest {
         "celery",
         "my-super-secret-token",
         INFLUXDB.getHost(),
+        null,
         INFLUXDB.getMappedPort(8086),
         "logging",
         null, null, null);
