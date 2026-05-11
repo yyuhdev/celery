@@ -1,10 +1,16 @@
 package de.yyuh.celery.api.credentials.provider;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -26,6 +32,11 @@ import org.slf4j.LoggerFactory;
  * </ul>
  *
  * <p>
+ * Lookup order: explicit path via system property/env var, then
+ * {@code ./.env} in the working directory, then {@code .env} on the
+ * classpath (e.g. {@code src/main/resources/.env}).
+ *
+ * <p>
  * Loaded once and cached. Use {@link #reload()} to force re-read.
  */
 final class EnvironmentFileParser {
@@ -45,16 +56,25 @@ final class EnvironmentFileParser {
     }
 
     final var envFilePath = resolvePath();
-    if (envFilePath == null) {
-      loaded.set(true);
-      return entries;
+    if (envFilePath != null) {
+      try {
+        entries = parse(Files.readAllLines(envFilePath));
+        log.debug("Loaded {} entries from {}", entries.size(), envFilePath);
+        loaded.set(true);
+        return entries;
+      } catch (final IOException e) {
+        log.warn("Failed to read .env file at {}: {}", envFilePath, e.getMessage());
+      }
     }
 
-    try {
-      entries = parse(envFilePath);
-      log.debug("Loaded {} entries from {}", entries.size(), envFilePath);
-    } catch (final IOException e) {
-      log.warn("Failed to read .env file at {}: {}", envFilePath, e.getMessage());
+    final var resource = resolveResource();
+    if (resource != null) {
+      try (resource) {
+        entries = parse(readAllLines(resource));
+        log.debug("Loaded {} entries from classpath:.env", entries.size());
+      } catch (final IOException e) {
+        log.warn("Failed to read .env from classpath: {}", e.getMessage());
+      }
     }
 
     loaded.set(true);
@@ -80,10 +100,10 @@ final class EnvironmentFileParser {
   }
 
   @NotNull
-  private static Map<String, String> parse(final @NotNull Path path) throws IOException {
+  private static Map<String, String> parse(final @NotNull List<String> lines) {
     final var result = new LinkedHashMap<String, String>();
 
-    for (final String line : Files.readAllLines(path)) {
+    for (final String line : lines) {
       final var trimmed = line.strip();
 
       if (trimmed.isEmpty() || trimmed.startsWith("#")) {
@@ -103,6 +123,18 @@ final class EnvironmentFileParser {
     }
 
     return Collections.unmodifiableMap(result);
+  }
+
+  @NotNull
+  private static List<String> readAllLines(final @NotNull InputStream stream) throws IOException {
+    final var lines = new ArrayList<String>();
+    try (final var reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        lines.add(line);
+      }
+    }
+    return lines;
   }
 
   @NotNull
@@ -151,5 +183,20 @@ final class EnvironmentFileParser {
     }
 
     return null;
+  }
+
+  @Nullable
+  private static InputStream resolveResource() {
+    final var cl = EnvironmentFileParser.class.getClassLoader();
+    if (cl == null) {
+      return null;
+    }
+
+    final var stream = cl.getResourceAsStream(".env");
+    if (stream != null) {
+      return stream;
+    }
+
+    return cl.getResourceAsStream(".env.properties");
   }
 }

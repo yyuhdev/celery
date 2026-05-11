@@ -30,9 +30,13 @@ import de.yyuh.celery.api.credentials.ICredentialProvider;
  * etc.
  *
  * <p>
- * The .env file path can be overridden via the system property
- * {@code celery.dotenv.path} or the environment variable
- * {@code CELERY_DOTENV_PATH}.
+ * The .env file is resolved in this order:
+ * <ol>
+ *   <li>Explicit path via {@code celery.dotenv.path} system property
+ *       or {@code CELERY_DOTENV_PATH} environment variable</li>
+ *   <li>{@code ./.env} in the working directory</li>
+ *   <li>{@code .env} on the classpath (e.g. {@code src/main/resources/.env})</li>
+ * </ol>
  *
  * @see SystemPropertyCredentialProvider for the JVM system property equivalent
  */
