@@ -4,11 +4,6 @@ plugins {
 
 dependencies {
     api(libs.jetbrainsannotations)
-    api(libs.mongo)
-    api(libs.influxdb)
-    api(libs.nats)
-    api(libs.lettuce)
-    api(libs.gson)
     api(libs.protobuf.java)
     api(project(":shared"))
     api(project(":celery-api"))
