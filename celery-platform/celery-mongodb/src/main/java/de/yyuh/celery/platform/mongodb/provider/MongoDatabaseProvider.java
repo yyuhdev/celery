@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +15,7 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.ReplaceOptions;
 
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.entity.IEntity;
@@ -100,12 +102,16 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
   @SuppressWarnings("unchecked")
   public @NotNull CompletableFuture<Void> save(final @NotNull IEntity entity) {
     return CompletableFuture.runAsync(() -> {
-      final String collectionName = SchemaExtractor.getName(entity.getClass());
-      final Object id = SchemaExtractor.extractId(entity);
+      Result.of(() -> {
+        final String collectionName = SchemaExtractor.getName(entity.getClass());
+        final Object id = SchemaExtractor.extractId(entity);
 
-      database.getCollection(collectionName, (Class<IEntity>) entity.getClass())
-          .replaceOne(new org.bson.Document("_id", id), entity,
-              new com.mongodb.client.model.ReplaceOptions().upsert(true));
+        return database.getCollection(collectionName, (Class<IEntity>) entity.getClass())
+            .replaceOne(new Document("_id", id), entity,
+                new ReplaceOptions().upsert(true));
+      }).ifErr(e -> {
+        e.printStackTrace();
+      });
     });
   }
 
