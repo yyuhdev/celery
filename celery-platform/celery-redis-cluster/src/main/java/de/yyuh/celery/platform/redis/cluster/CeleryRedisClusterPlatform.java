@@ -1,12 +1,12 @@
 package de.yyuh.celery.platform.redis.cluster;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.yyuh.celery.api.CeleryDatabaseType;
 import de.yyuh.celery.api.CeleryPlatformType;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
-import de.yyuh.celery.api.provider.IProvider;
 import de.yyuh.celery.platform.redis.cluster.provider.RedisClusterMessagingProvider;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Redis Cluster platform for Pub/Sub messaging.
@@ -27,7 +27,7 @@ public final class CeleryRedisClusterPlatform extends AbstractCeleryPlatform {
 
   /** {@inheritDoc} */
   @Override
-  public @NotNull IProvider defaultProvider() {
+  public @NotNull IMessagingProvider defaultProvider() {
     return provider(IMessagingProvider.class).orElseThrow();
   }
 }

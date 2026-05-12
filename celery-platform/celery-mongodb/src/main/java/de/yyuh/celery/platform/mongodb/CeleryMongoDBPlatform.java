@@ -4,9 +4,10 @@ import org.jetbrains.annotations.NotNull;
 
 import de.yyuh.celery.api.CeleryDatabaseType;
 import de.yyuh.celery.api.CeleryPlatformType;
+import de.yyuh.celery.api.entity.IEntity;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
 import de.yyuh.celery.api.provider.IDatabaseProvider;
-import de.yyuh.celery.api.provider.IProvider;
+import de.yyuh.celery.api.query.IQuery;
 import de.yyuh.celery.platform.mongodb.provider.MongoDatabaseProvider;
 
 /**
@@ -32,7 +33,8 @@ public final class CeleryMongoDBPlatform extends AbstractCeleryPlatform {
 
   /** {@inheritDoc} */
   @Override
-  public @NotNull IProvider defaultProvider() {
+  @SuppressWarnings("unchecked")
+  public @NotNull IDatabaseProvider<IEntity, IQuery<IEntity>> defaultProvider() {
     return provider(IDatabaseProvider.class).orElseThrow();
   }
 }
