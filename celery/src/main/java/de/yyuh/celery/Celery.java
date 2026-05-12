@@ -109,8 +109,11 @@ public final class Celery {
    * @return an Optional containing the platform if found
    */
   @NotNull
-  public Optional<AbstractCeleryPlatform> getPlatform(final @NotNull Class<? extends AbstractCeleryPlatform> clazz) {
-    return this.platformManager.getPlatform(clazz);
+  @SuppressWarnings("unchecked")
+  public <T extends AbstractCeleryPlatform> Optional<T> getPlatform(
+      final @NotNull Class<T> clazz) {
+
+    return (Optional<T>) this.platformManager.getPlatform(clazz);
   }
 
   /**

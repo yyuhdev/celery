@@ -2,11 +2,13 @@ package de.yyuh.testing.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import de.yyuh.celery.Celery;
 import de.yyuh.celery.api.credentials.Credentials;
 import de.yyuh.celery.api.entity.IEntity;
 import de.yyuh.celery.api.query.AbstractQuery;
 import de.yyuh.celery.api.query.IQuery;
 import de.yyuh.celery.api.query.impl.IDQuery;
+import de.yyuh.celery.platform.mongodb.CeleryMongoDBPlatform;
 import de.yyuh.celery.platform.mongodb.provider.MongoDatabaseProvider;
 import de.yyuh.testing.entity.TestEntity;
 

@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.protobuf.BytesValue;
 
+import de.yyuh.celery.Celery;
 import de.yyuh.celery.api.credentials.Credentials;
+import de.yyuh.celery.platform.mongodb.CeleryMongoDBPlatform;
 import de.yyuh.celery.platform.nats.provider.NatsMessagingProvider;
 
 import java.util.concurrent.TimeUnit;
