@@ -10,7 +10,7 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
 }
 
-rootProject.name = "libs-fix"
+rootProject.name = "libs"
 include("shared")
 include("celery")
 include("celery-api")
