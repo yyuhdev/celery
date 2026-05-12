@@ -1,11 +1,11 @@
 package de.yyuh.celery.platform.redis.cache.cluster;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.yyuh.celery.api.CeleryDatabaseType;
 import de.yyuh.celery.api.CeleryPlatformType;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
 import de.yyuh.celery.api.provider.ICacheProvider;
-import de.yyuh.celery.api.provider.IProvider;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Redis Cluster cache platform with automatic sharding.
@@ -26,7 +26,7 @@ public final class CeleryRedisCacheClusterPlatform extends AbstractCeleryPlatfor
 
   /** {@inheritDoc} */
   @Override
-  public @NotNull IProvider defaultProvider() {
+  public @NotNull ICacheProvider defaultProvider() {
     return provider(ICacheProvider.class).orElseThrow();
   }
 }

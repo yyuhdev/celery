@@ -1,17 +1,18 @@
 package de.yyuh.celery.platform.redis;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.yyuh.celery.api.CeleryDatabaseType;
 import de.yyuh.celery.api.CeleryPlatformType;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
-import de.yyuh.celery.api.provider.IProvider;
 import de.yyuh.celery.platform.redis.provider.RedisMessagingProvider;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Redis platform implementation for the Celery framework.
  *
- * <p>This platform connects to a single Redis instance and provides
+ * <p>
+ * This platform connects to a single Redis instance and provides
  * Pub/Sub messaging via {@link RedisMessagingProvider}.
  * Messages are encoded as Protobuf byte arrays.
  */
@@ -28,7 +29,7 @@ public final class CeleryRedisPlatform extends AbstractCeleryPlatform {
 
   /** {@inheritDoc} */
   @Override
-  public @NotNull IProvider defaultProvider() {
+  public @NotNull IMessagingProvider defaultProvider() {
     return provider(IMessagingProvider.class).orElseThrow();
   }
 }

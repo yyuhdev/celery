@@ -1,12 +1,12 @@
 package de.yyuh.celery.platform.nats.cluster;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.yyuh.celery.api.CeleryDatabaseType;
 import de.yyuh.celery.api.CeleryPlatformType;
 import de.yyuh.celery.api.messaging.IMessagingProvider;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
-import de.yyuh.celery.api.provider.IProvider;
 import de.yyuh.celery.platform.nats.cluster.provider.NatsClusterMessagingProvider;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * NATS Cluster platform for Pub/Sub messaging.
@@ -31,7 +31,7 @@ public final class CeleryNatsClusterPlatform extends AbstractCeleryPlatform {
 
   /** {@inheritDoc} */
   @Override
-  public @NotNull IProvider defaultProvider() {
+  public @NotNull IMessagingProvider defaultProvider() {
     return provider(IMessagingProvider.class).orElseThrow();
   }
 }

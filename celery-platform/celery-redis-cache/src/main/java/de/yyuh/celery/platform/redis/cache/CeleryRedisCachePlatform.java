@@ -1,16 +1,17 @@
 package de.yyuh.celery.platform.redis.cache;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.yyuh.celery.api.CeleryDatabaseType;
 import de.yyuh.celery.api.CeleryPlatformType;
 import de.yyuh.celery.api.platform.AbstractCeleryPlatform;
 import de.yyuh.celery.api.provider.ICacheProvider;
-import de.yyuh.celery.api.provider.IProvider;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Redis cache platform implementation for the Celery framework.
  *
- * <p>This platform connects to a single Redis instance and provides
+ * <p>
+ * This platform connects to a single Redis instance and provides
  * cache operations (get, set, delete, exists) via {@link RedisCacheProvider}.
  */
 public final class CeleryRedisCachePlatform extends AbstractCeleryPlatform {
@@ -26,7 +27,7 @@ public final class CeleryRedisCachePlatform extends AbstractCeleryPlatform {
 
   /** {@inheritDoc} */
   @Override
-  public @NotNull IProvider defaultProvider() {
+  public @NotNull ICacheProvider defaultProvider() {
     return provider(ICacheProvider.class).orElseThrow();
   }
 }

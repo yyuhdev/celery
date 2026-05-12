@@ -137,7 +137,8 @@ public final class Celery {
   }
 
   /**
-   * Registers multiple platform classes for initialization during {@link #build()}.
+   * Registers multiple platform classes for initialization during
+   * {@link #build()}.
    *
    * @param clazz the platform classes to register
    * @return this Celery instance for chaining
