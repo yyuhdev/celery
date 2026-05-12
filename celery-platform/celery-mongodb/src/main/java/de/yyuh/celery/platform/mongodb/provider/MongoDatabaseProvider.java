@@ -87,9 +87,11 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
     return CompletableFuture.supplyAsync(() -> {
       final String collectionName = SchemaExtractor.getName(query.entityClass());
       final List<IEntity> results = new ArrayList<>();
+
       database.getCollection(collectionName, query.entityClass())
           .find(BsonQueryBuilder.buildFilter(query))
           .into(results);
+
       return results;
     });
   }
@@ -104,16 +106,12 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
   @SuppressWarnings("unchecked")
   public @NotNull CompletableFuture<Void> save(final @NotNull IEntity entity) {
     return CompletableFuture.runAsync(() -> {
-      Result.of(() -> {
-        final String collectionName = SchemaExtractor.getName(entity.getClass());
-        final Object id = SchemaExtractor.extractId(entity);
+      final String collectionName = SchemaExtractor.getName(entity.getClass());
+      final Object id = SchemaExtractor.extractId(entity);
 
-        return database.getCollection(collectionName, (Class<IEntity>) entity.getClass())
-            .replaceOne(new Document("_id", id), entity,
-                new ReplaceOptions().upsert(true));
-      }).ifErr(e -> {
-        e.printStackTrace();
-      });
+      database.getCollection(collectionName, (Class<IEntity>) entity.getClass())
+          .replaceOne(new Document("_id", id), entity,
+              new ReplaceOptions().upsert(true));
     });
   }
 
