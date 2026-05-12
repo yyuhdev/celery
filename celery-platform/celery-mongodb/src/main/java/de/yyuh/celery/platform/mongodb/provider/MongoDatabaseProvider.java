@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.bson.Document;
+import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -56,6 +57,7 @@ public final class MongoDatabaseProvider implements IReconnectable, IDatabasePro
 
       final MongoClientSettings settings = MongoClientSettings.builder()
           .applyConnectionString(new ConnectionString(connectionString))
+          .uuidRepresentation(UuidRepresentation.STANDARD)
           .codecRegistry(codecRegistry)
           .build();
 
