@@ -22,6 +22,11 @@ steps:
   build:
     image: gradle:jdk-25-and-25
     commands:
+      - |
+        set -e
+        curl -sSL "https://github.com/bufbuild/buf/releases/download/v1.66.1/buf-Linux-x86_64" -o /usr/local/bin/buf
+        chmod +x /usr/local/bin/buf
+        /usr/local/bin/buf --version
       - ./gradlew build -x test --no-daemon
 
 services:
