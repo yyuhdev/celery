@@ -42,4 +42,4 @@ services:
 
 when:
   branch: v3
-  event: [push, pull_request]
+  event: [push, pull_request, manual]
