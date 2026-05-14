@@ -6,19 +6,14 @@ clone:
       recursive: true
 
 steps:
-  setup-buf:
+  integration-test:
     image: gradle:jdk-25-and-25
     commands:
       - |
         set -e
-        BUF_VERSION=1.66.1
-        curl -sSL "https://github.com/bufbuild/buf/releases/download/v$${BUF_VERSION}/buf-Linux-x86_64" -o /usr/local/bin/buf
+        curl -sSL "https://github.com/bufbuild/buf/releases/download/v1.66.1/buf-Linux-x86_64" -o /usr/local/bin/buf
         chmod +x /usr/local/bin/buf
         /usr/local/bin/buf --version
-
-  integration-test:
-    image: gradle:jdk-25-and-25
-    commands:
       - ./gradlew testing:test --no-daemon
     environment:
       DOCKER_HOST: tcp://docker:2375
